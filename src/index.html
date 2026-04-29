@@ -300,11 +300,15 @@ function parseMd(text) {
     if (line.startsWith('### ')) {
       if (post) { posts.push(post); post = null; }
       postIndex++;
+      const dayLabel = line.replace('### ', '').trim();
+      // Derive order from the day name in the heading (Mon=1 … Sun=7)
+      const DAY_ORDER = { MONDAY:1, TUESDAY:2, WEDNESDAY:3, THURSDAY:4, FRIDAY:5, SATURDAY:6, SUNDAY:7 };
+      const firstWord = dayLabel.split(/[\s\u00B7·]/)[0].toUpperCase();
       post = {
-        id:           `${platform}-${postIndex}`,  // will be refined when date: is parsed
+        id:           `${platform}-${postIndex}`,
         platform,
-        day_label:    line.replace('### ', '').trim(),
-        day_order:    0,   // derived from date: field
+        day_label:    dayLabel,
+        day_order:    DAY_ORDER[firstWord] || 99,
         date:         '',
         post_time:    '',
         content_type: '',
@@ -326,13 +330,7 @@ function parseMd(text) {
 
     if (key === 'date') {
       post.date = val;
-      if (val) {
-        const d = new Date(val + 'T12:00:00');
-        // day_order: 0 = Sun, 1 = Mon ... but we want Mon=1 through Sun=7
-        const jsDay = d.getDay(); // 0=Sun,1=Mon,...,6=Sat
-        post.day_order = jsDay === 0 ? 7 : jsDay;
-        post.id = `${platform}-${val}-${postIndex}`;
-      }
+      if (val) post.id = `${platform}-${val}-${postIndex}`;
     }
     else if (key === 'time')     post.post_time    = val;
     else if (key === 'type')     post.content_type = val;
