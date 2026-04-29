@@ -3,694 +3,963 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KelliWorks Calendar</title>
-
-  <!-- Supabase -->
+  <title>KelliWorks Content Calendar</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- Config -->
   <script src="config/supabase-config.js"></script>
-
   <style>
-    /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body { font-family: Arial, sans-serif; background: #f5f5f5; color: #222; font-size: 13px; }
 
     /* ── Header ── */
-    header { background: #1a1a2e; color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 1rem; }
-    header h1 { font-size: 15px; letter-spacing: 1px; }
-    header p { font-size: 11px; color: #bbb; margin-top: 4px; }
+    header { background: #1a1a2e; color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+    .header-text h1 { font-size: 15px; letter-spacing: 1px; }
+    .header-text p  { font-size: 11px; color: #bbb; margin-top: 3px; }
+    .header-back {
+      margin-left: auto; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 11px;
+      white-space: nowrap;
+    }
+    .header-back:hover { background: rgba(255,255,255,0.22); }
 
-    /* ── Sync status ── */
+    /* ── Sync pill ── */
     #sync-status {
-      margin-left: auto;
-      font-size: 0.8rem;
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.1);
+      font-size: 11px; padding: 4px 10px; border-radius: 20px;
+      background: rgba(255,255,255,0.1); color: #ccc; white-space: nowrap;
     }
     #sync-status.synced  { background: rgba(72,199,142,0.25); color: #48c78e; }
     #sync-status.syncing { background: rgba(255,193,7,0.25);  color: #ffc107; }
     #sync-status.error   { background: rgba(255,99,99,0.25);  color: #ff6363; }
 
-    /* ── Calendar styles ── */
-    .platform-nav { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 20px; background: #fff; border-bottom: 2px solid #c9a84c; position: sticky; top: 0; z-index: 100; }
-    .platform-nav button { padding: 6px 12px; border: 1px solid #ccc; border-radius: 16px; background: #fff; cursor: pointer; font-size: 11px; font-weight: bold; }
+    /* ══════════════════════════════════════
+       LANDING PAGE
+    ══════════════════════════════════════ */
+    #screen-landing { min-height: 100vh; display: flex; flex-direction: column; }
+    .landing-body {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 60px 24px; gap: 36px;
+    }
+    .landing-intro { text-align: center; }
+    .landing-intro h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 8px; }
+    .landing-intro p  { font-size: 13px; color: #888; }
+    .landing-cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .role-card {
+      background: #fff; border: 2px solid #e8e8e8; border-radius: 12px;
+      padding: 36px 32px; width: 220px; text-align: center; cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .role-card:hover { border-color: #c9a84c; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .role-card .icon { font-size: 32px; margin-bottom: 12px; }
+    .role-card h3 { font-size: 14px; color: #1a1a2e; margin-bottom: 6px; }
+    .role-card p  { font-size: 11px; color: #888; line-height: 1.5; }
+    .role-card.primary { background: #1a1a2e; border-color: #1a1a2e; }
+    .role-card.primary h3, .role-card.primary p { color: #fff; }
+    .role-card.primary .icon { color: #c9a84c; }
+    .role-card.primary:hover { border-color: #c9a84c; box-shadow: 0 4px 20px rgba(26,26,46,0.3); }
+    .role-card.accent { border-color: #c9a84c; }
+
+    /* ══════════════════════════════════════
+       APPROVAL MODE — Calendar
+    ══════════════════════════════════════ */
+    .week-bar {
+      background: #fff; border-bottom: 1px solid #eee;
+      padding: 8px 20px; display: flex; align-items: center; gap: 10px; font-size: 11px; color: #666;
+    }
+    .week-bar select { font-size: 11px; padding: 4px 8px; border: 1px solid #ddd; border-radius: 6px; }
+    .platform-nav {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 20px;
+      background: #fff; border-bottom: 2px solid #c9a84c; position: sticky; top: 0; z-index: 100;
+    }
+    .platform-nav button {
+      padding: 6px 12px; border: 1px solid #ccc; border-radius: 16px;
+      background: #fff; cursor: pointer; font-size: 11px; font-weight: bold;
+    }
     .platform-nav button.active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
     .platform { display: none; padding: 16px 20px; }
     .platform.active { display: block; }
     .platform-header { background: #1a1a2e; color: #fff; padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; }
     .platform-header h2 { font-size: 13px; letter-spacing: 0.5px; }
-    .platform-header p { font-size: 10px; color: #c9a84c; margin-top: 3px; }
+    .platform-header p  { font-size: 10px; color: #c9a84c; margin-top: 3px; }
     .day-block { margin-bottom: 20px; }
-    .day-label { background: #c9a84c; color: #1a1a2e; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 4px 4px 0 0; }
-    .post-card { background: #fff; border: 1px solid #e8e8e8; border-top: none; padding: 14px; margin-bottom: 2px; }
+    .day-label {
+      background: #c9a84c; color: #1a1a2e; padding: 6px 12px;
+      font-size: 11px; font-weight: bold; border-radius: 4px 4px 0 0;
+    }
+    .post-card {
+      background: #fff; border: 1px solid #e8e8e8; border-top: none;
+      padding: 14px; margin-bottom: 2px;
+    }
     .post-card:last-child { border-radius: 0 0 6px 6px; }
     .post-meta { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
     .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; }
-    .badge-time { background: #f0f0f0; color: #666; }
-    .badge-type { background: #e8f4fd; color: #1a6fa8; }
-    .badge-high { background: #fdecea; color: #c0392b; }
+    .badge-time  { background: #f0f0f0; color: #666; }
+    .badge-type  { background: #e8f4fd; color: #1a6fa8; }
+    .badge-high  { background: #fdecea; color: #c0392b; }
     .badge-trend { background: #e8f8e8; color: #27ae60; }
-    .post-caption { font-size: 12px; line-height: 1.7; color: #333; margin-bottom: 10px; padding: 10px; background: #fafafa; border-left: 3px solid #c9a84c; border-radius: 0 4px 4px 0; }
-    .visual-box { background: #fff8e1; border: 1px dashed #c9a84c; border-radius: 4px; padding: 10px; margin-bottom: 10px; font-size: 11px; color: #856404; }
-    .visual-box strong { display: block; margin-bottom: 4px; color: #1a1a2e; }
-    .approve-row { display: flex; align-items: center; gap: 10px; }
-    .approve-row label { font-size: 11px; color: #888; }
-    .approve-row select { font-size: 11px; padding: 4px 8px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; }
-    .approve-row select.approved { border-color: #27ae60; color: #27ae60; background: #eafaf1; }
-    .approve-row select.edits { border-color: #c9a84c; color: #856404; background: #fff8e1; }
-    .approve-row select.no { border-color: #e74c3c; color: #922; background: #fdecea; }
-    .notes-input { flex: 1; padding: 4px 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-family: Arial; }
-    .note-alert { background: #fdecea; border-left: 3px solid #e74c3c; padding: 8px 12px; font-size: 11px; color: #7b1a1a; margin-bottom: 10px; border-radius: 0 4px 4px 0; }
-    .note-info { background: #e8f4fd; border-left: 3px solid #1a6fa8; padding: 8px 12px; font-size: 11px; color: #1a3a5c; margin-bottom: 10px; border-radius: 0 4px 4px 0; }
+    .post-caption {
+      font-size: 12px; line-height: 1.7; color: #333; margin-bottom: 10px;
+      padding: 10px; background: #fafafa; border-left: 3px solid #c9a84c; border-radius: 0 4px 4px 0;
+    }
+    .visual-box {
+      background: #fff8e1; border: 1px dashed #c9a84c; border-radius: 4px;
+      padding: 10px; margin-bottom: 10px; font-size: 11px; color: #856404;
+    }
+    .visual-box strong { display: block; margin-bottom: 4px; color: #1a1a2e; font-size: 10px; letter-spacing: 0.5px; }
+    .visual-box a { color: #1a6fa8; font-weight: bold; font-size: 11px; }
+    .approve-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .approve-row label { font-size: 11px; color: #888; white-space: nowrap; }
+    .approve-row select {
+      font-size: 11px; padding: 5px 8px; border: 1px solid #ddd;
+      border-radius: 6px; background: #fff; cursor: pointer;
+    }
+    .approve-row select.approved   { border-color: #27ae60; color: #27ae60; background: #eafaf1; }
+    .approve-row select.edits      { border-color: #c9a84c; color: #856404; background: #fff8e1; }
+    .approve-row select.no         { border-color: #e74c3c; color: #922;    background: #fdecea; }
+    .notes-input {
+      flex: 1; min-width: 150px; padding: 5px 8px;
+      border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-family: Arial;
+    }
+    .note-alert {
+      background: #fdecea; border-left: 3px solid #e74c3c;
+      padding: 8px 12px; font-size: 11px; color: #7b1a1a; margin-bottom: 10px; border-radius: 0 4px 4px 0;
+    }
+    .note-info {
+      background: #e8f4fd; border-left: 3px solid #1a6fa8;
+      padding: 8px 12px; font-size: 11px; color: #1a3a5c; margin-bottom: 10px; border-radius: 0 4px 4px 0;
+    }
+    .empty-state { text-align: center; padding: 60px 20px; color: #aaa; font-size: 13px; }
+
+    /* ══════════════════════════════════════
+       UPLOAD MODE
+    ══════════════════════════════════════ */
+    #screen-upload .upload-body { max-width: 720px; margin: 0 auto; padding: 24px 20px 60px; }
+    .upload-section {
+      background: #fff; border: 1px solid #e8e8e8; border-radius: 8px;
+      padding: 20px; margin-bottom: 20px;
+    }
+    .upload-section h3 {
+      font-size: 12px; color: #1a1a2e; font-weight: bold; letter-spacing: 0.5px;
+      text-transform: uppercase; margin-bottom: 16px;
+      border-bottom: 2px solid #c9a84c; padding-bottom: 8px;
+    }
+    .form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 160px; }
+    .form-group.full { flex: 1 1 100%; min-width: 0; }
+    .form-group label { font-size: 11px; color: #666; font-weight: bold; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px;
+      font-size: 12px; font-family: Arial; width: 100%;
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { outline: none; border-color: #c9a84c; }
+    .btn-add {
+      background: #c9a84c; color: #1a1a2e; border: none;
+      padding: 9px 20px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer;
+    }
+    .btn-add:hover { background: #b8962e; }
+    .btn-publish {
+      background: #1a1a2e; color: #fff; border: none;
+      padding: 13px 28px; border-radius: 8px; font-size: 13px;
+      font-weight: bold; cursor: pointer; width: 100%; margin-top: 4px;
+    }
+    .btn-publish:hover { background: #2d2d4e; }
+    .btn-publish:disabled { opacity: 0.5; cursor: not-allowed; }
+    .post-preview-list { list-style: none; margin-top: 4px; }
+    .post-preview-item {
+      background: #f9f9f9; border: 1px solid #eee; border-radius: 6px;
+      padding: 10px 14px; margin-bottom: 8px; font-size: 11px;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+    }
+    .post-preview-meta { color: #888; margin-top: 3px; }
+    .post-preview-caption { color: #444; margin-top: 4px; }
+    .btn-remove {
+      background: none; border: none; color: #e74c3c;
+      cursor: pointer; font-size: 18px; line-height: 1; padding: 0; flex-shrink: 0;
+    }
+    .upload-toast {
+      border-radius: 6px; padding: 12px 16px; font-size: 12px;
+      margin-top: 12px; display: none;
+    }
+    .upload-toast.success { background: #eafaf1; border: 1px solid #27ae60; color: #1e8449; }
+    .upload-toast.error   { background: #fdecea; border: 1px solid #e74c3c; color: #922; }
+
+    /* ── Responsive ── */
+    @media (max-width: 500px) {
+      .landing-cards { flex-direction: column; align-items: center; }
+      .role-card { width: 100%; max-width: 300px; }
+      .approve-row { flex-direction: column; align-items: flex-start; }
+      .notes-input { width: 100%; }
+      .platform-nav { gap: 4px; padding: 8px 12px; }
+      .platform-nav button { padding: 5px 9px; font-size: 10px; }
+      .form-row { flex-direction: column; }
+      header { flex-wrap: wrap; gap: 8px; }
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <div>
-    <h1>KELLIWORKS — FULL CONTENT CALENDAR | APRIL 27 – MAY 1, 2025</h1>
-    <p>Prepared by Charity Moses · Pending Kelli Lewis Approval · Nothing goes live without sign-off</p>
-  </div>
-  <span id="sync-status">Connecting...</span>
-</header>
-
-<div class="platform-nav">
-  <button class="active" onclick="showPlatform('kw', this)">KelliWorks IG+FB</button>
-  <button onclick="showPlatform('kwa', this)">KW Accounting</button>
-  <button onclick="showPlatform('kwt', this)">KW Taxes</button>
-  <button onclick="showPlatform('ea', this)">EA</button>
-  <button onclick="showPlatform('kl', this)">Kelli LinkedIn</button>
-  <button onclick="showPlatform('gw', this)">Global Woman</button>
-  <button onclick="showPlatform('web', this)">Website + GMB + Yelp</button>
-</div>
-
-<!-- ===================== KELLIWORKS IG+FB ===================== -->
-<div id="kw" class="platform active">
-  <div class="platform-header">
-    <h2>KELLIWORKS MAIN — Instagram + Facebook</h2>
-    <p>1 post/day · Brand positioning · Premium firm-first tone · No EA promotion · No book promotion</p>
-  </div>
-
-  <!-- MON -->
-  <div class="day-block">
-    <div class="day-label">MONDAY · APRIL 27</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">8:00 AM</span>
-        <span class="badge badge-type">Static Post</span>
-        <span class="badge badge-high">🔴 HIGH</span>
-      </div>
-      <div class="post-caption">The firm your business deserves does not just file reports and disappear. It embeds into your operation — learning your goals, your gaps, and your growth edge — and builds the financial systems to take you there. That is the KelliWorks difference. Book a discovery call — link in bio.</div>
-      <div class="visual-box">
-        <strong>📸 VISUAL PLACEHOLDER</strong>
-        Headline: The Firm Your Business Deserves. Navy background. Gold accent. Premium minimal. Montserrat Bold headline. KelliWorks logo footer.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
-      </div>
+<!-- ══════════════════════════════════════════════════
+     SCREEN 1: LANDING PAGE
+════════════════════════════════════════════════════ -->
+<div id="screen-landing">
+  <header>
+    <div class="header-text">
+      <h1>KELLIWORKS CONTENT CALENDAR</h1>
+      <p>Prepared by Charity Moses &middot; Review &amp; Approval by Kelli Lewis</p>
     </div>
-  </div>
-
-  <!-- TUE -->
-  <div class="day-block">
-    <div class="day-label">TUESDAY · APRIL 28</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">8:00 AM</span>
-        <span class="badge badge-type">Static Post</span>
-        <span class="badge badge-high">🔴 HIGH</span>
-      </div>
-      <div class="post-caption">Your business is only as strong as the systems behind it. Payroll that runs on time. Books that are always clean. Reports that actually mean something. Operations that do not require your constant attention. KelliWorks builds the infrastructure so you can lead — not manage. DM us to start the conversation.</div>
-      <div class="visual-box">
-        <strong>📸 VISUAL PLACEHOLDER</strong>
-        Headline: Strong Systems. Stronger Business. Navy and gold. Clean minimal layout. Montserrat Bold + SemiBold.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
-      </div>
+  </header>
+  <div class="landing-body">
+    <div class="landing-intro">
+      <h2>What would you like to do?</h2>
+      <p>Select your role to continue</p>
     </div>
-  </div>
-
-  <!-- WED -->
-  <div class="day-block">
-    <div class="day-label">WEDNESDAY · APRIL 29</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">8:00 AM</span>
-        <span class="badge badge-type">Carousel</span>
-        <span class="badge badge-high">🔴 HIGH</span>
+    <div class="landing-cards">
+      <div class="role-card primary" onclick="enterMode('upload')">
+        <div class="icon">&#128197;</div>
+        <h3>Update Calendar</h3>
+        <p>Add this week's posts, captions, and Google Drive links for Kelli to review</p>
       </div>
-      <div class="post-caption">Most founders are great at what they do. Running the back end of a business is a different skill set entirely. Swipe to see what KelliWorks takes off your plate — so you can focus on what only you can do. ➡️</div>
-      <div class="visual-box">
-        <strong>📸 VISUAL PLACEHOLDER</strong>
-        Carousel — 5 slides. Slide 1: What Only You Should Be Doing. Slides 2–4: What KelliWorks handles — Bookkeeping, Payroll, Reporting, Operations. Slide 5: CTA — Book a Discovery Call. Navy and gold. Kelli's photo on cover slide.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
-      </div>
-    </div>
-  </div>
-
-  <!-- THU -->
-  <div class="day-block">
-    <div class="day-label">THURSDAY · APRIL 30</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">8:00 AM</span>
-        <span class="badge badge-type">Static Post</span>
-        <span class="badge badge-high">🔴 HIGH</span>
-      </div>
-      <div class="post-caption">Financial clarity is not a luxury. It is a leadership tool. The founders who make the best decisions are not the ones with the most hustle — they are the ones who always know their numbers. KelliWorks gives you that clarity every single month. Link in bio.</div>
-      <div class="visual-box">
-        <strong>📸 VISUAL PLACEHOLDER</strong>
-        Headline: Clarity is a Leadership Tool. Navy background. Gold text accent. Minimal elegant layout. Montserrat Bold.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
-      </div>
-    </div>
-  </div>
-
-  <!-- FRI -->
-  <div class="day-block">
-    <div class="day-label">FRIDAY · MAY 1</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">8:00 AM</span>
-        <span class="badge badge-type">Static Post</span>
-        <span class="badge badge-high">🔴 HIGH</span>
-      </div>
-      <div class="post-caption">Another week built on decisions — and every great decision starts with knowing your numbers. KelliWorks is here to make sure you always do. Happy May. Let's make it your strongest month yet. 🙏</div>
-      <div class="visual-box">
-        <strong>📸 VISUAL PLACEHOLDER</strong>
-        Headline: Happy May. Let's Build. Warm premium navy and gold week wrap graphic. KelliWorks branding. Montserrat Bold.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
+      <div class="role-card accent" onclick="enterMode('approve')">
+        <div class="icon">&#9989;</div>
+        <h3>Approve Content</h3>
+        <p>Review posts, set approval status, and leave notes for Charity</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===================== KW ACCOUNTING ===================== -->
-<div id="kwa" class="platform">
-  <div class="platform-header">
-    <h2>KELLIWORKS ACCOUNTING — Instagram + Facebook + LinkedIn</h2>
-    <p>1 post/day · Mix of trending POV reels + educational static · Playful, funny, relatable · ❌ No tax content</p>
-  </div>
+<!-- ══════════════════════════════════════════════════
+     SCREEN 2: UPLOAD MODE
+════════════════════════════════════════════════════ -->
+<div id="screen-upload" style="display:none">
+  <header>
+    <div class="header-text">
+      <h1>UPDATE CALENDAR</h1>
+      <p>Add this week&apos;s content for Kelli to review</p>
+    </div>
+    <button class="header-back" onclick="exitMode()">&#8592; Home</button>
+  </header>
 
-  <div class="note-info">📌 New direction: Mix trending POV reels (funny + relatable) with educational static posts. POV reels get the reach. Static posts build authority. Both sell KelliWorks.</div>
+  <div class="upload-body">
 
-  <!-- MON -->
-  <div class="day-block">
-    <div class="day-label">MONDAY · APRIL 27</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">10:00 AM</span>
-        <span class="badge badge-type">🎬 Trending Reel</span>
-        <span class="badge badge-trend">🟢 TRENDING</span>
-      </div>
-      <div class="post-caption">POV: You haven't reconciled your accounts since January 😬
-
-#KelliWorks #Accounting #SmallBusiness #Bookkeeping #Entrepreneurs</div>
-      <div class="visual-box">
-        <strong>🎬 REEL PLACEHOLDER</strong>
-        Trending audio — use a "panicking / chaotic" trending sound. Text overlay: POV: You haven't reconciled your accounts since January 😬. Second text overlay mid-video: KelliWorks to the rescue 😌. Use a funny trending video clip or film yourself reacting. Keep it short — 7 to 15 seconds max.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
+    <!-- Week info -->
+    <div class="upload-section">
+      <h3>Week Information</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Week Start Date</label>
+          <input type="date" id="week-start" />
+        </div>
+        <div class="form-group">
+          <label>Week Label (shown in approval view)</label>
+          <input type="text" id="week-label" placeholder="e.g. April 27 - May 1, 2025" />
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- TUE -->
-  <div class="day-block">
-    <div class="day-label">TUESDAY · APRIL 28</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">10:00 AM</span>
-        <span class="badge badge-type">Static Post</span>
-        <span class="badge badge-high">🔴 HIGH</span>
+    <!-- Add post -->
+    <div class="upload-section">
+      <h3>Add a Post</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Platform</label>
+          <select id="post-platform">
+            <option value="kw">KelliWorks IG+FB</option>
+            <option value="kwa">KW Accounting</option>
+            <option value="kwt">KW Taxes</option>
+            <option value="ea">Entrepreneurs Anonymous</option>
+            <option value="kl">Kelli LinkedIn</option>
+            <option value="gw">Global Woman</option>
+            <option value="web">Website + GMB + Yelp</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Day</label>
+          <select id="post-day">
+            <option value="1|MONDAY">Monday</option>
+            <option value="2|TUESDAY">Tuesday</option>
+            <option value="3|WEDNESDAY">Wednesday</option>
+            <option value="4|THURSDAY">Thursday</option>
+            <option value="5|FRIDAY">Friday</option>
+            <option value="6|SATURDAY">Saturday</option>
+            <option value="7|SUNDAY">Sunday</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Time</label>
+          <input type="time" id="post-time" />
+        </div>
       </div>
-      <div class="post-caption">Bookkeeping is not a task you do once a year at tax time. It is a system that runs every single month — keeping your business clean, your cash flow clear, and your decisions grounded in real numbers. KelliWorks builds that system for you. DM us to get started.</div>
-      <div class="visual-box">
-        <strong>📸 VISUAL PLACEHOLDER</strong>
-        Headline: Bookkeeping Is a System. Not a Task. Navy and gold. Clean minimal. Montserrat Bold + SemiBold. KelliWorks Accounting footer.
+      <div class="form-row">
+        <div class="form-group">
+          <label>Content Type</label>
+          <select id="post-content-type">
+            <option>Static Post</option>
+            <option>Reel</option>
+            <option>Trending Reel</option>
+            <option>Carousel</option>
+            <option>Quote</option>
+            <option>Story</option>
+            <option>Tax Tip</option>
+            <option>Thought Leadership</option>
+            <option>Industry POV</option>
+            <option>Founder Story</option>
+            <option>Coaching Voice</option>
+            <option>Community Post</option>
+            <option>Blog Post</option>
+            <option>GMB Update</option>
+            <option>Yelp Update</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="post-priority">
+            <option value="">None</option>
+            <option value="HIGH">HIGH</option>
+            <option value="TREND">TREND</option>
+          </select>
+        </div>
       </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Caption / Copy</label>
+          <textarea id="post-caption" placeholder="Full post caption or copy..."></textarea>
+        </div>
       </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Visual Description</label>
+          <input type="text" id="post-visual" placeholder="e.g. Navy background, gold headline, Montserrat Bold" />
+        </div>
+        <div class="form-group">
+          <label>Google Drive Image Link</label>
+          <input type="url" id="post-drive-link" placeholder="https://drive.google.com/..." />
+        </div>
+      </div>
+      <button class="btn-add" onclick="addPostToList()">+ Add Post</button>
     </div>
-  </div>
 
-  <!-- WED -->
-  <div class="day-block">
-    <div class="day-label">WEDNESDAY · APRIL 29</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">10:00 AM</span>
-        <span class="badge badge-type">🎬 Trending Reel</span>
-        <span class="badge badge-trend">🟢 TRENDING</span>
-      </div>
-      <div class="post-caption">POV: Your accountant actually explains your financial report instead of just sending it 😌✨
-
-#KelliWorks #Accounting #FounderLife #Bookkeeping #SmallBusiness</div>
-      <div class="visual-box">
-        <strong>🎬 REEL PLACEHOLDER</strong>
-        Trending audio — use a "relief / ahhh finally" sound. Text overlay 1: POV: Your accountant just sends reports and disappears 😩. Text overlay 2: POV: KelliWorks actually explains every line 😌. Short and punchy — 7 to 15 seconds. Film yourself or use trending clip.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
-      </div>
+    <!-- Posts queued -->
+    <div class="upload-section" id="posts-preview-section" style="display:none">
+      <h3>Posts Queued &mdash; <span id="post-count">0</span></h3>
+      <ul class="post-preview-list" id="post-preview-list"></ul>
+      <button class="btn-publish" id="publish-btn" onclick="publishWeek()">
+        Publish Week &rarr; Make Available for Kelli
+      </button>
+      <div class="upload-toast" id="upload-toast"></div>
     </div>
-  </div>
 
-  <!-- THU -->
-  <div class="day-block">
-    <div class="day-label">THURSDAY · APRIL 30</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">10:00 AM</span>
-        <span class="badge badge-type">Static Post</span>
-        <span class="badge badge-high">🔴 HIGH</span>
-      </div>
-      <div class="post-caption">Do you know exactly how your business performed in Q1? Revenue. Expenses. Profit. Cash flow. If the honest answer is no — that is the first thing to fix. KelliWorks delivers monthly reports that give you a clear picture of your business performance so you always know where you stand. DM us.</div>
-      <div class="visual-box">
-        <strong>📸 VISUAL PLACEHOLDER</strong>
-        Headline: Do You Know Your Q1 Numbers? Navy and gold. Clean bold layout. Montserrat Bold. KelliWorks Accounting footer.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
-      </div>
-    </div>
-  </div>
-
-  <!-- FRI -->
-  <div class="day-block">
-    <div class="day-label">FRIDAY · MAY 1</div>
-    <div class="post-card">
-      <div class="post-meta">
-        <span class="badge badge-time">10:00 AM</span>
-        <span class="badge badge-type">🎬 Trending Reel</span>
-        <span class="badge badge-trend">🟢 TRENDING</span>
-      </div>
-      <div class="post-caption">POV: It's May 1st and your books are finally clean 😎🙌
-
-#KelliWorks #NewMonth #Accounting #FounderLife #SmallBusiness</div>
-      <div class="visual-box">
-        <strong>🎬 REEL PLACEHOLDER</strong>
-        Trending audio — use a "winning / celebration" sound. Text overlay 1: POV: It's May 1st and you still don't know your numbers 😬. Text overlay 2: POV: KelliWorks client on May 1st 😎. Use a confident, winning reaction clip or film yourself. 7 to 15 seconds.
-      </div>
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select>
-        <input class="notes-input" type="text" placeholder="Kelli's notes here...">
-      </div>
-    </div>
   </div>
 </div>
 
-<!-- ===================== KW TAXES ===================== -->
-<div id="kwt" class="platform">
-  <div class="platform-header">
-    <h2>KELLIWORKS TAXES — Taxes Instagram ONLY</h2>
-    <p>2 posts/day · Tips, quotes, carousels · ❌ NOT on LinkedIn ❌ NOT on KW Accounting grid</p>
+<!-- ══════════════════════════════════════════════════
+     SCREEN 3: APPROVE MODE
+════════════════════════════════════════════════════ -->
+<div id="screen-approve" style="display:none">
+  <header>
+    <div class="header-text">
+      <h1>APPROVE CONTENT</h1>
+      <p id="approve-week-label">Loading&hellip;</p>
+    </div>
+    <span id="sync-status">Connecting&hellip;</span>
+    <button class="header-back" onclick="exitMode()">&#8592; Home</button>
+  </header>
+
+  <div class="week-bar">
+    <span><strong>Week:</strong></span>
+    <select id="week-select" onchange="loadWeekPosts(this.value)">
+      <option>Loading&hellip;</option>
+    </select>
   </div>
 
-  <!-- MON -->
-  <div class="day-block">
-    <div class="day-label">MONDAY · APRIL 27</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">7:00 AM</span><span class="badge badge-type">💡 Tax Tip</span></div>
-      <div class="post-caption">Welcome to May — and Q2 estimated taxes are already counting. June 15 is closer than you think. If your business is profitable start setting money aside right now. KelliWorks keeps you on schedule all year. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Tax tip graphic — headline: Q2 Is Already Counting. Navy gold bold.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">4:00 PM</span><span class="badge badge-type">💬 Quote</span></div>
-      <div class="post-caption">"KelliWorks, so you don't have to." Tax season is done. But smart tax planning never stops. Let us carry it all year long. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Brand quote card — cream background navy and gold. Elegant premium.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
+  <nav class="platform-nav">
+    <button class="active" onclick="showPlatform('kw',this)">KelliWorks IG+FB</button>
+    <button onclick="showPlatform('kwa',this)">KW Accounting</button>
+    <button onclick="showPlatform('kwt',this)">KW Taxes</button>
+    <button onclick="showPlatform('ea',this)">EA</button>
+    <button onclick="showPlatform('kl',this)">Kelli LinkedIn</button>
+    <button onclick="showPlatform('gw',this)">Global Woman</button>
+    <button onclick="showPlatform('web',this)">Website + GMB</button>
+  </nav>
 
-  <!-- TUE -->
-  <div class="day-block">
-    <div class="day-label">TUESDAY · APRIL 28</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">7:00 AM</span><span class="badge badge-type">💡 Tax Tip</span></div>
-      <div class="post-caption">If you received a large refund this year — that is not good news. It means you overpaid the IRS all year and gave them an interest-free loan. KelliWorks helps you adjust your withholding so you keep more money in your business where it belongs. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Tax tip graphic — headline: A Big Refund Means You Overpaid. Navy gold bold.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">4:00 PM</span><span class="badge badge-type">🎠 Carousel</span></div>
-      <div class="post-caption">Tax season is over — but your tax strategy should not be. Swipe to see 4 moves every entrepreneur should make RIGHT NOW to protect their finances for the rest of 2025. ➡️</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Carousel — 5 slides — 4 Post Tax Season Moves. Navy and gold. Montserrat Bold + SemiBold.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- WED -->
-  <div class="day-block">
-    <div class="day-label">WEDNESDAY · APRIL 29</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">7:00 AM</span><span class="badge badge-type">💡 Tax Tip</span></div>
-      <div class="post-caption">Are you paying yourself correctly as a business owner? How you pay yourself — salary, owner's draw, distributions — has major tax implications. Getting it wrong costs you money. KelliWorks helps you structure it right. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Tax tip graphic — headline: Are You Paying Yourself Correctly? Navy gold bold.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">4:00 PM</span><span class="badge badge-type">💬 Quote</span></div>
-      <div class="post-caption">"Tax preparation is no longer the same with modern accounting methods." — Kelli Lewis. Stop doing it the old way. KelliWorks brings modern solutions to your finances all year round. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Quote card — cream background elegant premium. Kelli Lewis attribution gold.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- THU -->
-  <div class="day-block">
-    <div class="day-label">THURSDAY · APRIL 30</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">7:00 AM</span><span class="badge badge-type">💡 Tax Tip</span></div>
-      <div class="post-caption">Tax Tip Thursday 💡 Keep every business receipt — digital or physical. The IRS requires documentation for every deduction you claim. KelliWorks helps you set up a simple system so nothing ever gets lost. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Tax Tip Thursday branded graphic — navy gold. Bold headline.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">4:00 PM</span><span class="badge badge-type">🎠 Carousel</span></div>
-      <div class="post-caption">Your Q2 financial checklist starts NOW. Swipe to see exactly what every smart entrepreneur should be doing this month to stay ahead. ➡️</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Carousel — 5 slides — Q2 Financial Checklist. Navy and gold. Montserrat Bold + SemiBold.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- FRI -->
-  <div class="day-block">
-    <div class="day-label">FRIDAY · MAY 1</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">7:00 AM</span><span class="badge badge-type">💡 Tax Tip</span></div>
-      <div class="post-caption">Happy May! New month — new opportunity to get your finances right. Is your business structure still working for you? LLC. S-Corp. Sole Proprietor. Each has different tax implications. KelliWorks can review your setup and help you optimize. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Tax tip graphic — headline: New Month. New Financial Strategy. Navy gold bold.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">4:00 PM</span><span class="badge badge-type">💬 Quote</span></div>
-      <div class="post-caption">"KelliWorks takes the burden off entrepreneurs by guiding them in planning their taxes." Tax season is done. The work is not. Let us carry it. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Quote card — cream premium elegant. Gold attribution. KelliWorks footer.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== EA ===================== -->
-<div id="ea" class="platform">
-  <div class="platform-header">
-    <h2>ENTREPRENEURS ANONYMOUS — IG + FB + YouTube + Skool</h2>
-    <p>Meeting rhythm · ❌ No meeting promotion until Kelli confirms · General EA community content only</p>
-  </div>
-
-  <div class="note-alert">⚠️ No EA meeting promotion this week per Kelli's instruction. Posts focus on community value and evergreen EA content only.</div>
-
-  <!-- MON -->
-  <div class="day-block">
-    <div class="day-label">MONDAY · APRIL 27</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">12:00 PM</span><span class="badge badge-type">Static Post</span></div>
-      <div class="post-caption">Entrepreneurship is the loneliest journey — until you find your community. Entrepreneurs Anonymous exists because no founder should have to build alone. Join the community — link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> EA branded graphic — dark background gold accent. Headline: You Were Never Meant to Build Alone. EA logo.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- WED -->
-  <div class="day-block">
-    <div class="day-label">WEDNESDAY · APRIL 29</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">12:00 PM</span><span class="badge badge-type">Quote Post</span></div>
-      <div class="post-caption">The room changes when entrepreneurs stop competing and start collaborating. That is what Entrepreneurs Anonymous is built on. Real conversations. Real connections. Real growth. Link in bio to join the community.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> EA quote graphic — dark navy gold. Headline: Real Conversations. Real Growth. EA branding.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- FRI -->
-  <div class="day-block">
-    <div class="day-label">FRIDAY · MAY 1</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">12:00 PM</span><span class="badge badge-type">Community Post</span></div>
-      <div class="post-caption">Happy May EA family! 🙌 New month. New energy. New opportunities. Whatever you are building — keep going. This community is rooting for you. — Kelli Lewis | Entrepreneurs Anonymous</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> EA community graphic — warm celebratory energy. Happy May. Gold and navy. EA logo.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== KELLI LINKEDIN ===================== -->
-<div id="kl" class="platform">
-  <div class="platform-header">
-    <h2>KELLI LEWIS PERSONAL — LinkedIn</h2>
-    <p>1 post/day · Author · Speaker · Coach · Accountant · 30 min daily engagement · ❌ No tax content</p>
-  </div>
-
-  <!-- MON -->
-  <div class="day-block">
-    <div class="day-label">MONDAY · APRIL 27</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">9:00 AM</span><span class="badge badge-type">Thought Leadership</span></div>
-      <div class="post-caption">The founders who scale the fastest are not the ones who work the hardest. They are the ones who build the best systems. A business that requires your constant presence to function is not a business — it is a job. And it is probably the most demanding job you have ever had. The shift starts when you stop being the engine and start being the architect. What is one system you could build this week that would give you back an hour of your time?</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Professional Kelli photo — editorial, confident. Or clean branded quote graphic.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- TUE -->
-  <div class="day-block">
-    <div class="day-label">TUESDAY · APRIL 28</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">9:00 AM</span><span class="badge badge-type">Founder Story</span></div>
-      <div class="post-caption">I spent years being the best-kept secret in my clients' businesses. Doing everything. Available always. Undercharging constantly. I thought that was the price of loyalty. What I actually learned is that boundaries create respect. Systems create freedom. And charging your worth creates the business you deserve. If you are still giving everything away in the name of dedication — this is your sign to stop.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Professional Kelli photo — warm, authoritative. Or clean branded graphic.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- WED -->
-  <div class="day-block">
-    <div class="day-label">WEDNESDAY · APRIL 29</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">9:00 AM</span><span class="badge badge-type">Thought Leadership</span></div>
-      <div class="post-caption">Financial clarity is not a finance topic. It is a leadership topic. When you know your numbers — your cash position, your profit margin, your burn rate — you make decisions from a place of power instead of panic. The most confident founders I know are not the richest. They are the most informed. KelliWorks gives founders that clarity every single month. Link in bio.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Clean branded KelliWorks graphic — professional LinkedIn format.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- THU -->
-  <div class="day-block">
-    <div class="day-label">THURSDAY · APRIL 30</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">9:00 AM</span><span class="badge badge-type">Coaching Voice</span></div>
-      <div class="post-caption">One question I ask every founder I work with: If you took two weeks completely off right now — what would break? The answer tells you everything about where your business actually stands. Not where you think it stands. Where it actually stands. Your answer is your to-do list.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Professional Kelli photo or clean quote graphic — coaching voice, direct, confident.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- FRI -->
-  <div class="day-block">
-    <div class="day-label">FRIDAY · MAY 1</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">9:00 AM</span><span class="badge badge-type">Friday Reflection</span></div>
-      <div class="post-caption">Happy May. New month. Fresh start. This is the month you stop running your business on instinct and start running it on intelligence. Clean books. Clear strategy. Confident decisions. That is what I help founders build at KelliWorks — and it starts with one conversation. Link in bio. Have a powerful weekend. 🙏</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Polished Kelli brand photo or Happy May branded graphic. Warm professional.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== GLOBAL WOMAN ===================== -->
-<div id="gw" class="platform">
-  <div class="platform-header">
-    <h2>GLOBAL WOMAN — Global Woman Platform</h2>
-    <p>Min 4 posts/week · 10–15 min daily engagement · Kelli as THOUGHT LEADER — specific POV, industry insight, expertise · ❌ No generic motivation · ❌ No EA content</p>
-  </div>
-
-  <!-- MON -->
-  <div class="day-block">
-    <div class="day-label">MONDAY · APRIL 27</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">11:00 AM</span><span class="badge badge-type">Thought Leadership</span></div>
-      <div class="post-caption">I have worked with hundreds of women-owned businesses. And the number one thing that keeps them stuck is not lack of hustle — it is lack of financial infrastructure. They are working incredibly hard inside a business that has no system to hold the growth. Here is what I know to be true: you cannot scale chaos. Before you invest in marketing, hiring, or expansion — get your books clean, your cash flow clear, and your reporting consistent. That is the foundation everything else is built on. — Kelli Lewis | Founder, KelliWorks</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Editorial Kelli photo — confident, authoritative. Or clean branded thought leadership graphic. Navy and gold. Premium feminine.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- TUE -->
-  <div class="day-block">
-    <div class="day-label">TUESDAY · APRIL 28</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">11:00 AM</span><span class="badge badge-type">Industry POV</span></div>
-      <div class="post-caption">Nobody talks about this enough — women entrepreneurs are statistically more likely to undercharge, over-deliver, and avoid looking at their own numbers. I did it too. For years I helped wealthy clients build financial systems while my own business was falling apart. The moment I started treating my business with the same rigor I applied to my clients' — everything changed. Your business deserves the same financial discipline you give your best client. Start there. — Kelli Lewis | KelliWorks</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Professional Kelli photo — warm, real, editorial. Not a headshot. Premium feminine aesthetic.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- THU -->
-  <div class="day-block">
-    <div class="day-label">THURSDAY · APRIL 30</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">11:00 AM</span><span class="badge badge-type">Expert Insight</span></div>
-      <div class="post-caption">A question I get asked constantly by women founders: "When is the right time to hire an accountant?" My answer is always the same — before you think you need one. Most founders come to KelliWorks after something breaks. A tax surprise. A cash flow crisis. A payroll error. The ones who build the most sustainably are the ones who build the financial infrastructure early — before the growth exposes the gaps. Do not wait for the emergency. Build the system now. — Kelli Lewis | KelliWorks Founder</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Clean expert insight graphic — Kelli's quote pulled out as a pull quote. Premium navy and gold. Feminine authoritative aesthetic.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <!-- FRI -->
-  <div class="day-block">
-    <div class="day-label">FRIDAY · MAY 1</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">11:00 AM</span><span class="badge badge-type">Thought Leadership</span></div>
-      <div class="post-caption">May is here. And I want to challenge every woman founder reading this to ask herself one honest question: Does my business have the financial infrastructure to handle the growth I am praying for? Because here is the truth — most businesses are not ready for the opportunities they are asking God to send. The clients come and the systems collapse. The revenue grows and the cash flow disappears. Growth without infrastructure is just expensive chaos. This month — build the foundation first. — Kelli Lewis | KelliWorks | Global Business Woman</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Premium Kelli editorial photo or branded thought leadership graphic. Happy May energy but authoritative — not celebratory. Navy gold feminine.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== WEBSITE + GMB + YELP ===================== -->
-<div id="web" class="platform">
-  <div class="platform-header">
-    <h2>WEBSITE + GOOGLE MY BUSINESS + YELP</h2>
-    <p>Weekly tasks · Blog post · EA website update · GMB + Yelp refresh</p>
-  </div>
-
-  <div class="day-block">
-    <div class="day-label">MONDAY · APRIL 27 — BLOG POST</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">EOD</span><span class="badge badge-type">Lovable Website</span></div>
-      <div class="post-caption">Suggested title: "5 Signs Your Business Needs a Better Accounting System (And What to Do About It)" — accounting focused, ties to KelliWorks services, CTA to book a discovery call. Charity to draft and submit to Kelli for approval before publishing.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Blog header image — professional KelliWorks branded. Kelli photo or brand graphic.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <div class="day-block">
-    <div class="day-label">THIS WEEK — GOOGLE MY BUSINESS</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">By Fri May 1</span><span class="badge badge-type">GMB Update</span></div>
-      <div class="post-caption">Post update: "Welcome to May — KelliWorks is your full-service accounting and business management firm for ambitious founders. Clean books. Clear strategy. Confident growth. Book a discovery call today." Include a fresh professional brand photo.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Fresh KelliWorks brand photo or professional team photo for GMB.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
-  </div>
-
-  <div class="day-block">
-    <div class="day-label">THIS WEEK — YELP</div>
-    <div class="post-card">
-      <div class="post-meta"><span class="badge badge-time">By Fri May 1</span><span class="badge badge-type">Yelp Update</span></div>
-      <div class="post-caption">Refresh Yelp listing — ensure services are current, photos are fresh. Tax season has ended — shift messaging to year-round accounting and business management services. Update any seasonal content.</div>
-      <div class="visual-box"><strong>📸 VISUAL PLACEHOLDER</strong> Fresh Yelp photo — professional KelliWorks branded image.</div>
-      <div class="approve-row"><label>Kelli:</label><select onchange="styleSelect(this)"><option>Pending</option><option>✅ Approved</option><option>✏️ Needs Edits</option><option>❌ Do Not Post</option></select><input class="notes-input" type="text" placeholder="Kelli's notes here..."></div>
-    </div>
+  <div id="calendar-body">
+    <div class="platform active" id="platform-kw"></div>
+    <div class="platform" id="platform-kwa"></div>
+    <div class="platform" id="platform-kwt"></div>
+    <div class="platform" id="platform-ea"></div>
+    <div class="platform" id="platform-kl"></div>
+    <div class="platform" id="platform-gw"></div>
+    <div class="platform" id="platform-web"></div>
   </div>
 </div>
 
 <script>
-  // ── Calendar UI ────────────────────────────────────────────
-  function showPlatform(id, btn) {
-    document.querySelectorAll('.platform').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.platform-nav button').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
-  }
-  function styleSelect(sel) {
-    sel.className = '';
-    if (sel.value.includes('Approved')) sel.className = 'approved';
-    else if (sel.value.includes('Edits')) sel.className = 'edits';
-    else if (sel.value.includes('Do Not')) sel.className = 'no';
-  }
-</script>
+// ════════════════════════════════════════════════════
+//  CONSTANTS
+// ════════════════════════════════════════════════════
 
-<script>
-  // ── Supabase init ──────────────────────────────────────────
+const PLATFORMS = ['kw','kwa','kwt','ea','kl','gw','web'];
+
+const PLATFORM_META = {
+  kw:  { name: 'KELLIWORKS MAIN — Instagram + Facebook',                  sub: '1 post/day · Brand positioning · Premium firm-first tone' },
+  kwa: { name: 'KELLIWORKS ACCOUNTING — Instagram + Facebook + LinkedIn', sub: '1 post/day · Trending POV reels + educational static' },
+  kwt: { name: 'KELLIWORKS TAXES — Instagram Only',                       sub: '2 posts/day · Tips, quotes, carousels' },
+  ea:  { name: 'ENTREPRENEURS ANONYMOUS — IG + FB + YouTube + Skool',     sub: 'General EA community content' },
+  kl:  { name: 'KELLI LEWIS PERSONAL — LinkedIn',                         sub: '1 post/day · Author · Speaker · Coach · Accountant' },
+  gw:  { name: 'GLOBAL WOMAN — Global Woman Platform',                    sub: 'Min 4 posts/week · Kelli as THOUGHT LEADER' },
+  web: { name: 'WEBSITE + GOOGLE MY BUSINESS + YELP',                     sub: 'Weekly tasks · Blog · GMB + Yelp refresh' },
+};
+
+// ════════════════════════════════════════════════════
+//  SUPABASE INIT
+// ════════════════════════════════════════════════════
+
+let sb = null;
+let currentWeekId = null;
+let pendingPosts = [];
+let realtimeChannel = null;
+
+(function initSupabase() {
   try {
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const statusEl = document.getElementById('sync-status');
-
-    function setStatus(state, label) {
-      statusEl.className = state;
-      statusEl.textContent = label;
+    if (
+      typeof SUPABASE_URL !== 'undefined' &&
+      SUPABASE_URL &&
+      !SUPABASE_URL.includes('YOUR_')
+    ) {
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
-
-    async function saveData(data) {
-      setStatus('syncing', 'Saving...');
-      try {
-        const { error } = await supabase
-          .from('calendar_data')
-          .upsert({ user_id: USER_ID, data, updated_at: new Date().toISOString() });
-        if (error) throw error;
-        setStatus('synced', 'Saved');
-      } catch (err) {
-        console.error('Save error:', err);
-        setStatus('error', 'Save failed');
-      }
-    }
-
-    async function loadData() {
-      setStatus('syncing', 'Loading...');
-      try {
-        const { data, error } = await supabase
-          .from('calendar_data')
-          .select('data')
-          .eq('user_id', USER_ID)
-          .single();
-        if (error && error.code !== 'PGRST116') throw error;
-        setStatus('synced', 'Ready');
-        return data?.data ?? null;
-      } catch (err) {
-        console.error('Load error:', err);
-        setStatus('error', 'Load failed');
-        return null;
-      }
-    }
-
-    (async () => {
-      const saved = await loadData();
-      if (saved) {
-        console.log('Loaded saved data:', saved);
-      }
-    })();
-
-  } catch (err) {
-    console.warn('Supabase not available:', err.message);
-    const statusEl = document.getElementById('sync-status');
-    if (statusEl) statusEl.textContent = 'Offline';
+  } catch (e) {
+    console.warn('Supabase init failed:', e.message);
   }
+})();
+
+// ════════════════════════════════════════════════════
+//  SCREEN NAVIGATION
+// ════════════════════════════════════════════════════
+
+function enterMode(mode) {
+  document.getElementById('screen-landing').style.display = 'none';
+  if (mode === 'upload') {
+    document.getElementById('screen-upload').style.display = 'block';
+  } else {
+    document.getElementById('screen-approve').style.display = 'block';
+    initApproveMode();
+  }
+}
+
+function exitMode() {
+  document.getElementById('screen-upload').style.display  = 'none';
+  document.getElementById('screen-approve').style.display = 'none';
+  document.getElementById('screen-landing').style.display = 'block';
+  if (realtimeChannel && sb) {
+    sb.removeChannel(realtimeChannel);
+    realtimeChannel = null;
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  UPLOAD MODE
+// ════════════════════════════════════════════════════
+
+function addPostToList() {
+  const caption = document.getElementById('post-caption').value.trim();
+  if (!caption) { alert('Caption is required before adding a post.'); return; }
+
+  const weekStart = document.getElementById('week-start').value;
+  const dayVal    = document.getElementById('post-day').value;     // "1|MONDAY"
+  const [orderStr, dayName] = dayVal.split('|');
+  const dayOrder = parseInt(orderStr, 10);
+
+  let dayLabel = dayName;
+  if (weekStart) {
+    const base = new Date(weekStart + 'T12:00:00');
+    base.setDate(base.getDate() + (dayOrder - 1));
+    const mon = base.toLocaleString('en-US', { month: 'long' }).toUpperCase();
+    dayLabel = `${dayName} \u00B7 ${mon} ${base.getDate()}`;
+  }
+
+  const rawTime = document.getElementById('post-time').value;
+  const post = {
+    platform:     document.getElementById('post-platform').value,
+    day_label:    dayLabel,
+    day_order:    dayOrder,
+    post_time:    rawTime ? fmtTime(rawTime) : '',
+    content_type: document.getElementById('post-content-type').value,
+    priority:     document.getElementById('post-priority').value,
+    caption,
+    visual_text:  document.getElementById('post-visual').value.trim(),
+    image_url:    document.getElementById('post-drive-link').value.trim(),
+  };
+
+  pendingPosts.push(post);
+  renderPendingList();
+  clearPostForm();
+}
+
+function removePost(i) {
+  pendingPosts.splice(i, 1);
+  renderPendingList();
+}
+
+function renderPendingList() {
+  const section = document.getElementById('posts-preview-section');
+  section.style.display = pendingPosts.length ? 'block' : 'none';
+  document.getElementById('post-count').textContent = pendingPosts.length;
+
+  document.getElementById('post-preview-list').innerHTML = pendingPosts.map((p, i) => `
+    <li class="post-preview-item">
+      <div style="flex:1;min-width:0">
+        <strong>${shortPlatformName(p.platform)}</strong> &mdash; ${esc(p.day_label)}
+        <div class="post-preview-meta">
+          ${p.post_time || '&mdash;'}
+          ${p.content_type ? ' &middot; ' + esc(p.content_type) : ''}
+          ${p.priority    ? ' &middot; ' + esc(p.priority)    : ''}
+        </div>
+        <div class="post-preview-caption">${esc(p.caption.slice(0, 90))}${p.caption.length > 90 ? '&hellip;' : ''}</div>
+        ${p.image_url ? '<div class="post-preview-meta" style="color:#1a6fa8">Drive link attached</div>' : ''}
+      </div>
+      <button class="btn-remove" onclick="removePost(${i})" title="Remove">&times;</button>
+    </li>
+  `).join('');
+}
+
+function clearPostForm() {
+  ['post-caption','post-visual','post-drive-link'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('post-time').value     = '';
+  document.getElementById('post-priority').value = '';
+}
+
+async function publishWeek() {
+  const weekStart = document.getElementById('week-start').value;
+  const weekLabel = document.getElementById('week-label').value.trim();
+  const toast     = document.getElementById('upload-toast');
+  const btn       = document.getElementById('publish-btn');
+
+  if (!pendingPosts.length) { alert('Add at least one post before publishing.'); return; }
+  if (!weekStart) { alert('Please enter the week start date.'); return; }
+  if (!weekLabel) { alert('Please enter a week label.'); return; }
+
+  if (!sb) {
+    showToast('error', 'Supabase is not configured. Add your SUPABASE_URL and SUPABASE_ANON_KEY to src/config/supabase-config.js, then redeploy.');
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Publishing\u2026';
+
+  try {
+    const { data: week, error: wErr } = await sb
+      .from('weeks')
+      .insert({ week_start: weekStart, label: weekLabel, status: 'active' })
+      .select()
+      .single();
+    if (wErr) throw wErr;
+
+    const rows = pendingPosts.map(p => ({ ...p, week_id: week.id, approval_status: 'pending' }));
+    const { error: pErr } = await sb.from('posts').insert(rows);
+    if (pErr) throw pErr;
+
+    const n = pendingPosts.length;
+    showToast('success', `Published! ${n} post${n !== 1 ? 's' : ''} are now live for Kelli to review.`);
+    pendingPosts = [];
+    renderPendingList();
+    document.getElementById('week-start').value = '';
+    document.getElementById('week-label').value = '';
+
+  } catch (e) {
+    showToast('error', 'Error: ' + e.message);
+  }
+
+  btn.disabled    = false;
+  btn.textContent = 'Publish Week \u2192 Make Available for Kelli';
+}
+
+function showToast(type, msg) {
+  const t = document.getElementById('upload-toast');
+  t.className    = 'upload-toast ' + type;
+  t.textContent  = msg;
+  t.style.display = 'block';
+}
+
+// ════════════════════════════════════════════════════
+//  APPROVE MODE
+// ════════════════════════════════════════════════════
+
+async function initApproveMode() {
+  setSyncStatus('syncing', 'Connecting\u2026');
+
+  if (!sb) {
+    setSyncStatus('error', 'No DB');
+    document.getElementById('approve-week-label').textContent =
+      'Demo mode \u2014 configure Supabase to load live data';
+    renderDemo();
+    return;
+  }
+
+  await loadWeeks();
+}
+
+async function loadWeeks() {
+  const { data: weeks, error } = await sb
+    .from('weeks')
+    .select('id, label, week_start')
+    .eq('status', 'active')
+    .order('week_start', { ascending: false });
+
+  const sel = document.getElementById('week-select');
+
+  if (error || !weeks || !weeks.length) {
+    sel.innerHTML = '<option value="">No weeks published yet</option>';
+    setSyncStatus('error', 'No weeks');
+    renderEmptyAll();
+    return;
+  }
+
+  sel.innerHTML = weeks.map(w =>
+    `<option value="${w.id}">${esc(w.label || w.week_start)}</option>`
+  ).join('');
+
+  await loadWeekPosts(weeks[0].id);
+  setupRealtime();
+}
+
+async function loadWeekPosts(weekId) {
+  if (!weekId || !sb) return;
+  currentWeekId = weekId;
+  setSyncStatus('syncing', 'Loading\u2026');
+
+  const { data: posts, error } = await sb
+    .from('posts')
+    .select('*')
+    .eq('week_id', weekId)
+    .order('day_order')
+    .order('post_time');
+
+  if (error) { setSyncStatus('error', 'Load failed'); return; }
+
+  const sel = document.getElementById('week-select');
+  const opt = sel.options[sel.selectedIndex];
+  document.getElementById('approve-week-label').textContent = opt ? opt.textContent : '';
+
+  renderPosts(posts || []);
+  setSyncStatus('synced', 'Live');
+}
+
+function renderPosts(posts) {
+  // Group: platform -> day_order -> { label, posts[] }
+  const grouped = {};
+  PLATFORMS.forEach(p => { grouped[p] = {}; });
+
+  posts.forEach(post => {
+    const p = post.platform;
+    if (!grouped[p]) grouped[p] = {};
+    if (!grouped[p][post.day_order]) {
+      grouped[p][post.day_order] = { label: post.day_label, posts: [] };
+    }
+    grouped[p][post.day_order].posts.push(post);
+  });
+
+  PLATFORMS.forEach(platform => {
+    const el   = document.getElementById('platform-' + platform);
+    const days = grouped[platform];
+    const keys = Object.keys(days).sort((a, b) => a - b);
+    const meta = PLATFORM_META[platform];
+
+    const header = `
+      <div class="platform-header">
+        <h2>${meta.name}</h2>
+        <p>${meta.sub}</p>
+      </div>`;
+
+    if (!keys.length) {
+      el.innerHTML = header + '<div class="empty-state">No posts for this platform this week.</div>';
+      return;
+    }
+
+    el.innerHTML = header + keys.map(key => {
+      const day = days[key];
+      return `
+        <div class="day-block">
+          <div class="day-label">${esc(day.label)}</div>
+          ${day.posts.map(buildCard).join('')}
+        </div>`;
+    }).join('');
+  });
+}
+
+function buildCard(post) {
+  const priorityBadge =
+    post.priority === 'HIGH'  ? '<span class="badge badge-high">\uD83D\uDD34 HIGH</span>' :
+    post.priority === 'TREND' ? '<span class="badge badge-trend">\uD83D\uDFE2 TRENDING</span>' : '';
+
+  const driveLink = post.image_url
+    ? `<br/><a href="${esc(post.image_url)}" target="_blank" rel="noopener">View Image &rarr;</a>`
+    : '';
+
+  const selClass = dbStatusToClass(post.approval_status);
+  const selVal   = dbStatusToDisplay(post.approval_status);
+
+  return `
+    <div class="post-card" data-id="${post.id}">
+      <div class="post-meta">
+        ${post.post_time    ? `<span class="badge badge-time">${esc(post.post_time)}</span>` : ''}
+        ${post.content_type ? `<span class="badge badge-type">${esc(post.content_type)}</span>` : ''}
+        ${priorityBadge}
+      </div>
+      ${post.caption ? `<div class="post-caption">${esc(post.caption)}</div>` : ''}
+      <div class="visual-box">
+        <strong>VISUAL</strong>
+        ${post.visual_text ? esc(post.visual_text) : ''}
+        ${driveLink}
+      </div>
+      <div class="approve-row">
+        <label>Kelli:</label>
+        <select class="${selClass}"
+          onchange="styleSelect(this); onApprovalChange('${post.id}', this)">
+          <option${selVal==='Pending'       ?' selected':''}>Pending</option>
+          <option${selVal==='\u2705 Approved'  ?' selected':''}>\u2705 Approved</option>
+          <option${selVal==='\u270F\uFE0F Needs Edits'?' selected':''}>\u270F\uFE0F Needs Edits</option>
+          <option${selVal==='\u274C Do Not Post'?' selected':''}>\u274C Do Not Post</option>
+        </select>
+        <input
+          class="notes-input"
+          type="text"
+          placeholder="Kelli's notes here..."
+          value="${esc(post.kelli_note || '')}"
+          onblur="onNoteBlur('${post.id}', this.value)"
+        />
+      </div>
+    </div>`;
+}
+
+function renderEmptyAll() {
+  PLATFORMS.forEach(platform => {
+    const el   = document.getElementById('platform-' + platform);
+    const meta = PLATFORM_META[platform];
+    el.innerHTML = `
+      <div class="platform-header">
+        <h2>${meta.name}</h2>
+        <p>${meta.sub}</p>
+      </div>
+      <div class="empty-state">
+        No content published yet.<br/>Use <strong>Update Calendar</strong> to add this week&apos;s posts.
+      </div>`;
+  });
+}
+
+// ════════════════════════════════════════════════════
+//  SAVE APPROVAL + SLACK
+// ════════════════════════════════════════════════════
+
+async function onApprovalChange(postId, sel) {
+  if (!sb) return;
+  const status = displayToDbStatus(sel.value);
+  setSyncStatus('syncing', 'Saving\u2026');
+
+  const { error } = await sb
+    .from('posts')
+    .update({ approval_status: status, updated_at: new Date().toISOString() })
+    .eq('id', postId);
+
+  if (error) { setSyncStatus('error', 'Save failed'); return; }
+  setSyncStatus('synced', 'Saved');
+
+  if (status === 'approved') notifySlack(postId);
+}
+
+async function onNoteBlur(postId, note) {
+  if (!sb) return;
+  setSyncStatus('syncing', 'Saving\u2026');
+  const { error } = await sb
+    .from('posts')
+    .update({ kelli_note: note, updated_at: new Date().toISOString() })
+    .eq('id', postId);
+  setSyncStatus(error ? 'error' : 'synced', error ? 'Save failed' : 'Saved');
+}
+
+async function notifySlack(postId) {
+  try {
+    const { data: post } = await sb.from('posts').select('*').eq('id', postId).single();
+    if (!post) return;
+    const pName = PLATFORM_META[post.platform]?.name.split('\u2014')[0].trim() || post.platform;
+    const text  = [
+      '\u2705 Kelli approved a post',
+      `Platform: ${pName}`,
+      `Day: ${post.day_label}`,
+      `Time: ${post.post_time || '\u2014'}`,
+      `Content type: ${post.content_type || '\u2014'}`,
+    ].join('\n');
+
+    await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+  } catch (e) {
+    console.warn('Slack notify failed:', e.message);
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  REALTIME
+// ════════════════════════════════════════════════════
+
+function setupRealtime() {
+  if (!sb) return;
+  realtimeChannel = sb
+    .channel('posts-live')
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'posts' }, payload => {
+      patchCardInDOM(payload.new);
+    })
+    .subscribe();
+}
+
+function patchCardInDOM(post) {
+  const card = document.querySelector(`[data-id="${post.id}"]`);
+  if (!card) return;
+
+  const sel = card.querySelector('select');
+  if (sel && document.activeElement !== sel) {
+    sel.value = dbStatusToDisplay(post.approval_status);
+    styleSelect(sel);
+  }
+
+  const noteEl = card.querySelector('.notes-input');
+  if (noteEl && document.activeElement !== noteEl) {
+    noteEl.value = post.kelli_note || '';
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  DEMO (no Supabase)
+// ════════════════════════════════════════════════════
+
+function renderDemo() {
+  document.getElementById('week-select').innerHTML =
+    '<option>April 27 - May 1, 2025 (Demo)</option>';
+  document.getElementById('approve-week-label').textContent =
+    'April 27 - May 1, 2025 \u2014 Demo Mode';
+
+  const kw = document.getElementById('platform-kw');
+  kw.innerHTML = `
+    <div class="platform-header">
+      <h2>${PLATFORM_META.kw.name}</h2>
+      <p>${PLATFORM_META.kw.sub}</p>
+    </div>
+    <div class="note-info">
+      <strong>Demo mode.</strong> Supabase is not yet connected \u2014 approvals will not be saved.
+      Configure <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> in
+      <code>src/config/supabase-config.js</code> to go live.
+    </div>
+    <div class="day-block">
+      <div class="day-label">MONDAY \u00B7 APRIL 27</div>
+      <div class="post-card">
+        <div class="post-meta">
+          <span class="badge badge-time">8:00 AM</span>
+          <span class="badge badge-type">Static Post</span>
+          <span class="badge badge-high">\uD83D\uDD34 HIGH</span>
+        </div>
+        <div class="post-caption">
+          The firm your business deserves does not just file reports and disappear.
+          It embeds into your operation \u2014 learning your goals, your gaps, and your growth edge \u2014
+          and builds the financial systems to take you there. That is the KelliWorks difference.
+          Book a discovery call \u2014 link in bio.
+        </div>
+        <div class="visual-box">
+          <strong>VISUAL</strong>
+          Headline: The Firm Your Business Deserves. Navy background. Gold accent.
+          Premium minimal. Montserrat Bold headline. KelliWorks logo footer.
+        </div>
+        <div class="approve-row">
+          <label>Kelli:</label>
+          <select onchange="styleSelect(this)">
+            <option>Pending</option>
+            <option>\u2705 Approved</option>
+            <option>\u270F\uFE0F Needs Edits</option>
+            <option>\u274C Do Not Post</option>
+          </select>
+          <input class="notes-input" type="text" placeholder="Kelli's notes here..." />
+        </div>
+      </div>
+    </div>`;
+
+  PLATFORMS.filter(p => p !== 'kw').forEach(platform => {
+    document.getElementById('platform-' + platform).innerHTML = `
+      <div class="platform-header">
+        <h2>${PLATFORM_META[platform].name}</h2>
+        <p>${PLATFORM_META[platform].sub}</p>
+      </div>
+      <div class="empty-state">Connect Supabase to see live content.</div>`;
+  });
+}
+
+// ════════════════════════════════════════════════════
+//  SHARED HELPERS
+// ════════════════════════════════════════════════════
+
+function showPlatform(id, btn) {
+  document.querySelectorAll('.platform').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.platform-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('platform-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function styleSelect(sel) {
+  sel.className = '';
+  if      (sel.value.includes('Approved'))  sel.className = 'approved';
+  else if (sel.value.includes('Edits'))     sel.className = 'edits';
+  else if (sel.value.includes('Do Not'))    sel.className = 'no';
+}
+
+function dbStatusToClass(s) {
+  return s === 'approved' ? 'approved' : s === 'needs_edits' ? 'edits' : s === 'do_not_post' ? 'no' : '';
+}
+
+function dbStatusToDisplay(s) {
+  const m = {
+    approved:    '\u2705 Approved',
+    needs_edits: '\u270F\uFE0F Needs Edits',
+    do_not_post: '\u274C Do Not Post',
+  };
+  return m[s] || 'Pending';
+}
+
+function displayToDbStatus(v) {
+  if (v.includes('Approved'))  return 'approved';
+  if (v.includes('Edits'))     return 'needs_edits';
+  if (v.includes('Do Not'))    return 'do_not_post';
+  return 'pending';
+}
+
+function setSyncStatus(state, text) {
+  const el = document.getElementById('sync-status');
+  el.className   = state;
+  el.textContent = text;
+}
+
+function shortPlatformName(p) {
+  return PLATFORM_META[p]?.name.split('\u2014')[0].trim() || p;
+}
+
+function fmtTime(t) {  // "08:00" → "8:00 AM"
+  const [h, m] = t.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2,'0')} ${h < 12 ? 'AM' : 'PM'}`;
+}
+
+function esc(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 </script>
 </body>
 </html>
