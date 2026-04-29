@@ -1,11 +1,7 @@
-# WEEK: April 27 - May 1, 2025
-week_start: 2025-04-27
-
----
-
 ## PLATFORM: kw
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -14,6 +10,7 @@ visual: Headline: The Firm Your Business Deserves. Navy background. Gold accent.
 drive:
 
 ### TUESDAY · APRIL 28
+date: 2025-04-28
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -22,6 +19,7 @@ visual: Headline: Strong Systems. Stronger Business. Navy and gold. Clean minima
 drive:
 
 ### WEDNESDAY · APRIL 29
+date: 2025-04-29
 time: 8:00 AM
 type: Carousel
 priority: HIGH
@@ -30,6 +28,7 @@ visual: Carousel — 5 slides. Slide 1: What Only You Should Be Doing. Slides 2�
 drive:
 
 ### THURSDAY · APRIL 30
+date: 2025-04-30
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -38,6 +37,7 @@ visual: Headline: Clarity is a Leadership Tool. Navy background. Gold text accen
 drive:
 
 ### FRIDAY · MAY 1
+date: 2025-05-01
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -50,6 +50,7 @@ drive:
 ## PLATFORM: kwa
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
@@ -58,6 +59,7 @@ visual: Trending audio — panicking / chaotic sound. Text overlay: POV: You hav
 drive:
 
 ### TUESDAY · APRIL 28
+date: 2025-04-28
 time: 10:00 AM
 type: Static Post
 priority: HIGH
@@ -66,14 +68,16 @@ visual: Headline: Bookkeeping Is a System. Not a Task. Navy and gold. Clean mini
 drive:
 
 ### WEDNESDAY · APRIL 29
+date: 2025-04-29
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
 caption: POV: Your accountant actually explains your financial report instead of just sending it 😌✨ #KelliWorks #Accounting
-visual: Trending audio — relief / ahhh finally sound. Text overlay 1: POV: Your accountant just sends reports 😩. Text overlay 2: POV: KelliWorks actually explains every line 😌.
+visual: Trending audio — relief sound. Text overlay 1: POV: Your accountant just sends reports 😩. Text overlay 2: POV: KelliWorks actually explains every line 😌.
 drive:
 
 ### THURSDAY · APRIL 30
+date: 2025-04-30
 time: 10:00 AM
 type: Static Post
 priority: HIGH
@@ -82,6 +86,7 @@ visual: Headline: Do You Know Your Q1 Numbers? Navy and gold. Clean bold layout.
 drive:
 
 ### FRIDAY · MAY 1
+date: 2025-05-01
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
@@ -94,6 +99,7 @@ drive:
 ## PLATFORM: kwt
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 7:00 AM
 type: Tax Tip
 priority:
@@ -102,6 +108,7 @@ visual: Tax tip graphic — headline: Q2 Is Already Counting. Navy gold bold.
 drive:
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 4:00 PM
 type: Quote
 priority:
@@ -110,14 +117,16 @@ visual: Brand quote card — cream background navy and gold. Elegant premium.
 drive:
 
 ### TUESDAY · APRIL 28
+date: 2025-04-28
 time: 7:00 AM
 type: Tax Tip
 priority:
-caption: If you received a large refund this year — that is not good news. It means you overpaid the IRS all year and gave them an interest-free loan. KelliWorks helps you adjust your withholding so you keep more money in your business where it belongs. Link in bio.
+caption: If you received a large refund this year — that is not good news. It means you overpaid the IRS all year and gave them an interest-free loan. KelliWorks helps you adjust your withholding so you keep more money in your business. Link in bio.
 visual: Tax tip graphic — headline: A Big Refund Means You Overpaid. Navy gold bold.
 drive:
 
 ### TUESDAY · APRIL 28
+date: 2025-04-28
 time: 4:00 PM
 type: Carousel
 priority:
@@ -130,6 +139,7 @@ drive:
 ## PLATFORM: ea
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 12:00 PM
 type: Static Post
 priority:
@@ -138,6 +148,7 @@ visual: EA branded graphic — dark background gold accent. Headline: You Were N
 drive:
 
 ### WEDNESDAY · APRIL 29
+date: 2025-04-29
 time: 12:00 PM
 type: Quote Post
 priority:
@@ -146,6 +157,7 @@ visual: EA quote graphic — dark navy gold. Headline: Real Conversations. Real 
 drive:
 
 ### FRIDAY · MAY 1
+date: 2025-05-01
 time: 12:00 PM
 type: Community Post
 priority:
@@ -158,6 +170,7 @@ drive:
 ## PLATFORM: kl
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 9:00 AM
 type: Thought Leadership
 priority:
@@ -166,6 +179,7 @@ visual: Professional Kelli photo — editorial, confident. Or clean branded quot
 drive:
 
 ### TUESDAY · APRIL 28
+date: 2025-04-28
 time: 9:00 AM
 type: Founder Story
 priority:
@@ -174,6 +188,7 @@ visual: Professional Kelli photo — warm, authoritative. Or clean branded graph
 drive:
 
 ### WEDNESDAY · APRIL 29
+date: 2025-04-29
 time: 9:00 AM
 type: Thought Leadership
 priority:
@@ -182,6 +197,7 @@ visual: Clean branded KelliWorks graphic — professional LinkedIn format.
 drive:
 
 ### THURSDAY · APRIL 30
+date: 2025-04-30
 time: 9:00 AM
 type: Coaching Voice
 priority:
@@ -190,6 +206,7 @@ visual: Professional Kelli photo or clean quote graphic — coaching voice, dire
 drive:
 
 ### FRIDAY · MAY 1
+date: 2025-05-01
 time: 9:00 AM
 type: Friday Reflection
 priority:
@@ -202,14 +219,16 @@ drive:
 ## PLATFORM: gw
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 11:00 AM
 type: Thought Leadership
 priority:
 caption: I have worked with hundreds of women-owned businesses. And the number one thing that keeps them stuck is not lack of hustle — it is lack of financial infrastructure. They are working incredibly hard inside a business that has no system to hold the growth. You cannot scale chaos. Before you invest in marketing, hiring, or expansion — get your books clean, your cash flow clear, and your reporting consistent. — Kelli Lewis | Founder, KelliWorks
-visual: Editorial Kelli photo — confident, authoritative. Or clean branded thought leadership graphic. Navy and gold. Premium feminine.
+visual: Editorial Kelli photo — confident, authoritative. Navy and gold. Premium feminine.
 drive:
 
 ### TUESDAY · APRIL 28
+date: 2025-04-28
 time: 11:00 AM
 type: Industry POV
 priority:
@@ -218,14 +237,16 @@ visual: Professional Kelli photo — warm, real, editorial. Premium feminine aes
 drive:
 
 ### THURSDAY · APRIL 30
+date: 2025-04-30
 time: 11:00 AM
 type: Expert Insight
 priority:
-caption: A question I get asked constantly by women founders: "When is the right time to hire an accountant?" My answer is always the same — before you think you need one. The ones who build the most sustainably are the ones who build the financial infrastructure early — before the growth exposes the gaps. Do not wait for the emergency. Build the system now. — Kelli Lewis | KelliWorks Founder
+caption: A question I get asked constantly by women founders: When is the right time to hire an accountant? My answer is always the same — before you think you need one. The ones who build the most sustainably are the ones who build the financial infrastructure early — before the growth exposes the gaps. Do not wait for the emergency. Build the system now. — Kelli Lewis | KelliWorks Founder
 visual: Clean expert insight graphic — Kelli's quote as a pull quote. Premium navy and gold. Feminine authoritative aesthetic.
 drive:
 
 ### FRIDAY · MAY 1
+date: 2025-05-01
 time: 11:00 AM
 type: Thought Leadership
 priority:
@@ -238,6 +259,7 @@ drive:
 ## PLATFORM: web
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: EOD
 type: Blog Post
 priority:
@@ -246,6 +268,7 @@ visual: Blog header image — professional KelliWorks branded. Kelli photo or br
 drive:
 
 ### THIS WEEK
+date: 2025-05-01
 time: By Fri May 1
 type: GMB Update
 priority:
@@ -254,9 +277,10 @@ visual: Fresh KelliWorks brand photo or professional team photo for GMB.
 drive:
 
 ### THIS WEEK
+date: 2025-05-01
 time: By Fri May 1
 type: Yelp Update
 priority:
-caption: Refresh Yelp listing — ensure services are current, photos are fresh. Tax season has ended — shift messaging to year-round accounting and business management services. Update any seasonal content.
+caption: Refresh Yelp listing — ensure services are current, photos are fresh. Tax season has ended — shift messaging to year-round accounting and business management services.
 visual: Fresh Yelp photo — professional KelliWorks branded image.
 drive:

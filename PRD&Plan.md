@@ -74,14 +74,10 @@ Charity writes the week's content
 Charity sends a `.md` file structured exactly like this:
 
 ```markdown
-# WEEK: April 27 - May 1, 2025
-week_start: 2025-04-27
-
----
-
 ## PLATFORM: kw
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -90,6 +86,7 @@ visual: Headline: The Firm Your Business Deserves. Navy background. Gold accent.
 drive: https://drive.google.com/file/d/EXAMPLE/view
 
 ### TUESDAY · APRIL 28
+date: 2025-04-28
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -102,6 +99,7 @@ drive:
 ## PLATFORM: kwa
 
 ### MONDAY · APRIL 27
+date: 2025-04-27
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
@@ -109,6 +107,10 @@ caption: POV: You haven't reconciled your accounts since January...
 visual: Trending audio — panicking / chaotic sound. Text overlay: POV reel.
 drive:
 ```
+
+The `date:` field on each post is all that's needed. The week label shown in the app
+("April 27 – May 1, 2025") is automatically calculated from the earliest and latest
+dates across all posts — no week header required.
 
 ### What Ola does on receipt
 
