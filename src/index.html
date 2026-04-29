@@ -59,12 +59,6 @@
     /* ══════════════════════════════
        APPROVE MODE
     ══════════════════════════════ */
-    .week-label-bar {
-      background: #fff; border-bottom: 1px solid #eee;
-      padding: 8px 20px; font-size: 11px; color: #666;
-    }
-    .week-label-bar strong { color: #1a1a2e; }
-
     .platform-nav {
       display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 20px;
       background: #fff; border-bottom: 2px solid #c9a84c;
@@ -195,7 +189,6 @@
     <button class="header-back" onclick="exitMode()">&#8592; Home</button>
   </header>
 
-  <div class="week-label-bar" id="week-label-bar">&nbsp;</div>
 
   <nav class="platform-nav">
     <button class="active" onclick="showPlatform('kw',this)">KelliWorks IG+FB</button>
@@ -272,8 +265,6 @@ async function loadWeek() {
     const text = await res.text();
     const { label, posts } = parseMd(text);
     document.getElementById('approve-week-label').textContent = label || 'Current Week';
-    document.getElementById('week-label-bar').innerHTML =
-      `<strong>Week:</strong> ${esc(label || 'Current Week')}`;
     renderPosts(posts);
   } catch (e) {
     document.getElementById('approve-week-label').textContent = 'Could not load week data';
