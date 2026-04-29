@@ -48,6 +48,7 @@ drive:
 ---
 
 ## PLATFORM: kwa
+note-info: 📌 New direction: Mix trending POV reels (funny + relatable) with educational static posts. POV reels get the reach. Static posts build authority. Both sell KelliWorks.
 
 ### MONDAY · APRIL 27
 date: 2025-04-27
@@ -134,9 +135,64 @@ caption: Tax season is over — but your tax strategy should not be. Swipe to se
 visual: Carousel — 5 slides — 4 Post Tax Season Moves. Navy and gold.
 drive:
 
+### WEDNESDAY · APRIL 29
+date: 2025-04-29
+time: 7:00 AM
+type: Tax Tip
+priority:
+caption: Are you paying yourself correctly as a business owner? How you pay yourself — salary, owner's draw, distributions — has major tax implications. Getting it wrong costs you money. KelliWorks helps you structure it right. Link in bio.
+visual: Tax tip graphic — headline: Are You Paying Yourself Correctly? Navy gold bold.
+drive:
+
+### WEDNESDAY · APRIL 29
+date: 2025-04-29
+time: 4:00 PM
+type: Quote
+priority:
+caption: "Tax preparation is no longer the same with modern accounting methods." — Kelli Lewis. Stop doing it the old way. KelliWorks brings modern solutions to your finances all year round. Link in bio.
+visual: Quote card — cream background elegant premium. Kelli Lewis attribution gold.
+drive:
+
+### THURSDAY · APRIL 30
+date: 2025-04-30
+time: 7:00 AM
+type: Tax Tip
+priority:
+caption: Tax Tip Thursday 💡 Keep every business receipt — digital or physical. The IRS requires documentation for every deduction you claim. KelliWorks helps you set up a simple system so nothing ever gets lost. Link in bio.
+visual: Tax Tip Thursday branded graphic — navy gold. Bold headline.
+drive:
+
+### THURSDAY · APRIL 30
+date: 2025-04-30
+time: 4:00 PM
+type: Carousel
+priority:
+caption: Your Q2 financial checklist starts NOW. Swipe to see exactly what every smart entrepreneur should be doing this month to stay ahead.
+visual: Carousel — 5 slides — Q2 Financial Checklist. Navy and gold.
+drive:
+
+### FRIDAY · MAY 1
+date: 2025-05-01
+time: 7:00 AM
+type: Tax Tip
+priority:
+caption: Happy May! New month — new opportunity to get your finances right. Is your business structure still working for you? LLC. S-Corp. Sole Proprietor. Each has different tax implications. KelliWorks can review your setup and help you optimize. Link in bio.
+visual: Tax tip graphic — headline: New Month. New Financial Strategy. Navy gold bold.
+drive:
+
+### FRIDAY · MAY 1
+date: 2025-05-01
+time: 4:00 PM
+type: Quote
+priority:
+caption: "KelliWorks takes the burden off entrepreneurs by guiding them in planning their taxes." Tax season is done. The work is not. Let us carry it. Link in bio.
+visual: Quote card — cream premium elegant. Gold attribution. KelliWorks footer.
+drive:
+
 ---
 
 ## PLATFORM: ea
+note-alert: ⚠️ No EA meeting promotion this week per Kelli's instruction. Posts focus on community value and evergreen EA content only.
 
 ### MONDAY · APRIL 27
 date: 2025-04-27

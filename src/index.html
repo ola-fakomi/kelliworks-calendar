@@ -116,6 +116,16 @@
       border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-family: Arial;
     }
 
+    .note-alert {
+      background: #fdecea; border-left: 3px solid #e74c3c;
+      padding: 8px 12px; font-size: 11px; color: #7b1a1a;
+      margin-bottom: 16px; border-radius: 0 4px 4px 0;
+    }
+    .note-info {
+      background: #e8f4fd; border-left: 3px solid #1a6fa8;
+      padding: 8px 12px; font-size: 11px; color: #1a3a5c;
+      margin-bottom: 16px; border-radius: 0 4px 4px 0;
+    }
     .empty-state { text-align: center; padding: 60px 20px; color: #aaa; }
 
     /* Save indicator */
@@ -263,9 +273,9 @@ async function loadWeek() {
     const res = await fetch('data/week.md');
     if (!res.ok) throw new Error('week.md not found');
     const text = await res.text();
-    const { label, posts } = parseMd(text);
+    const { label, posts, platformNotes } = parseMd(text);
     document.getElementById('approve-week-label').textContent = label || 'Current Week';
-    renderPosts(posts);
+    renderPosts(posts, platformNotes);
   } catch (e) {
     document.getElementById('approve-week-label').textContent = 'Could not load week data';
     PLATFORMS.forEach(p => {
@@ -278,11 +288,12 @@ async function loadWeek() {
 }
 
 function parseMd(text) {
-  const lines   = text.split('\n');
-  let platform  = '';
-  let post      = null;
-  const posts   = [];
-  let postIndex = 0;
+  const lines         = text.split('\n');
+  let platform        = '';
+  let post            = null;
+  const posts         = [];
+  const platformNotes = {};
+  let postIndex       = 0;
 
   for (let i = 0; i < lines.length; i++) {
     const raw  = lines[i];
@@ -293,6 +304,15 @@ function parseMd(text) {
       if (post) { posts.push(post); post = null; }
       platform  = line.replace('## PLATFORM:', '').trim().toLowerCase();
       postIndex = 0;
+      continue;
+    }
+
+    // Platform-level notes (appear before the first ### heading)
+    if (!post && platform && (line.startsWith('note-info:') || line.startsWith('note-alert:'))) {
+      const ci  = line.indexOf(':');
+      const key = line.slice(0, ci).trim().toLowerCase();
+      const val = line.slice(ci + 1).trim();
+      platformNotes[platform] = { type: key === 'note-info' ? 'info' : 'alert', text: val };
       continue;
     }
 
@@ -373,14 +393,14 @@ function parseMd(text) {
       : `${fmt(dates[0])} \u2013 ${fmt(dates[dates.length - 1])}, ${year}`;
   }
 
-  return { label, posts };
+  return { label, posts, platformNotes };
 }
 
 // ═══════════════════════════════════════════
 //  RENDER
 // ═══════════════════════════════════════════
 
-function renderPosts(posts) {
+function renderPosts(posts, platformNotes = {}) {
   // Group: platform -> dayOrder -> { label, posts[] }
   const grouped = {};
   PLATFORMS.forEach(p => { grouped[p] = {}; });
@@ -404,14 +424,19 @@ function renderPosts(posts) {
         <p>${meta.sub}</p>
       </div>`;
 
+    const pNote = platformNotes[platform];
+    const noteHtml = pNote
+      ? `<div class="note-${pNote.type}">${esc(pNote.text)}</div>`
+      : '';
+
     const dayKeys = Object.keys(days).sort((a, b) => days[a].order - days[b].order);
 
     if (!dayKeys.length) {
-      el.innerHTML = header + '<div class="empty-state">No posts for this platform this week.</div>';
+      el.innerHTML = header + noteHtml + '<div class="empty-state">No posts for this platform this week.</div>';
       return;
     }
 
-    el.innerHTML = header + dayKeys.map(key => {
+    el.innerHTML = header + noteHtml + dayKeys.map(key => {
       const day = days[key];
       return `
         <div class="day-block">
