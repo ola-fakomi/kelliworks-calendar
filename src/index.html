@@ -231,13 +231,13 @@
 const PLATFORMS = ['kw','kwa','kwt','ea','kl','gw','web'];
 
 const PLATFORM_META = {
-  kw:  { name: 'KELLIWORKS MAIN — Instagram + Facebook',                  sub: '1 post/day · Brand positioning · Premium firm-first tone' },
-  kwa: { name: 'KELLIWORKS ACCOUNTING — Instagram + Facebook + LinkedIn', sub: '1 post/day · Trending POV reels + educational static' },
-  kwt: { name: 'KELLIWORKS TAXES — Instagram Only',                       sub: '2 posts/day · Tips, quotes, carousels' },
-  ea:  { name: 'ENTREPRENEURS ANONYMOUS — IG + FB + YouTube + Skool',     sub: 'General EA community content' },
-  kl:  { name: 'KELLI LEWIS PERSONAL — LinkedIn',                         sub: '1 post/day · Author · Speaker · Coach · Accountant' },
-  gw:  { name: 'GLOBAL WOMAN — Global Woman Platform',                    sub: 'Min 4 posts/week · Kelli as THOUGHT LEADER' },
-  web: { name: 'WEBSITE + GOOGLE MY BUSINESS + YELP',                     sub: 'Weekly tasks · Blog · GMB + Yelp refresh' },
+  kw:  { name: 'KELLIWORKS MAIN — Instagram + Facebook',                  sub: '1 post/day · Brand positioning · Premium firm-first tone · No EA promotion · No book promotion' },
+  kwa: { name: 'KELLIWORKS ACCOUNTING — Instagram + Facebook + LinkedIn', sub: '1 post/day · Mix of trending POV reels + educational static · Playful, funny, relatable · ❌ No tax content' },
+  kwt: { name: 'KELLIWORKS TAXES — Instagram Only',                       sub: '2 posts/day · Tips, quotes, carousels · ❌ NOT on LinkedIn · ❌ NOT on KW Accounting grid' },
+  ea:  { name: 'ENTREPRENEURS ANONYMOUS — IG + FB + YouTube + Skool',     sub: 'Meeting rhythm · ❌ No meeting promotion until Kelli confirms · General EA community content only' },
+  kl:  { name: 'KELLI LEWIS PERSONAL — LinkedIn',                         sub: '1 post/day · Author · Speaker · Coach · Accountant · 30 min daily engagement · ❌ No tax content' },
+  gw:  { name: 'GLOBAL WOMAN — Global Woman Platform',                    sub: 'Min 4 posts/week · 10–15 min daily engagement · Kelli as THOUGHT LEADER — specific POV, industry insight, expertise · ❌ No generic motivation · ❌ No EA content' },
+  web: { name: 'WEBSITE + GOOGLE MY BUSINESS + YELP',                     sub: 'Weekly tasks · Blog post · EA website update · GMB + Yelp refresh' },
 };
 
 const LS_PREFIX = 'kw-approval-';
@@ -316,11 +316,11 @@ function parseMd(text) {
       continue;
     }
 
-    // Day heading: "### MONDAY · APRIL 27"
+    // Day heading: "### MONDAY · APRIL 27" or "### THIS WEEK — GMB"
     if (line.startsWith('### ')) {
       if (post) { posts.push(post); post = null; }
       postIndex++;
-      const dayLabel = line.replace('### ', '').trim();
+      const dayLabel = line.replace(/^###\s+/, '').trim();
       // Derive order from the day name in the heading (Mon=1 … Sun=7)
       const DAY_ORDER = { MONDAY:1, TUESDAY:2, WEDNESDAY:3, THURSDAY:4, FRIDAY:5, SATURDAY:6, SUNDAY:7 };
       const firstWord = dayLabel.split(/[\s\u00B7·]/)[0].toUpperCase();
@@ -360,8 +360,8 @@ function parseMd(text) {
       let caption = val;
       while (i + 1 < lines.length) {
         const next = lines[i + 1].trim();
-        if (!next || next.startsWith('#') || next.startsWith('---')) break;
-        if (/^[a-z_]+:/.test(next)) break;
+        if (!next || next.startsWith('## ') || next.startsWith('### ') || next === '---') break;
+        if (/^[a-z][a-z_]*:/.test(next)) break;
         caption += ' ' + next;
         i++;
       }
@@ -371,8 +371,8 @@ function parseMd(text) {
       let visual = val;
       while (i + 1 < lines.length) {
         const next = lines[i + 1].trim();
-        if (!next || next.startsWith('#') || next.startsWith('---')) break;
-        if (/^[a-z_]+:/.test(next)) break;
+        if (!next || next.startsWith('## ') || next.startsWith('### ') || next === '---') break;
+        if (/^[a-z][a-z_]*:/.test(next)) break;
         visual += ' ' + next;
         i++;
       }
@@ -458,6 +458,9 @@ function buildCard(post) {
     post.priority === 'HIGH'  ? '<span class="badge badge-high">&#128308; HIGH</span>' :
     post.priority === 'TREND' ? '<span class="badge badge-trend">&#128994; TRENDING</span>' : '';
 
+  const isReel = post.content_type && post.content_type.toLowerCase().includes('reel');
+  const visualLabel = isReel ? '🎬 REEL PLACEHOLDER' : '📸 VISUAL PLACEHOLDER';
+
   const driveLink = post.image_url
     ? `<br/><a href="${esc(post.image_url)}" target="_blank" rel="noopener">View Image &rarr;</a>`
     : '';
@@ -471,7 +474,7 @@ function buildCard(post) {
       </div>
       ${post.caption ? `<div class="post-caption">${esc(post.caption)}</div>` : ''}
       <div class="visual-box">
-        <strong>VISUAL</strong>
+        <strong>${visualLabel}</strong>
         ${post.visual_text ? esc(post.visual_text) : ''}
         ${driveLink}
       </div>

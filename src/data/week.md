@@ -23,8 +23,8 @@ date: 2025-04-29
 time: 8:00 AM
 type: Carousel
 priority: HIGH
-caption: Most founders are great at what they do. Running the back end of a business is a different skill set entirely. Swipe to see what KelliWorks takes off your plate — so you can focus on what only you can do.
-visual: Carousel — 5 slides. Slide 1: What Only You Should Be Doing. Slides 2–4: Bookkeeping, Payroll, Reporting, Operations. Slide 5: CTA — Book a Discovery Call. Navy and gold.
+caption: Most founders are great at what they do. Running the back end of a business is a different skill set entirely. Swipe to see what KelliWorks takes off your plate — so you can focus on what only you can do. ➡️
+visual: Carousel — 5 slides. Slide 1: What Only You Should Be Doing. Slides 2–4: What KelliWorks handles — Bookkeeping, Payroll, Reporting, Operations. Slide 5: CTA — Book a Discovery Call. Navy and gold. Kelli's photo on cover slide.
 drive:
 
 ### THURSDAY · APRIL 30
@@ -32,8 +32,8 @@ date: 2025-04-30
 time: 8:00 AM
 type: Static Post
 priority: HIGH
-caption: Financial clarity is not a luxury. It is a leadership tool. The founders who make the best decisions are the ones who always know their numbers. KelliWorks gives you that clarity every single month. Link in bio.
-visual: Headline: Clarity is a Leadership Tool. Navy background. Gold text accent. Minimal elegant layout.
+caption: Financial clarity is not a luxury. It is a leadership tool. The founders who make the best decisions are not the ones with the most hustle — they are the ones who always know their numbers. KelliWorks gives you that clarity every single month. Link in bio.
+visual: Headline: Clarity is a Leadership Tool. Navy background. Gold text accent. Minimal elegant layout. Montserrat Bold.
 drive:
 
 ### FRIDAY · MAY 1
@@ -41,8 +41,8 @@ date: 2025-05-01
 time: 8:00 AM
 type: Static Post
 priority: HIGH
-caption: Another week built on decisions — and every great decision starts with knowing your numbers. KelliWorks is here to make sure you always do. Happy May. Let's make it your strongest month yet.
-visual: Headline: Happy May. Let's Build. Warm premium navy and gold week wrap graphic. KelliWorks branding.
+caption: Another week built on decisions — and every great decision starts with knowing your numbers. KelliWorks is here to make sure you always do. Happy May. Let's make it your strongest month yet. 🙏
+visual: Headline: Happy May. Let's Build. Warm premium navy and gold week wrap graphic. KelliWorks branding. Montserrat Bold.
 drive:
 
 ---
@@ -55,8 +55,8 @@ date: 2025-04-27
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
-caption: POV: You haven't reconciled your accounts since January 😬 #KelliWorks #Accounting #SmallBusiness
-visual: Trending audio — panicking / chaotic sound. Text overlay: POV: You haven't reconciled your accounts since January 😬. 7–15 seconds.
+caption: POV: You haven't reconciled your accounts since January 😬 #KelliWorks #Accounting #SmallBusiness #Bookkeeping #Entrepreneurs
+visual: Trending audio — use a "panicking / chaotic" trending sound. Text overlay: POV: You haven't reconciled your accounts since January 😬. Second text overlay mid-video: KelliWorks to the rescue 😌. Use a funny trending video clip or film yourself reacting. Keep it short — 7 to 15 seconds max.
 drive:
 
 ### TUESDAY · APRIL 28
@@ -65,7 +65,7 @@ time: 10:00 AM
 type: Static Post
 priority: HIGH
 caption: Bookkeeping is not a task you do once a year at tax time. It is a system that runs every single month — keeping your business clean, your cash flow clear, and your decisions grounded in real numbers. KelliWorks builds that system for you. DM us to get started.
-visual: Headline: Bookkeeping Is a System. Not a Task. Navy and gold. Clean minimal. KelliWorks Accounting footer.
+visual: Headline: Bookkeeping Is a System. Not a Task. Navy and gold. Clean minimal. Montserrat Bold + SemiBold. KelliWorks Accounting footer.
 drive:
 
 ### WEDNESDAY · APRIL 29
@@ -73,8 +73,8 @@ date: 2025-04-29
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
-caption: POV: Your accountant actually explains your financial report instead of just sending it 😌✨ #KelliWorks #Accounting
-visual: Trending audio — relief sound. Text overlay 1: POV: Your accountant just sends reports 😩. Text overlay 2: POV: KelliWorks actually explains every line 😌.
+caption: POV: Your accountant actually explains your financial report instead of just sending it 😌✨ #KelliWorks #Accounting #FounderLife #Bookkeeping #SmallBusiness
+visual: Trending audio — use a "relief / ahhh finally" sound. Text overlay 1: POV: Your accountant just sends reports and disappears 😩. Text overlay 2: POV: KelliWorks actually explains every line 😌. Short and punchy — 7 to 15 seconds. Film yourself or use trending clip.
 drive:
 
 ### THURSDAY · APRIL 30
@@ -82,8 +82,8 @@ date: 2025-04-30
 time: 10:00 AM
 type: Static Post
 priority: HIGH
-caption: Do you know exactly how your business performed in Q1? Revenue. Expenses. Profit. Cash flow. If the honest answer is no — that is the first thing to fix. KelliWorks delivers monthly reports that give you a clear picture. DM us.
-visual: Headline: Do You Know Your Q1 Numbers? Navy and gold. Clean bold layout. KelliWorks Accounting footer.
+caption: Do you know exactly how your business performed in Q1? Revenue. Expenses. Profit. Cash flow. If the honest answer is no — that is the first thing to fix. KelliWorks delivers monthly reports that give you a clear picture of your business performance so you always know where you stand. DM us.
+visual: Headline: Do You Know Your Q1 Numbers? Navy and gold. Clean bold layout. Montserrat Bold. KelliWorks Accounting footer.
 drive:
 
 ### FRIDAY · MAY 1
@@ -91,8 +91,8 @@ date: 2025-05-01
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
-caption: POV: It's May 1st and your books are finally clean 😎🙌 #KelliWorks #NewMonth #Accounting
-visual: Trending audio — winning / celebration sound. Text overlay 1: POV: It's May 1st and you still don't know your numbers 😬. Text overlay 2: KelliWorks client on May 1st 😎.
+caption: POV: It's May 1st and your books are finally clean 😎🙌 #KelliWorks #NewMonth #Accounting #FounderLife #SmallBusiness
+visual: Trending audio — use a "winning / celebration" sound. Text overlay 1: POV: It's May 1st and you still don't know your numbers 😬. Text overlay 2: POV: KelliWorks client on May 1st 😎. Use a confident, winning reaction clip or film yourself. 7 to 15 seconds.
 drive:
 
 ---
@@ -122,7 +122,7 @@ date: 2025-04-28
 time: 7:00 AM
 type: Tax Tip
 priority:
-caption: If you received a large refund this year — that is not good news. It means you overpaid the IRS all year and gave them an interest-free loan. KelliWorks helps you adjust your withholding so you keep more money in your business. Link in bio.
+caption: If you received a large refund this year — that is not good news. It means you overpaid the IRS all year and gave them an interest-free loan. KelliWorks helps you adjust your withholding so you keep more money in your business where it belongs. Link in bio.
 visual: Tax tip graphic — headline: A Big Refund Means You Overpaid. Navy gold bold.
 drive:
 
@@ -131,8 +131,8 @@ date: 2025-04-28
 time: 4:00 PM
 type: Carousel
 priority:
-caption: Tax season is over — but your tax strategy should not be. Swipe to see 4 moves every entrepreneur should make RIGHT NOW to protect their finances for the rest of 2025.
-visual: Carousel — 5 slides — 4 Post Tax Season Moves. Navy and gold.
+caption: Tax season is over — but your tax strategy should not be. Swipe to see 4 moves every entrepreneur should make RIGHT NOW to protect their finances for the rest of 2025. ➡️
+visual: Carousel — 5 slides — 4 Post Tax Season Moves. Navy and gold. Montserrat Bold + SemiBold.
 drive:
 
 ### WEDNESDAY · APRIL 29
@@ -167,8 +167,8 @@ date: 2025-04-30
 time: 4:00 PM
 type: Carousel
 priority:
-caption: Your Q2 financial checklist starts NOW. Swipe to see exactly what every smart entrepreneur should be doing this month to stay ahead.
-visual: Carousel — 5 slides — Q2 Financial Checklist. Navy and gold.
+caption: Your Q2 financial checklist starts NOW. Swipe to see exactly what every smart entrepreneur should be doing this month to stay ahead. ➡️
+visual: Carousel — 5 slides — Q2 Financial Checklist. Navy and gold. Montserrat Bold + SemiBold.
 drive:
 
 ### FRIDAY · MAY 1
@@ -200,7 +200,7 @@ time: 12:00 PM
 type: Static Post
 priority:
 caption: Entrepreneurship is the loneliest journey — until you find your community. Entrepreneurs Anonymous exists because no founder should have to build alone. Join the community — link in bio.
-visual: EA branded graphic — dark background gold accent. Headline: You Were Never Meant to Build Alone.
+visual: EA branded graphic — dark background gold accent. Headline: You Were Never Meant to Build Alone. EA logo.
 drive:
 
 ### WEDNESDAY · APRIL 29
@@ -209,7 +209,7 @@ time: 12:00 PM
 type: Quote Post
 priority:
 caption: The room changes when entrepreneurs stop competing and start collaborating. That is what Entrepreneurs Anonymous is built on. Real conversations. Real connections. Real growth. Link in bio to join the community.
-visual: EA quote graphic — dark navy gold. Headline: Real Conversations. Real Growth.
+visual: EA quote graphic — dark navy gold. Headline: Real Conversations. Real Growth. EA branding.
 drive:
 
 ### FRIDAY · MAY 1
@@ -230,7 +230,7 @@ date: 2025-04-27
 time: 9:00 AM
 type: Thought Leadership
 priority:
-caption: The founders who scale the fastest are not the ones who work the hardest. They are the ones who build the best systems. A business that requires your constant presence to function is not a business — it is a job. The shift starts when you stop being the engine and start being the architect. What is one system you could build this week that would give you back an hour of your time?
+caption: The founders who scale the fastest are not the ones who work the hardest. They are the ones who build the best systems. A business that requires your constant presence to function is not a business — it is a job. And it is probably the most demanding job you have ever had. The shift starts when you stop being the engine and start being the architect. What is one system you could build this week that would give you back an hour of your time?
 visual: Professional Kelli photo — editorial, confident. Or clean branded quote graphic.
 drive:
 
@@ -239,7 +239,7 @@ date: 2025-04-28
 time: 9:00 AM
 type: Founder Story
 priority:
-caption: I spent years being the best-kept secret in my clients' businesses. Doing everything. Available always. Undercharging constantly. I thought that was the price of loyalty. What I actually learned is that boundaries create respect. Systems create freedom. And charging your worth creates the business you deserve.
+caption: I spent years being the best-kept secret in my clients' businesses. Doing everything. Available always. Undercharging constantly. I thought that was the price of loyalty. What I actually learned is that boundaries create respect. Systems create freedom. And charging your worth creates the business you deserve. If you are still giving everything away in the name of dedication — this is your sign to stop.
 visual: Professional Kelli photo — warm, authoritative. Or clean branded graphic.
 drive:
 
@@ -248,7 +248,7 @@ date: 2025-04-29
 time: 9:00 AM
 type: Thought Leadership
 priority:
-caption: Financial clarity is not a finance topic. It is a leadership topic. When you know your numbers — your cash position, your profit margin, your burn rate — you make decisions from a place of power instead of panic. The most confident founders I know are not the richest. They are the most informed.
+caption: Financial clarity is not a finance topic. It is a leadership topic. When you know your numbers — your cash position, your profit margin, your burn rate — you make decisions from a place of power instead of panic. The most confident founders I know are not the richest. They are the most informed. KelliWorks gives founders that clarity every single month. Link in bio.
 visual: Clean branded KelliWorks graphic — professional LinkedIn format.
 drive:
 
@@ -266,7 +266,7 @@ date: 2025-05-01
 time: 9:00 AM
 type: Friday Reflection
 priority:
-caption: Happy May. New month. Fresh start. This is the month you stop running your business on instinct and start running it on intelligence. Clean books. Clear strategy. Confident decisions. That is what I help founders build at KelliWorks — and it starts with one conversation. Link in bio. Have a powerful weekend.
+caption: Happy May. New month. Fresh start. This is the month you stop running your business on instinct and start running it on intelligence. Clean books. Clear strategy. Confident decisions. That is what I help founders build at KelliWorks — and it starts with one conversation. Link in bio. Have a powerful weekend. 🙏
 visual: Polished Kelli brand photo or Happy May branded graphic. Warm professional.
 drive:
 
@@ -279,8 +279,8 @@ date: 2025-04-27
 time: 11:00 AM
 type: Thought Leadership
 priority:
-caption: I have worked with hundreds of women-owned businesses. And the number one thing that keeps them stuck is not lack of hustle — it is lack of financial infrastructure. They are working incredibly hard inside a business that has no system to hold the growth. You cannot scale chaos. Before you invest in marketing, hiring, or expansion — get your books clean, your cash flow clear, and your reporting consistent. — Kelli Lewis | Founder, KelliWorks
-visual: Editorial Kelli photo — confident, authoritative. Navy and gold. Premium feminine.
+caption: I have worked with hundreds of women-owned businesses. And the number one thing that keeps them stuck is not lack of hustle — it is lack of financial infrastructure. They are working incredibly hard inside a business that has no system to hold the growth. Here is what I know to be true: you cannot scale chaos. Before you invest in marketing, hiring, or expansion — get your books clean, your cash flow clear, and your reporting consistent. That is the foundation everything else is built on. — Kelli Lewis | Founder, KelliWorks
+visual: Editorial Kelli photo — confident, authoritative. Or clean branded thought leadership graphic. Navy and gold. Premium feminine.
 drive:
 
 ### TUESDAY · APRIL 28
@@ -288,8 +288,8 @@ date: 2025-04-28
 time: 11:00 AM
 type: Industry POV
 priority:
-caption: Nobody talks about this enough — women entrepreneurs are statistically more likely to undercharge, over-deliver, and avoid looking at their own numbers. I did it too. The moment I started treating my business with the same rigor I applied to my clients' — everything changed. Your business deserves the same financial discipline you give your best client. — Kelli Lewis | KelliWorks
-visual: Professional Kelli photo — warm, real, editorial. Premium feminine aesthetic.
+caption: Nobody talks about this enough — women entrepreneurs are statistically more likely to undercharge, over-deliver, and avoid looking at their own numbers. I did it too. For years I helped wealthy clients build financial systems while my own business was falling apart. The moment I started treating my business with the same rigor I applied to my clients' — everything changed. Your business deserves the same financial discipline you give your best client. Start there. — Kelli Lewis | KelliWorks
+visual: Professional Kelli photo — warm, real, editorial. Not a headshot. Premium feminine aesthetic.
 drive:
 
 ### THURSDAY · APRIL 30
@@ -297,8 +297,8 @@ date: 2025-04-30
 time: 11:00 AM
 type: Expert Insight
 priority:
-caption: A question I get asked constantly by women founders: When is the right time to hire an accountant? My answer is always the same — before you think you need one. The ones who build the most sustainably are the ones who build the financial infrastructure early — before the growth exposes the gaps. Do not wait for the emergency. Build the system now. — Kelli Lewis | KelliWorks Founder
-visual: Clean expert insight graphic — Kelli's quote as a pull quote. Premium navy and gold. Feminine authoritative aesthetic.
+caption: A question I get asked constantly by women founders: "When is the right time to hire an accountant?" My answer is always the same — before you think you need one. Most founders come to KelliWorks after something breaks. A tax surprise. A cash flow crisis. A payroll error. The ones who build the most sustainably are the ones who build the financial infrastructure early — before the growth exposes the gaps. Do not wait for the emergency. Build the system now. — Kelli Lewis | KelliWorks Founder
+visual: Clean expert insight graphic — Kelli's quote pulled out as a pull quote. Premium navy and gold. Feminine authoritative aesthetic.
 drive:
 
 ### FRIDAY · MAY 1
@@ -306,24 +306,24 @@ date: 2025-05-01
 time: 11:00 AM
 type: Thought Leadership
 priority:
-caption: May is here. And I want to challenge every woman founder reading this to ask herself one honest question: Does my business have the financial infrastructure to handle the growth I am praying for? Growth without infrastructure is just expensive chaos. This month — build the foundation first. — Kelli Lewis | KelliWorks | Global Business Woman
-visual: Premium Kelli editorial photo or branded thought leadership graphic. Navy gold feminine.
+caption: May is here. And I want to challenge every woman founder reading this to ask herself one honest question: Does my business have the financial infrastructure to handle the growth I am praying for? Because here is the truth — most businesses are not ready for the opportunities they are asking God to send. The clients come and the systems collapse. The revenue grows and the cash flow disappears. Growth without infrastructure is just expensive chaos. This month — build the foundation first. — Kelli Lewis | KelliWorks | Global Business Woman
+visual: Premium Kelli editorial photo or branded thought leadership graphic. Happy May energy but authoritative — not celebratory. Navy gold feminine.
 drive:
 
 ---
 
 ## PLATFORM: web
 
-### MONDAY · APRIL 27
+### MONDAY · APRIL 27 — BLOG POST
 date: 2025-04-27
 time: EOD
-type: Blog Post
+type: Lovable Website
 priority:
 caption: Suggested title: "5 Signs Your Business Needs a Better Accounting System (And What to Do About It)" — accounting focused, ties to KelliWorks services, CTA to book a discovery call. Charity to draft and submit to Kelli for approval before publishing.
 visual: Blog header image — professional KelliWorks branded. Kelli photo or brand graphic.
 drive:
 
-### THIS WEEK
+### THIS WEEK — GOOGLE MY BUSINESS
 date: 2025-05-01
 time: By Fri May 1
 type: GMB Update
@@ -332,11 +332,11 @@ caption: Post update: "Welcome to May — KelliWorks is your full-service accoun
 visual: Fresh KelliWorks brand photo or professional team photo for GMB.
 drive:
 
-### THIS WEEK
+### THIS WEEK — YELP
 date: 2025-05-01
 time: By Fri May 1
 type: Yelp Update
 priority:
-caption: Refresh Yelp listing — ensure services are current, photos are fresh. Tax season has ended — shift messaging to year-round accounting and business management services.
+caption: Refresh Yelp listing — ensure services are current, photos are fresh. Tax season has ended — shift messaging to year-round accounting and business management services. Update any seasonal content.
 visual: Fresh Yelp photo — professional KelliWorks branded image.
 drive:
