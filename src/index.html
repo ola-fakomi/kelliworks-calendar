@@ -4,201 +4,585 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KelliWorks Content Calendar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f5f5f5; color: #222; font-size: 13px; }
 
-    /* ── Header ── */
-    header { background: #1a1a2e; color: #fff; padding: 16px 20px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .header-text h1 { font-size: 15px; letter-spacing: 1px; }
-    .header-text p  { font-size: 11px; color: #bbb; margin-top: 3px; }
-    .header-back {
-      margin-left: auto; background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2); color: #fff;
-      padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 11px;
+    :root {
+      --navy:        #1a1a2e;
+      --gold:        #c9a84c;
+      --gold-light:  #f0dfa0;
+      --gold-pale:   #fdf9ee;
+      --cream:       #faf8f2;
+      --cream-dark:  #f0ece0;
+      --white:       #ffffff;
+      --text:        #1a1a2e;
+      --text-mid:    #3d3d5c;
+      --text-muted:  #7a7a96;
+      --text-light:  #b0b0c4;
+      --border:      #e6e0d4;
+      --border-mid:  #d4cec2;
+      --shadow-xs:   0 1px 2px rgba(26,26,46,0.05);
+      --shadow-sm:   0 1px 4px rgba(26,26,46,0.07), 0 1px 2px rgba(26,26,46,0.04);
+      --shadow:      0 2px 10px rgba(26,26,46,0.08), 0 1px 4px rgba(26,26,46,0.04);
+      --shadow-md:   0 4px 20px rgba(26,26,46,0.10), 0 2px 6px rgba(26,26,46,0.05);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .header-back:hover { background: rgba(255,255,255,0.22); }
 
-    /* ══════════════════════════════
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ══════════════════════════════════════════
        LANDING PAGE
-    ══════════════════════════════ */
-    #screen-landing { min-height: 100vh; display: flex; flex-direction: column; }
-    .landing-body {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 60px 24px; gap: 36px;
+    ══════════════════════════════════════════ */
+
+    #screen-landing {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--cream);
     }
-    .landing-intro { text-align: center; }
-    .landing-intro h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 8px; }
-    .landing-intro p  { font-size: 13px; color: #888; }
-    .landing-cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+    .landing-header {
+      background: var(--navy);
+      height: 58px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .header-monogram {
+      width: 32px;
+      height: 32px;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+
+    .masthead-name {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 17px;
+      letter-spacing: 3px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .landing-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 72px 24px 80px;
+    }
+
+    .landing-wordmark {
+      text-align: center;
+      margin-bottom: 32px;
+      animation: fadeUp 0.7s var(--ease-out) both;
+    }
+
+    .landing-wordmark h1 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(42px, 8vw, 68px);
+      letter-spacing: 6px;
+      color: var(--navy);
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .wm-sub {
+      font-size: 10.5px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    .landing-divider {
+      width: 52px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 40px;
+      animation: fadeIn 0.7s 0.2s var(--ease-out) both;
+    }
+
+    .landing-prompt {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeUp 0.7s 0.15s var(--ease-out) both;
+    }
+
+    .landing-prompt h2 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 24px;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .landing-prompt p {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.4px;
+    }
+
+    .landing-cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.7s 0.25s var(--ease-out) both;
+    }
 
     .role-card {
-      border-radius: 12px; padding: 36px 32px; width: 220px;
-      text-align: center; border: 2px solid #e8e8e8; background: #fff;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px 36px 36px;
+      width: 230px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.2s;
     }
-    .role-card .icon { font-size: 32px; margin-bottom: 12px; }
-    .role-card h3 { font-size: 14px; color: #1a1a2e; margin-bottom: 6px; }
-    .role-card p  { font-size: 11px; color: #888; line-height: 1.5; }
 
-    /* Active card */
-    .role-card.active-card { border-color: #c9a84c; cursor: pointer; transition: box-shadow 0.2s; }
-    .role-card.active-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .role-card .icon { font-size: 34px; margin-bottom: 16px; display: block; line-height: 1; }
 
-    /* Disabled card */
-    .role-card.disabled-card {
-      opacity: 0.45; cursor: not-allowed;
-      position: relative;
+    .role-card h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 10px;
     }
+
+    .role-card p { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
+
+    .role-card.active-card { cursor: pointer; }
+    .role-card.active-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md), 0 0 0 3px var(--gold-light);
+      border-color: var(--gold);
+    }
+
+    .role-card.disabled-card { opacity: 0.38; cursor: not-allowed; }
+
     .disabled-badge {
       display: inline-block; margin-top: 12px;
-      background: #f0f0f0; color: #999; font-size: 10px;
-      padding: 3px 10px; border-radius: 20px; font-weight: bold; letter-spacing: 0.3px;
+      background: var(--cream-dark); color: var(--text-light);
+      font-size: 9px; padding: 3px 10px; border-radius: 20px;
+      font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
     }
 
-    /* ══════════════════════════════
-       APPROVE MODE
-    ══════════════════════════════ */
+    .landing-footer {
+      margin-top: 60px;
+      font-size: 11px;
+      color: var(--text-light);
+      letter-spacing: 0.4px;
+      text-align: center;
+      animation: fadeIn 0.6s 0.4s var(--ease-out) both;
+    }
+
+    /* ══════════════════════════════════════════
+       APPROVE SCREEN HEADER
+    ══════════════════════════════════════════ */
+
+    #screen-approve > header {
+      background: var(--navy);
+      height: 56px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(201,168,76,0.18);
+    }
+
+    #screen-approve > header .header-monogram { width: 30px; height: 30px; font-size: 13px; }
+
+    .header-text h1 {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .header-text p { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+
+    .header-back {
+      margin-left: auto;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.13);
+      color: rgba(255,255,255,0.65);
+      padding: 6px 15px; border-radius: 7px; cursor: pointer;
+      font-size: 11px; font-family: var(--font-body); font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .header-back:hover { background: rgba(255,255,255,0.13); color: #fff; }
+
+    /* ══════════════════════════════════════════
+       PLATFORM NAV — underline tab style
+    ══════════════════════════════════════════ */
+
     .platform-nav {
-      display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 20px;
-      background: #fff; border-bottom: 2px solid #c9a84c;
-      position: sticky; top: 0; z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      scrollbar-width: none;
     }
-    .platform-nav button {
-      padding: 6px 12px; border: 1px solid #ccc; border-radius: 16px;
-      background: #fff; cursor: pointer; font-size: 11px; font-weight: bold;
-    }
-    .platform-nav button.active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+    .platform-nav::-webkit-scrollbar { display: none; }
 
-    .platform { display: none; padding: 16px 20px; }
+    .platform-nav button {
+      padding: 0 16px;
+      height: 44px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: none;
+      cursor: pointer;
+      font-size: 11.5px;
+      font-weight: 500;
+      font-family: var(--font-body);
+      color: var(--text-muted);
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      margin-bottom: -1px;
+    }
+    .platform-nav button:hover { color: var(--navy); background: var(--cream); }
+    .platform-nav button.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 600; }
+
+    /* ══════════════════════════════════════════
+       PLATFORM SECTIONS
+    ══════════════════════════════════════════ */
+
+    .platform { display: none; padding: 28px 24px; max-width: 860px; margin: 0 auto; }
     .platform.active { display: block; }
 
-    .platform-header { background: #1a1a2e; color: #fff; padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; }
-    .platform-header h2 { font-size: 13px; letter-spacing: 0.5px; }
-    .platform-header p  { font-size: 10px; color: #c9a84c; margin-top: 3px; }
+    .platform-header { margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
 
-    .day-block { margin-bottom: 20px; }
-    .day-label { background: #c9a84c; color: #1a1a2e; padding: 6px 12px; font-size: 11px; font-weight: bold; border-radius: 4px 4px 0 0; }
-
-    .post-card { background: #fff; border: 1px solid #e8e8e8; border-top: none; padding: 14px; margin-bottom: 2px; }
-    .post-card:last-child { border-radius: 0 0 6px 6px; }
-
-    .post-meta { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; }
-    .badge-time  { background: #f0f0f0; color: #666; }
-    .badge-type  { background: #e8f4fd; color: #1a6fa8; }
-    .badge-high  { background: #fdecea; color: #c0392b; }
-    .badge-trend { background: #e8f8e8; color: #27ae60; }
-
-    .post-caption {
-      font-size: 12px; line-height: 1.7; color: #333; margin-bottom: 10px;
-      padding: 10px; background: #fafafa; border-left: 3px solid #c9a84c; border-radius: 0 4px 4px 0;
+    .platform-header h2 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 5px;
     }
-    .visual-box {
-      background: #fff8e1; border: 1px dashed #c9a84c; border-radius: 4px;
-      margin-bottom: 10px; overflow: hidden;
-    }
-    .visual-desc {
-      font-size: 11px; color: #856404; padding: 8px 10px 4px; line-height: 1.5;
-    }
-    .visual-box .drive-link { display: block; padding: 0 10px 8px; font-size: 11px; }
-    .visual-box .drive-link a { color: #1a6fa8; font-weight: bold; }
-    .visual-box .media-placeholder { border: none; border-radius: 0; }
-    .visual-box .media-carousel { margin-bottom: 0; }
-    .visual-box .carousel-controls { padding: 4px 8px; }
 
-    .approve-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .approve-row label { font-size: 11px; color: #888; white-space: nowrap; }
-    .approve-row select {
-      font-size: 11px; padding: 5px 8px; border: 1px solid #ddd;
-      border-radius: 6px; background: #fff; cursor: pointer;
-    }
-    .approve-row select.approved   { border-color: #27ae60; color: #27ae60; background: #eafaf1; }
-    .approve-row select.edits      { border-color: #c9a84c; color: #856404; background: #fff8e1; }
-    .approve-row select.no         { border-color: #e74c3c; color: #922;    background: #fdecea; }
-
-    .notes-input {
-      flex: 1; min-width: 150px; padding: 5px 8px;
-      border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-family: Arial;
-      transition: border-color 0.3s;
-    }
-    .notes-input.sent { border-color: #27ae60; }
-    .send-btn {
-      background: #1a1a2e; color: #fff; border: none;
-      border-radius: 6px; padding: 5px 11px;
-      font-size: 11px; cursor: pointer; white-space: nowrap; font-family: Arial;
-    }
-    .send-btn:hover { background: #c9a84c; color: #1a1a2e; }
-
+    .platform-header p { font-size: 11px; color: var(--text-muted); line-height: 1.7; }
 
     .note-alert {
-      background: #fdecea; border-left: 3px solid #e74c3c;
-      padding: 8px 12px; font-size: 11px; color: #7b1a1a;
-      margin-bottom: 16px; border-radius: 0 4px 4px 0;
+      background: #fff4f4; border-left: 3px solid #e74c3c;
+      padding: 10px 15px; font-size: 11px; color: #7b1a1a;
+      margin-bottom: 22px; border-radius: 0 7px 7px 0; line-height: 1.6;
     }
     .note-info {
-      background: #e8f4fd; border-left: 3px solid #1a6fa8;
-      padding: 8px 12px; font-size: 11px; color: #1a3a5c;
-      margin-bottom: 16px; border-radius: 0 4px 4px 0;
+      background: #f0f7ff; border-left: 3px solid #1a6fa8;
+      padding: 10px 15px; font-size: 11px; color: #1a3a5c;
+      margin-bottom: 22px; border-radius: 0 7px 7px 0; line-height: 1.6;
     }
-    .empty-state { text-align: center; padding: 60px 20px; color: #aaa; }
 
-    /* ── Media Carousel ── */
-    .media-carousel { margin-bottom: 10px; }
+    /* ══════════════════════════════════════════
+       DAY BLOCKS
+    ══════════════════════════════════════════ */
+
+    .day-block { margin-bottom: 32px; }
+
+    .day-label {
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--navy);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      border-bottom: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .day-label::before {
+      content: '';
+      display: inline-block;
+      width: 5px; height: 5px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-bottom: 1px;
+    }
+
+    /* ══════════════════════════════════════════
+       POST CARDS — two-column layout
+    ══════════════════════════════════════════ */
+
+    .post-card {
+      display: flex;
+      gap: 18px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s;
+    }
+    .post-card:hover { box-shadow: var(--shadow); }
+
+    /* Status left border */
+    .post-card:has(select.approved)       { border-left: 3px solid #27ae60; }
+    .post-card:has(select.edits)          { border-left: 3px solid var(--gold); }
+    .post-card:has(select.no)             { border-left: 3px solid #e74c3c; }
+    .post-card[data-status="approved"]    { border-left: 3px solid #27ae60; }
+    .post-card[data-status="needs_edits"] { border-left: 3px solid var(--gold); }
+    .post-card[data-status="do_not_post"] { border-left: 3px solid #e74c3c; }
+
+    /* ── Left column: media ── */
+    .post-card-media {
+      width: 300px;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--cream-dark);
+      align-self: flex-start;
+      position: relative;
+    }
+
+    /* Carousel fills media column */
+    .post-card-media .media-carousel {
+      width: 100%; height: 100%;
+    }
+    .post-card-media .carousel-track-wrap { width: 100%; height: 100%; overflow: hidden; }
+    .post-card-media .carousel-track { display: flex; width: 100%; height: 100%; transition: transform 0.25s ease; }
+    .post-card-media .carousel-slide { min-width: 100%; height: 100%; }
+    .post-card-media .carousel-slide img,
+    .post-card-media .carousel-slide video {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 0; display: block;
+    }
+    .post-card-media .carousel-slide {
+      position: relative; cursor: zoom-in;
+    }
+    .post-card-media .carousel-slide::after {
+      content: 'View';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.35);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      pointer-events: none;
+    }
+    .post-card-media .carousel-slide:hover::after { opacity: 1; }
+    .post-card-media .carousel-controls {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 5px 8px; background: rgba(255,255,255,0.85);
+      border-top: 1px solid var(--border);
+    }
+    .post-card-media .media-placeholder {
+      width: 100%; height: 100%; border-radius: 0; border: none;
+      background: var(--cream-dark);
+    }
+
+    /* ── Right column: content ── */
+    .post-card-content {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; gap: 12px;
+      justify-content: center;
+    }
+
+    /* Badges */
+    .post-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 11px; border-radius: 20px;
+      font-size: 10.5px; font-weight: 600; letter-spacing: 0.3px;
+    }
+    .badge-time  { background: var(--cream-dark); color: var(--text-mid); border: 1px solid var(--border); }
+    .badge-type  { background: #e7f1fc; color: #1a5a90; }
+    .badge-high  { background: #fdecea; color: #b83232; }
+    .badge-trend { background: #eafaf1; color: #1e7e45; }
+
+    /* Caption */
+    .post-caption {
+      font-size: 13px; line-height: 1.75; color: var(--text-mid);
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.75);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      flex: 1;
+    }
+
+    /* Design guide box */
+    .visual-box {
+      background: #fdf8ec;
+      border: 1px solid #e8d89e;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 11.5px;
+      color: #7a6528;
+      line-height: 1.6;
+    }
+    .visual-guide-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--gold);
+      margin-right: 6px;
+    }
+    .visual-box .drive-link { margin-top: 6px; font-size: 11px; }
+    .visual-box .drive-link a { color: #1a5a90; font-weight: 600; text-decoration: none; }
+    .visual-box .drive-link a:hover { text-decoration: underline; }
+
+    /* Approve row */
+    .approve-row {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .approve-row label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--text-muted); white-space: nowrap;
+    }
+    .approve-row select {
+      font-size: 12px; font-family: var(--font-body); font-weight: 500;
+      padding: 7px 12px; border: 1px solid var(--border); border-radius: 8px;
+      background: var(--white); cursor: pointer; color: var(--text);
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .approve-row select:focus { outline: none; box-shadow: 0 0 0 2px rgba(201,168,76,0.25); }
+    .approve-row select.approved   { border-color: #27ae60; color: #1a7a42; background: #edfaf3; }
+    .approve-row select.edits      { border-color: var(--gold); color: #786225; background: var(--gold-pale); }
+    .approve-row select.no         { border-color: #e74c3c; color: #921c1c; background: #fdecea; }
+
+    .notes-input {
+      flex: 1; min-width: 140px; padding: 7px 12px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 12px; font-family: var(--font-body);
+      background: var(--white); color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .notes-input:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 2px rgba(26,26,46,0.07); }
+    .notes-input.sent { border-color: #27ae60; }
+
+    .send-btn {
+      background: var(--navy); color: #fff; border: none;
+      border-radius: 8px; padding: 7px 18px;
+      font-size: 12px; font-weight: 600; font-family: var(--font-body);
+      cursor: pointer; white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .send-btn:hover { background: var(--gold); color: var(--navy); }
+
+    /* ── Standalone carousel (outside card-media) ── */
+    .media-carousel { margin-bottom: 0; }
     .carousel-track-wrap { overflow: hidden; border-radius: 4px; }
     .carousel-track { display: flex; transition: transform 0.25s ease; }
     .carousel-slide { min-width: 100%; }
     .media-placeholder {
-      background: #f0f0f0; border: 1px dashed #ccc; border-radius: 4px;
-      height: 140px; display: flex; flex-direction: column;
+      background: var(--cream-dark); height: 160px;
+      display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      color: #aaa; font-size: 11px; gap: 6px;
+      color: var(--text-light); font-size: 11px; gap: 7px; border-radius: 4px;
     }
     .media-placeholder .ph-icon { font-size: 28px; }
-    .media-placeholder .ph-name { font-size: 9px; color: #bbb; }
+    .media-placeholder .ph-name { font-size: 9px; color: var(--text-light); margin-top: 2px; }
     .carousel-controls {
       display: flex; align-items: center;
-      justify-content: space-between; margin-top: 5px;
+      justify-content: space-between; padding: 6px 10px;
     }
     .carousel-btn {
-      background: none; border: 1px solid #ddd; border-radius: 4px;
-      padding: 2px 8px; cursor: pointer; font-size: 12px; color: #666;
+      background: none; border: 1px solid var(--border); border-radius: 5px;
+      padding: 3px 10px; cursor: pointer; font-size: 12px;
+      color: var(--text-muted); font-family: inherit; transition: border-color 0.15s, color 0.15s;
     }
-    .carousel-btn:disabled { opacity: 0.3; cursor: default; }
-    .carousel-counter { font-size: 10px; color: #999; }
+    .carousel-btn:not(:disabled):hover { border-color: var(--navy); color: var(--navy); }
+    .carousel-btn:disabled { opacity: 0.28; cursor: default; }
+    .carousel-counter { font-size: 10px; color: var(--text-muted); font-weight: 500; }
 
     /* ── Lightbox ── */
     #lightbox {
       display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.92); z-index: 9999;
+      background: rgba(10,10,20,0.93); z-index: 9999;
       align-items: center; justify-content: center;
+      backdrop-filter: blur(6px);
     }
     #lightbox.open { display: flex; }
-    #lightbox-media { max-width: 92vw; max-height: 88vh; border-radius: 6px; }
+    #lightbox-media { max-width: 92vw; max-height: 88vh; border-radius: 8px; }
     #lightbox-close {
-      position: absolute; top: 16px; right: 20px;
-      background: none; border: none; color: #fff;
-      font-size: 28px; cursor: pointer; line-height: 1;
+      position: absolute; top: 18px; right: 22px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50%; color: #fff;
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; line-height: 1; transition: background 0.15s;
     }
+    #lightbox-close:hover { background: rgba(255,255,255,0.2); }
 
-    /* Save indicator */
+    /* ── Save indicator ── */
     #save-indicator {
-      position: fixed; bottom: 16px; right: 16px;
-      background: #1a1a2e; color: #fff; font-size: 11px;
-      padding: 8px 14px; border-radius: 20px;
+      position: fixed; bottom: 22px; right: 22px;
+      background: var(--navy); color: #fff;
+      font-size: 11.5px; font-weight: 500;
+      padding: 10px 18px 10px 14px; border-radius: 9px;
       opacity: 0; transition: opacity 0.3s; pointer-events: none;
-      z-index: 999;
+      z-index: 999; box-shadow: var(--shadow-md);
+      display: flex; align-items: center; gap: 7px;
     }
+    #save-indicator::before { content: '✓'; color: var(--gold); font-size: 13px; font-weight: 700; }
     #save-indicator.show { opacity: 1; }
 
-    /* ── Responsive ── */
-    @media (max-width: 500px) {
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); font-size: 13px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @media (max-width: 580px) {
+      .landing-wordmark h1 { letter-spacing: 3px; }
       .landing-cards { flex-direction: column; align-items: center; }
-      .role-card { width: 100%; max-width: 300px; }
+      .role-card { width: 100%; max-width: 320px; }
       .approve-row { flex-direction: column; align-items: flex-start; }
       .notes-input { width: 100%; }
-      .platform-nav { gap: 4px; padding: 8px 12px; }
-      .platform-nav button { padding: 5px 9px; font-size: 10px; }
+      .platform-nav button { padding: 0 11px; font-size: 10.5px; }
+      .platform { padding: 18px 14px; }
     }
   </style>
 </head>
@@ -208,27 +592,28 @@
      SCREEN 1: LANDING
 ═══════════════════════════════════════════ -->
 <div id="screen-landing">
-  <header>
-    <div class="header-text">
-      <h1>KELLIWORKS CONTENT CALENDAR</h1>
-      <p>Prepared by Charity Moses &middot; Review &amp; Approval by Kelli Lewis</p>
-    </div>
+  <header class="landing-header">
+    <div class="header-monogram">KW</div>
+    <span class="masthead-name">KelliWorks</span>
   </header>
   <div class="landing-body">
-    <div class="landing-intro">
+    <div class="landing-wordmark">
+      <h1>KelliWorks</h1>
+      <p class="wm-sub">Content Calendar</p>
+    </div>
+    <div class="landing-divider"></div>
+    <div class="landing-prompt">
       <h2>What would you like to do?</h2>
       <p>Select your role to continue</p>
     </div>
     <div class="landing-cards">
 
-      <!-- Charity: Upload Content -->
       <div class="role-card active-card" onclick="enterCharityMode()">
         <div class="icon">&#128197;</div>
         <h3>Upload Content</h3>
         <p>Manage and view this week&apos;s content and approval status</p>
       </div>
 
-      <!-- Kelli: Review Content -->
       <div class="role-card active-card" onclick="enterApproveMode()">
         <div class="icon">&#9989;</div>
         <h3>Review Content</h3>
@@ -236,6 +621,7 @@
       </div>
 
     </div>
+    <p class="landing-footer">Prepared by Charity Moses &middot; Review &amp; Approval by Kelli Lewis</p>
   </div>
 </div>
 
@@ -244,13 +630,13 @@
 ═══════════════════════════════════════════ -->
 <div id="screen-approve" style="display:none">
   <header>
+    <div class="header-monogram">KW</div>
     <div class="header-text">
       <h1 id="screen-title">APPROVE CONTENT</h1>
       <p id="approve-week-label">Loading&hellip;</p>
     </div>
     <button class="header-back" onclick="exitMode()">&#8592; Home</button>
   </header>
-
 
   <nav class="platform-nav">
     <button class="active" onclick="showPlatform('kw',this)">KelliWorks IG+FB</button>
@@ -278,7 +664,7 @@
 <div id="lightbox" onclick="lightboxClose()">
   <button id="lightbox-close" onclick="lightboxClose()">&times;</button>
   <img id="lightbox-media" src="" alt="preview" style="display:none;" />
-  <video id="lightbox-video" controls style="display:none; max-width:92vw; max-height:88vh; border-radius:6px;"></video>
+  <video id="lightbox-video" controls style="display:none; max-width:92vw; max-height:88vh; border-radius:8px;"></video>
 </div>
 
 <script type="module">
@@ -295,10 +681,6 @@ const _fbApp = initializeApp({
 });
 const db = getFirestore(_fbApp);
 
-// ═══════════════════════════════════════════
-//  CONSTANTS
-// ═══════════════════════════════════════════
-
 const PLATFORMS = ['kw','kwa','kwt','ea','kl','gw','web'];
 
 const PLATFORM_META = {
@@ -313,25 +695,20 @@ const PLATFORM_META = {
 
 const LS_PREFIX = 'kw-approval-';
 const approvalCache = {};
-let currentRole = 'kelli'; // 'kelli' | 'charity'
+let currentRole = 'kelli';
 
-// Media manifest — key: 'platform|date|time' or 'platform|date|content_type'
-// path: relative to src/ (served as-is). type: 'image' | 'video'
 const CDN = 'https://res.cloudinary.com/dx51n94k1';
 const W   = 'Apr%2027%20-%20May%201';
 
 const MEDIA_MANIFEST = {
-  // KelliWorks IG+FB
   'kw|2025-04-28|8:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/28th.png`,          type: 'image' }],
   'kw|2025-04-29|8:00 AM':   [{ path: `${CDN}/video/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/29th.mp4`,          type: 'video' }],
   'kw|2025-04-30|8:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/3oth.png`,          type: 'image' }],
   'kw|2025-05-01|8:00 AM':   [{ path: `${CDN}/video/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/1st.mp4`,           type: 'video' }],
-  // KW Accounting
   'kwa|2025-04-28|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/28.png`,                 type: 'image' }],
   'kwa|2025-04-29|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/29%20-%20Carousel.png`,  type: 'image' }],
   'kwa|2025-04-30|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/30th.png`,               type: 'image' }],
   'kwa|2025-05-01|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/1st.png`,                type: 'image' }],
-  // KW Taxes (2 posts/day)
   'kwt|2025-04-28|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/28.png`,                      type: 'image' }],
   'kwt|2025-04-28|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/28%20-%202.png`,              type: 'image' }],
   'kwt|2025-04-29|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/29.png`,                      type: 'image' }],
@@ -340,14 +717,11 @@ const MEDIA_MANIFEST = {
   'kwt|2025-04-30|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/30%20-%201.png`,              type: 'image' }],
   'kwt|2025-05-01|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/1st.png`,                     type: 'image' }],
   'kwt|2025-05-01|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/1st%20-%202.png`,             type: 'image' }],
-  // Kelli LinkedIn
   'kl|2025-04-28|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/28th.png`,              type: 'image' }],
   'kl|2025-04-29|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/29th.png`,              type: 'image' }],
   'kl|2025-04-30|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/30th.png`,              type: 'image' }],
   'kl|2025-05-01|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/1st%20May.jpg`,         type: 'image' }],
-  // Global Woman
   'gw|2025-04-28|11:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/Global%20Woman/${W}/28.jpg`,                  type: 'image' }],
-  // Website — keyed by content_type (GMB + Yelp share same date + time)
   'web|2025-05-01|GMB Update':  [{ path: `${CDN}/image/upload/kw-calendar/GMB/${W}/thisweek.png`,                    type: 'image' }],
   'web|2025-05-01|Yelp Update': [{ path: `${CDN}/image/upload/kw-calendar/Yelp/${W}/This%20week.png`,                type: 'image' }],
 };
@@ -356,10 +730,6 @@ function mediaUrl(rawPath) {
   if (rawPath.startsWith('https://') || rawPath.startsWith('http://')) return rawPath;
   return rawPath.split('/').map(encodeURIComponent).join('/');
 }
-
-// ═══════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════
 
 function enterApproveMode() {
   currentRole = 'kelli';
@@ -389,10 +759,6 @@ function showPlatform(id, btn) {
   btn.classList.add('active');
 }
 
-// ═══════════════════════════════════════════
-//  LOAD & PARSE WEEK.MD
-// ═══════════════════════════════════════════
-
 async function loadWeek() {
   try {
     const res = await fetch('data/week.md');
@@ -406,7 +772,7 @@ async function loadWeek() {
     PLATFORMS.forEach(p => {
       document.getElementById('platform-' + p).innerHTML =
         `<div class="platform-header"><h2>${PLATFORM_META[p].name}</h2><p>${PLATFORM_META[p].sub}</p></div>
-         <div class="empty-state">week.md could not be loaded. Check the console for details.</div>`;
+         <div class="empty-state">week.md could not be loaded.</div>`;
     });
     console.error('loadWeek error:', e);
   }
@@ -424,7 +790,6 @@ function parseMd(text) {
     const raw  = lines[i];
     const line = raw.trim();
 
-    // Platform: "## PLATFORM: kw"
     if (line.startsWith('## PLATFORM:')) {
       if (post) { posts.push(post); post = null; }
       platform  = line.replace('## PLATFORM:', '').trim().toLowerCase();
@@ -432,7 +797,6 @@ function parseMd(text) {
       continue;
     }
 
-    // Platform-level notes (appear before the first ### heading)
     if (!post && platform && (line.startsWith('note-info:') || line.startsWith('note-alert:'))) {
       const ci  = line.indexOf(':');
       const key = line.slice(0, ci).trim().toLowerCase();
@@ -441,33 +805,22 @@ function parseMd(text) {
       continue;
     }
 
-    // Day heading: "### MONDAY · APRIL 27" or "### THIS WEEK — GMB"
     if (line.startsWith('### ')) {
       if (post) { posts.push(post); post = null; }
       postIndex++;
       const dayLabel = line.replace(/^###\s+/, '').trim();
-      // Derive order from the day name in the heading (Mon=1 … Sun=7)
       const DAY_ORDER = { MONDAY:1, TUESDAY:2, WEDNESDAY:3, THURSDAY:4, FRIDAY:5, SATURDAY:6, SUNDAY:7 };
       const firstWord = dayLabel.split(/[\s\u00B7·]/)[0].toUpperCase();
       post = {
-        id:           `${platform}-${postIndex}`,
-        platform,
-        day_label:    dayLabel,
-        day_order:    DAY_ORDER[firstWord] || 99,
-        date:         '',
-        post_time:    '',
-        content_type: '',
-        priority:     '',
-        caption:      '',
-        visual_text:  '',
-        image_url:    '',
+        id: `${platform}-${postIndex}`, platform,
+        day_label: dayLabel, day_order: DAY_ORDER[firstWord] || 99,
+        date: '', post_time: '', content_type: '', priority: '', caption: '', visual_text: '', image_url: '',
       };
       continue;
     }
 
     if (!post) continue;
 
-    // Field lines: "key: value"
     const colonIdx = line.indexOf(':');
     if (colonIdx === -1) continue;
     const key = line.slice(0, colonIdx).trim().toLowerCase();
@@ -487,8 +840,7 @@ function parseMd(text) {
         const next = lines[i + 1].trim();
         if (!next || next.startsWith('## ') || next.startsWith('### ') || next === '---') break;
         if (/^[a-z][a-z_]*:/.test(next)) break;
-        caption += ' ' + next;
-        i++;
+        caption += ' ' + next; i++;
       }
       post.caption = caption;
     }
@@ -498,8 +850,7 @@ function parseMd(text) {
         const next = lines[i + 1].trim();
         if (!next || next.startsWith('## ') || next.startsWith('### ') || next === '---') break;
         if (/^[a-z][a-z_]*:/.test(next)) break;
-        visual += ' ' + next;
-        i++;
+        visual += ' ' + next; i++;
       }
       post.visual_text = visual;
     }
@@ -507,7 +858,6 @@ function parseMd(text) {
 
   if (post) posts.push(post);
 
-  // Infer week label from min/max dates across all posts
   const dates = posts.map(p => p.date).filter(Boolean).sort();
   let label = '';
   if (dates.length) {
@@ -517,13 +867,8 @@ function parseMd(text) {
       ? `${fmt(dates[0])}, ${year}`
       : `${fmt(dates[0])} \u2013 ${fmt(dates[dates.length - 1])}, ${year}`;
   }
-
   return { label, posts, platformNotes };
 }
-
-// ═══════════════════════════════════════════
-//  MEDIA CAROUSEL
-// ═══════════════════════════════════════════
 
 const carouselState = {};
 
@@ -538,21 +883,18 @@ function buildCarousel(post, isReel) {
   if (!media.length) {
     const icon  = isReel ? '🎬' : '📷';
     const label = isReel ? 'Reel — no media uploaded yet' : 'Image — no media uploaded yet';
-    return `<div class="media-placeholder">
-      <span class="ph-icon">${icon}</span>
-      <span>${label}</span>
-    </div>`;
+    return `<div class="media-placeholder"><span class="ph-icon">${icon}</span><span>${label}</span></div>`;
   }
 
-  const cid    = 'c-' + post.id.replace(/[^a-z0-9]/gi, '-');
-  const total  = media.length;
+  const cid   = 'c-' + post.id.replace(/[^a-z0-9]/gi, '-');
+  const total = media.length;
 
   const slides = media.map(m => {
     const url = mediaUrl(m.path);
     const media_el = m.type === 'video'
-      ? `<video src="${url}" style="width:100%;height:160px;object-fit:contain;background:#000;border-radius:4px;display:block;cursor:pointer;"
+      ? `<video src="${url}" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;"
            onclick="lightboxOpen('${url}','video')"></video>`
-      : `<img src="${url}" alt="media" style="width:100%;height:160px;object-fit:contain;background:#f0f0f0;border-radius:4px;display:block;cursor:pointer;"
+      : `<img src="${url}" alt="media" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;"
            onclick="lightboxOpen('${url}','image')"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
          <div class="media-placeholder" style="display:none;">
@@ -562,15 +904,16 @@ function buildCarousel(post, isReel) {
     return `<div class="carousel-slide">${media_el}</div>`;
   }).join('');
 
-  const counter = `<span class="carousel-counter" id="${cid}-counter">1 / ${total}</span>`;
-  const prevBtn = `<button class="carousel-btn" id="${cid}-prev" onclick="carouselPrev('${cid}',${total})" disabled>&#8592;</button>`;
-  const nextBtn = `<button class="carousel-btn" id="${cid}-next" onclick="carouselNext('${cid}',${total})" ${total <= 1 ? 'disabled' : ''}>&#8594;</button>`;
+  const controls = total > 1 ? (() => {
+    const counter = `<span class="carousel-counter" id="${cid}-counter">1 / ${total}</span>`;
+    const prevBtn = `<button class="carousel-btn" id="${cid}-prev" onclick="carouselPrev('${cid}',${total})" disabled>&#8592;</button>`;
+    const nextBtn = `<button class="carousel-btn" id="${cid}-next" onclick="carouselNext('${cid}',${total})">&#8594;</button>`;
+    return `<div class="carousel-controls">${prevBtn}${counter}${nextBtn}</div>`;
+  })() : '';
 
   return `<div class="media-carousel" id="${cid}">
-    <div class="carousel-track-wrap">
-      <div class="carousel-track" id="${cid}-track">${slides}</div>
-    </div>
-    <div class="carousel-controls">${prevBtn}${counter}${nextBtn}</div>
+    <div class="carousel-track-wrap"><div class="carousel-track" id="${cid}-track">${slides}</div></div>
+    ${controls}
   </div>`;
 }
 
@@ -586,27 +929,16 @@ function carouselGo(cid, total, idx) {
   if (next) next.disabled = idx === total - 1;
 }
 
-function carouselPrev(cid, total) {
-  carouselGo(cid, total, Math.max(0, (carouselState[cid] || 0) - 1));
-}
-
-function carouselNext(cid, total) {
-  carouselGo(cid, total, Math.min(total - 1, (carouselState[cid] || 0) + 1));
-}
-
-// ═══════════════════════════════════════════
-//  RENDER
-// ═══════════════════════════════════════════
+function carouselPrev(cid, total) { carouselGo(cid, total, Math.max(0, (carouselState[cid] || 0) - 1)); }
+function carouselNext(cid, total) { carouselGo(cid, total, Math.min(total - 1, (carouselState[cid] || 0) + 1)); }
 
 function renderPosts(posts, platformNotes = {}) {
-  // Group: platform -> dayOrder -> { label, posts[] }
   const grouped = {};
   PLATFORMS.forEach(p => { grouped[p] = {}; });
-
   posts.forEach(post => {
     const p = post.platform;
     if (!grouped[p]) return;
-    const key = post.day_order + '-' + post.day_label; // unique key per day label
+    const key = post.day_order + '-' + post.day_label;
     if (!grouped[p][key]) grouped[p][key] = { label: post.day_label, order: post.day_order, posts: [] };
     grouped[p][key].posts.push(post);
   });
@@ -616,18 +948,10 @@ function renderPosts(posts, platformNotes = {}) {
     const days = grouped[platform];
     const meta = PLATFORM_META[platform];
 
-    const header = `
-      <div class="platform-header">
-        <h2>${meta.name}</h2>
-        <p>${meta.sub}</p>
-      </div>`;
-
-    const pNote = platformNotes[platform];
-    const noteHtml = pNote
-      ? `<div class="note-${pNote.type}">${esc(pNote.text)}</div>`
-      : '';
-
-    const dayKeys = Object.keys(days).sort((a, b) => days[a].order - days[b].order);
+    const header = `<div class="platform-header"><h2>${meta.name}</h2><p>${meta.sub}</p></div>`;
+    const pNote  = platformNotes[platform];
+    const noteHtml = pNote ? `<div class="note-${pNote.type}">${esc(pNote.text)}</div>` : '';
+    const dayKeys  = Object.keys(days).sort((a, b) => days[a].order - days[b].order);
 
     if (!dayKeys.length) {
       el.innerHTML = header + noteHtml + '<div class="empty-state">No posts for this platform this week.</div>';
@@ -636,19 +960,18 @@ function renderPosts(posts, platformNotes = {}) {
 
     el.innerHTML = header + noteHtml + dayKeys.map(key => {
       const day = days[key];
-      return `
-        <div class="day-block">
-          <div class="day-label">${esc(day.label)}</div>
-          ${day.posts.map(p => buildCard(p)).join('')}
-        </div>`;
+      return `<div class="day-block">
+        <div class="day-label">${esc(day.label)}</div>
+        ${day.posts.map(p => buildCard(p)).join('')}
+      </div>`;
     }).join('');
   });
 }
 
 function buildCard(post) {
-  const saved   = loadApproval(post.id);
-  const status  = saved.status  || 'pending';
-  const note    = saved.note    || '';
+  const saved    = loadApproval(post.id);
+  const status   = saved.status || 'pending';
+  const note     = saved.note   || '';
   const selClass = statusToClass(status);
   const selVal   = statusToDisplay(status);
 
@@ -658,57 +981,51 @@ function buildCard(post) {
 
   const isReel = post.content_type && post.content_type.toLowerCase().includes('reel');
 
-  const driveLink = post.image_url
-    ? `<div class="drive-link"><a href="${esc(post.image_url)}" target="_blank" rel="noopener">View Image &rarr;</a></div>`
-    : '';
+  const visualHtml = post.visual_text
+    ? `<div class="visual-box">
+        <span class="visual-guide-label">Design Guide:</span>${esc(post.visual_text)}
+        ${post.image_url ? `<div class="drive-link"><a href="${esc(post.image_url)}" target="_blank" rel="noopener">View Image &rarr;</a></div>` : ''}
+      </div>`
+    : post.image_url
+      ? `<div class="visual-box"><div class="drive-link"><a href="${esc(post.image_url)}" target="_blank" rel="noopener">View Image &rarr;</a></div></div>`
+      : '';
 
   return `
-    <div class="post-card" data-post-id="${esc(post.id)}">
-      <div class="post-meta">
-        ${post.post_time    ? `<span class="badge badge-time">${esc(post.post_time)}</span>` : ''}
-        ${post.content_type ? `<span class="badge badge-type">${esc(post.content_type)}</span>` : ''}
-        ${priorityBadge}
-      </div>
-      ${post.caption ? `<div class="post-caption">${esc(post.caption)}</div>` : ''}
-      <div class="visual-box">
+    <div class="post-card" data-post-id="${esc(post.id)}" data-status="${status}">
+      <div class="post-card-media">
         ${buildCarousel(post, isReel)}
-        ${post.visual_text ? `<div class="visual-desc">${esc(post.visual_text)}</div>` : ''}
-        ${driveLink}
       </div>
-      ${currentRole !== 'charity' ? `
-      <div class="approve-row">
-        <label>Kelli:</label>
-        <select class="${selClass}"
-          onchange="styleSelect(this); onApprovalChange(this, '${esc(post.id)}', '${esc(post.platform)}', '${esc(post.day_label)}', '${esc(post.post_time)}', '${esc(post.content_type)}')">
-          <option${selVal === 'Pending'         ? ' selected' : ''}>Pending</option>
-          <option${selVal === '&#9989; Approved'  ? ' selected' : ''}>&#9989; Approved</option>
-          <option${selVal === '&#9999;&#65039; Needs Edits' ? ' selected' : ''}>&#9999;&#65039; Needs Edits</option>
-          <option${selVal === '&#10060; Do Not Post' ? ' selected' : ''}>&#10060; Do Not Post</option>
-        </select>
-        <input
-          class="notes-input"
-          type="text"
-          placeholder="Kelli's notes here..."
-          value="${esc(note)}"
-          onblur="onNoteBlur(this, '${esc(post.id)}')"
-        />
-        <button class="send-btn" onclick="sendNote(this.previousElementSibling, '${esc(post.id)}', '${esc(post.platform)}', '${esc(post.day_label)}', '${esc(post.post_time)}', '${esc(post.content_type)}')">Send</button>
-      </div>` : ''}
+      <div class="post-card-content">
+        <div class="post-meta">
+          ${post.post_time    ? `<span class="badge badge-time">${esc(post.post_time)}</span>` : ''}
+          ${post.content_type ? `<span class="badge badge-type">${esc(post.content_type)}</span>` : ''}
+          ${priorityBadge}
+        </div>
+        ${post.caption ? `<div class="post-caption"><span class="visual-guide-label">Caption:</span>${esc(post.caption)}</div>` : ''}
+        ${visualHtml}
+        ${currentRole !== 'charity' ? `
+        <div class="approve-row">
+          <label>Kelli:</label>
+          <select class="${selClass}"
+            onchange="styleSelect(this); onApprovalChange(this, '${esc(post.id)}', '${esc(post.platform)}', '${esc(post.day_label)}', '${esc(post.post_time)}', '${esc(post.content_type)}')">
+            <option${selVal === 'Pending'                       ? ' selected' : ''}>Pending</option>
+            <option${selVal === '&#9989; Approved'              ? ' selected' : ''}>&#9989; Approved</option>
+            <option${selVal === '&#9999;&#65039; Needs Edits'   ? ' selected' : ''}>&#9999;&#65039; Needs Edits</option>
+            <option${selVal === '&#10060; Do Not Post'          ? ' selected' : ''}>&#10060; Do Not Post</option>
+          </select>
+          <input class="notes-input" type="text" placeholder="Kelli's notes here..."
+            value="${esc(note)}" onblur="onNoteBlur(this, '${esc(post.id)}')" />
+          <button class="send-btn" onclick="sendNote(this.previousElementSibling, '${esc(post.id)}', '${esc(post.platform)}', '${esc(post.day_label)}', '${esc(post.post_time)}', '${esc(post.content_type)}')">Send</button>
+        </div>` : ''}
+      </div>
     </div>`;
 }
-
-// ═══════════════════════════════════════════
-//  APPROVAL — Firestore + Slack
-// ═══════════════════════════════════════════
 
 async function onApprovalChange(sel, postId, platform, dayLabel, postTime, contentType) {
   const status = displayToStatus(sel.value);
   const saved  = loadApproval(postId);
   await saveApproval(postId, { status, note: saved.note || '' });
-
-  if (status === 'approved') {
-    notifySlack(platform, dayLabel, postTime, contentType);
-  }
+  if (status === 'approved') notifySlack(platform, dayLabel, postTime, contentType);
 }
 
 async function onNoteBlur(input, postId) {
@@ -719,27 +1036,20 @@ async function onNoteBlur(input, postId) {
 async function saveApproval(postId, data) {
   try {
     await setDoc(doc(db, 'approvals', postId), { ...data, savedAt: new Date().toISOString() });
-    // Also keep localStorage as offline fallback
     localStorage.setItem(LS_PREFIX + postId, JSON.stringify(data));
     flashSaved();
   } catch(e) {
     console.warn('Firestore save failed, falling back to localStorage:', e);
-    try {
-      localStorage.setItem(LS_PREFIX + postId, JSON.stringify(data));
-      flashSaved();
-    } catch(e2) { /* ignore */ }
+    try { localStorage.setItem(LS_PREFIX + postId, JSON.stringify(data)); flashSaved(); } catch(e2) {}
   }
 }
 
 function loadApproval(postId) {
-  // Prefer Firestore cache; fall back to localStorage
   if (approvalCache[postId]) return approvalCache[postId];
   try {
     const raw = localStorage.getItem(LS_PREFIX + postId);
     return raw ? JSON.parse(raw) : {};
-  } catch(e) {
-    return {};
-  }
+  } catch(e) { return {}; }
 }
 
 function startApprovalListener() {
@@ -751,84 +1061,46 @@ function startApprovalListener() {
       approvalCache[postId] = data;
       updateCardUI(postId, data);
     });
-  }, (err) => {
-    console.warn('Firestore listener error:', err);
-  });
+  }, (err) => { console.warn('Firestore listener error:', err); });
 }
 
 function updateCardUI(postId, data) {
   const card = document.querySelector(`[data-post-id="${CSS.escape(postId)}"]`);
   if (!card) return;
-
+  card.dataset.status = data.status || 'pending';
   const sel   = card.querySelector('select');
   const input = card.querySelector('.notes-input');
-
   if (sel) {
     const target = statusToDisplay(data.status || 'pending');
-    Array.from(sel.options).forEach(opt => {
-      if (opt.text === target || opt.value === target) sel.value = opt.value;
-    });
+    Array.from(sel.options).forEach(opt => { if (opt.text === target || opt.value === target) sel.value = opt.value; });
     styleSelect(sel);
   }
-  if (input && !document.activeElement !== input) {
-    input.value = data.note || '';
-  }
+  if (input && !document.activeElement !== input) input.value = data.note || '';
 }
 
 async function sendNote(input, postId, platform, dayLabel, postTime, contentType) {
   const note = input.value.trim();
   if (!note) return;
-
   const saved = loadApproval(postId);
   await saveApproval(postId, { status: saved.status || 'pending', note });
-
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
-  const text = [
-    '\ud83d\udcac Kelli left a note',
-    `Platform: ${platformName}`,
-    `Day: ${dayLabel}`,
-    `Time: ${postTime || '\u2014'}`,
-    `Content type: ${contentType || '\u2014'}`,
-    `Note: ${note}`,
-  ].join('\n');
-
+  const text = ['\ud83d\udcac Kelli left a note', `Platform: ${platformName}`, `Day: ${dayLabel}`,
+    `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`, `Note: ${note}`].join('\n');
   try {
-    await fetch('/api/notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
-    });
+    await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
     input.classList.add('sent');
     setTimeout(() => input.classList.remove('sent'), 1500);
-  } catch(e) {
-    console.warn('Slack note failed:', e.message);
-  }
+  } catch(e) { console.warn('Slack note failed:', e.message); }
 }
 
 async function notifySlack(platform, dayLabel, postTime, contentType) {
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
-  const text = [
-    '\u2705 Kelli approved a post',
-    `Platform: ${platformName}`,
-    `Day: ${dayLabel}`,
-    `Time: ${postTime || '\u2014'}`,
-    `Content type: ${contentType || '\u2014'}`,
-  ].join('\n');
-
+  const text = ['\u2705 Kelli approved a post', `Platform: ${platformName}`, `Day: ${dayLabel}`,
+    `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`].join('\n');
   try {
-    await fetch('/api/notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
-    });
-  } catch(e) {
-    console.warn('Slack notify failed:', e.message);
-  }
+    await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+  } catch(e) { console.warn('Slack notify failed:', e.message); }
 }
-
-// ═══════════════════════════════════════════
-//  HELPERS
-// ═══════════════════════════════════════════
 
 function styleSelect(sel) {
   sel.className = '';
@@ -868,57 +1140,38 @@ function flashSaved() {
 
 function esc(str) {
   if (str == null) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
-
-// ═══════════════════════════════════════════
-//  INIT — expose functions + start listener
-// ═══════════════════════════════════════════
 
 function lightboxOpen(url, type) {
   const lb  = document.getElementById('lightbox');
   const img = document.getElementById('lightbox-media');
   const vid = document.getElementById('lightbox-video');
-  if (type === 'video') {
-    img.style.display = 'none';
-    vid.src = url;
-    vid.style.display = 'block';
-  } else {
-    vid.style.display = 'none';
-    vid.src = '';
-    img.src = url;
-    img.style.display = 'block';
-  }
+  if (type === 'video') { img.style.display='none'; vid.src=url; vid.style.display='block'; }
+  else { vid.style.display='none'; vid.src=''; img.src=url; img.style.display='block'; }
   lb.classList.add('open');
 }
 
 function lightboxClose() {
   const lb  = document.getElementById('lightbox');
   const vid = document.getElementById('lightbox-video');
-  lb.classList.remove('open');
-  vid.pause();
-  vid.src = '';
+  lb.classList.remove('open'); vid.pause(); vid.src = '';
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') lightboxClose(); });
 
-window.enterApproveMode  = enterApproveMode;
-window.enterCharityMode  = enterCharityMode;
-window.exitMode          = exitMode;
-window.showPlatform      = showPlatform;
-window.styleSelect       = styleSelect;
-window.onApprovalChange  = onApprovalChange;
-window.onNoteBlur        = onNoteBlur;
-window.sendNote          = sendNote;
-window.carouselPrev      = carouselPrev;
-window.carouselNext      = carouselNext;
-window.lightboxOpen      = lightboxOpen;
-window.lightboxClose     = lightboxClose;
+window.enterApproveMode = enterApproveMode;
+window.enterCharityMode = enterCharityMode;
+window.exitMode         = exitMode;
+window.showPlatform     = showPlatform;
+window.styleSelect      = styleSelect;
+window.onApprovalChange = onApprovalChange;
+window.onNoteBlur       = onNoteBlur;
+window.sendNote         = sendNote;
+window.carouselPrev     = carouselPrev;
+window.carouselNext     = carouselNext;
+window.lightboxOpen     = lightboxOpen;
+window.lightboxClose    = lightboxClose;
 
 startApprovalListener();
 </script>
