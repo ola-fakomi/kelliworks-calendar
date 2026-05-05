@@ -317,40 +317,43 @@ let currentRole = 'kelli'; // 'kelli' | 'charity'
 
 // Media manifest — key: 'platform|date|time' or 'platform|date|content_type'
 // path: relative to src/ (served as-is). type: 'image' | 'video'
-const W = 'Apr 27 - May 1';
+const CDN = 'https://res.cloudinary.com/dx51n94k1';
+const W   = 'Apr%2027%20-%20May%201';
+
 const MEDIA_MANIFEST = {
   // KelliWorks IG+FB
-  'kw|2025-04-28|8:00 AM':   [{ path: `MediaFiles/KelliWorks IG+FB/${W}/28th.png`,          type: 'image' }],
-  'kw|2025-04-29|8:00 AM':   [{ path: `MediaFiles/KelliWorks IG+FB/${W}/29th.mp4`,          type: 'video' }],
-  'kw|2025-04-30|8:00 AM':   [{ path: `MediaFiles/KelliWorks IG+FB/${W}/3oth.png`,          type: 'image' }],
-  'kw|2025-05-01|8:00 AM':   [{ path: `MediaFiles/KelliWorks IG+FB/${W}/1st.mp4`,           type: 'video' }],
+  'kw|2025-04-28|8:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/28th.png`,          type: 'image' }],
+  'kw|2025-04-29|8:00 AM':   [{ path: `${CDN}/video/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/29th.mp4`,          type: 'video' }],
+  'kw|2025-04-30|8:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/3oth.png`,          type: 'image' }],
+  'kw|2025-05-01|8:00 AM':   [{ path: `${CDN}/video/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/1st.mp4`,           type: 'video' }],
   // KW Accounting
-  'kwa|2025-04-28|10:00 AM': [{ path: `MediaFiles/KW Accounting/${W}/28.png`,               type: 'image' }],
-  'kwa|2025-04-29|10:00 AM': [{ path: `MediaFiles/KW Accounting/${W}/29 - Carousel.png`,    type: 'image' }],
-  'kwa|2025-04-30|10:00 AM': [{ path: `MediaFiles/KW Accounting/${W}/30th.png`,             type: 'image' }],
-  'kwa|2025-05-01|10:00 AM': [{ path: `MediaFiles/KW Accounting/${W}/1st .png`,             type: 'image' }],
+  'kwa|2025-04-28|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/28.png`,                 type: 'image' }],
+  'kwa|2025-04-29|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/29%20-%20Carousel.png`,  type: 'image' }],
+  'kwa|2025-04-30|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/30th.png`,               type: 'image' }],
+  'kwa|2025-05-01|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/1st.png`,                type: 'image' }],
   // KW Taxes (2 posts/day)
-  'kwt|2025-04-28|7:00 AM':  [{ path: `MediaFiles/KW Taxes/${W}/28.png`,                    type: 'image' }],
-  'kwt|2025-04-28|4:00 PM':  [{ path: `MediaFiles/KW Taxes/${W}/28 - 2.png`,                type: 'image' }],
-  'kwt|2025-04-29|7:00 AM':  [{ path: `MediaFiles/KW Taxes/${W}/29.png`,                    type: 'image' }],
-  'kwt|2025-04-29|4:00 PM':  [{ path: `MediaFiles/KW Taxes/${W}/29 - 2.png`,                type: 'image' }],
-  'kwt|2025-04-30|7:00 AM':  [{ path: `MediaFiles/KW Taxes/${W}/30.png`,                    type: 'image' }],
-  'kwt|2025-04-30|4:00 PM':  [{ path: `MediaFiles/KW Taxes/${W}/30 - 1.png`,                type: 'image' }],
-  'kwt|2025-05-01|7:00 AM':  [{ path: `MediaFiles/KW Taxes/${W}/1st.png`,                   type: 'image' }],
-  'kwt|2025-05-01|4:00 PM':  [{ path: `MediaFiles/KW Taxes/${W}/1st - 2.png`,               type: 'image' }],
+  'kwt|2025-04-28|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/28.png`,                      type: 'image' }],
+  'kwt|2025-04-28|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/28%20-%202.png`,              type: 'image' }],
+  'kwt|2025-04-29|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/29.png`,                      type: 'image' }],
+  'kwt|2025-04-29|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/29%20-%202.png`,              type: 'image' }],
+  'kwt|2025-04-30|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/30.png`,                      type: 'image' }],
+  'kwt|2025-04-30|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/30%20-%201.png`,              type: 'image' }],
+  'kwt|2025-05-01|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/1st.png`,                     type: 'image' }],
+  'kwt|2025-05-01|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/1st%20-%202.png`,             type: 'image' }],
   // Kelli LinkedIn
-  'kl|2025-04-28|9:00 AM':   [{ path: `MediaFiles/Kelli LinkedIn/${W}/28th.png`,            type: 'image' }],
-  'kl|2025-04-29|9:00 AM':   [{ path: `MediaFiles/Kelli LinkedIn/${W}/29th.png`,            type: 'image' }],
-  'kl|2025-04-30|9:00 AM':   [{ path: `MediaFiles/Kelli LinkedIn/${W}/30th.png`,            type: 'image' }],
-  'kl|2025-05-01|9:00 AM':   [{ path: `MediaFiles/Kelli LinkedIn/${W}/1st May.jpg`,         type: 'image' }],
+  'kl|2025-04-28|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/28th.png`,              type: 'image' }],
+  'kl|2025-04-29|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/29th.png`,              type: 'image' }],
+  'kl|2025-04-30|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/30th.png`,              type: 'image' }],
+  'kl|2025-05-01|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/1st%20May.jpg`,         type: 'image' }],
   // Global Woman
-  'gw|2025-04-28|11:00 AM':  [{ path: `MediaFiles/Global Woman/${W}/28.jpeg`,               type: 'image' }],
+  'gw|2025-04-28|11:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/Global%20Woman/${W}/28.jpg`,                  type: 'image' }],
   // Website — keyed by content_type (GMB + Yelp share same date + time)
-  'web|2025-05-01|GMB Update':  [{ path: `MediaFiles/GMB/${W}/thisweek.png`,                type: 'image' }],
-  'web|2025-05-01|Yelp Update': [{ path: `MediaFiles/Yelp/${W}/This week.png`,              type: 'image' }],
+  'web|2025-05-01|GMB Update':  [{ path: `${CDN}/image/upload/kw-calendar/GMB/${W}/thisweek.png`,                    type: 'image' }],
+  'web|2025-05-01|Yelp Update': [{ path: `${CDN}/image/upload/kw-calendar/Yelp/${W}/This%20week.png`,                type: 'image' }],
 };
 
 function mediaUrl(rawPath) {
+  if (rawPath.startsWith('https://') || rawPath.startsWith('http://')) return rawPath;
   return rawPath.split('/').map(encodeURIComponent).join('/');
 }
 
