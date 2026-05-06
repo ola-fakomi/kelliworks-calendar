@@ -1295,44 +1295,47 @@ function buildCard(post) {
 
   const isReel = post.content_type && post.content_type.toLowerCase().includes('reel');
 
+  const driveLink = post.image_url
+    ? '<div class="drive-link"><a href="' + esc(post.image_url) + '" target="_blank" rel="noopener">View Image &rarr;</a></div>'
+    : '';
   const visualHtml = post.visual_text
-    ? `<div class="visual-box">
-        <span class="visual-guide-label">Design Guide:</span>${esc(post.visual_text)}
-        ${post.image_url ? `<div class="drive-link"><a href="${esc(post.image_url)}" target="_blank" rel="noopener">View Image &rarr;</a></div>` : ''}
-      </div>`
+    ? '<div class="visual-box"><span class="visual-guide-label">Design Guide:</span>' + esc(post.visual_text) + driveLink + '</div>'
     : post.image_url
-      ? `<div class="visual-box"><div class="drive-link"><a href="${esc(post.image_url)}" target="_blank" rel="noopener">View Image &rarr;</a></div></div>`
+      ? '<div class="visual-box">' + driveLink + '</div>'
       : '';
+
+  const timeBadge = post.post_time    ? '<span class="badge badge-time">'    + esc(post.post_time)    + '</span>' : '';
+  const typeBadge = post.content_type ? '<span class="badge badge-type">'    + esc(post.content_type) + '</span>' : '';
+  const captionHtml = post.caption
+    ? '<div class="post-caption"><span class="visual-guide-label">Caption:</span>' + esc(post.caption) + '</div>'
+    : '';
+
+  let actionHtml;
+  if (currentRole === 'charity') {
+    actionHtml = '<button class="charity-edit-btn" onclick="openEditModal(\'' + esc(post.id) + '\')">&#9998; Edit Post</button>';
+  } else {
+    actionHtml = '<div class="approve-row">'
+      + '<label>Kelli:</label>'
+      + '<select class="' + selClass + '"'
+      + ' onchange="styleSelect(this); onApprovalChange(this,\'' + esc(post.id) + '\',\'' + esc(post.platform) + '\',\'' + esc(post.day_label) + '\',\'' + esc(post.post_time) + '\',\'' + esc(post.content_type) + '\')">'
+      + '<option' + (selVal === 'Pending'                     ? ' selected' : '') + '>Pending</option>'
+      + '<option' + (selVal === '&#9989; Approved'            ? ' selected' : '') + '>&#9989; Approved</option>'
+      + '<option' + (selVal === '&#9999;&#65039; Needs Edits' ? ' selected' : '') + '>&#9999;&#65039; Needs Edits</option>'
+      + '<option' + (selVal === '&#10060; Do Not Post'        ? ' selected' : '') + '>&#10060; Do Not Post</option>'
+      + '</select>'
+      + '<input class="notes-input" type="text" placeholder="Kelli\'s notes here..." value="' + esc(note) + '" onblur="onNoteBlur(this,\'' + esc(post.id) + '\')" />'
+      + '<button class="send-btn" onclick="sendNote(this.previousElementSibling,\'' + esc(post.id) + '\',\'' + esc(post.platform) + '\',\'' + esc(post.day_label) + '\',\'' + esc(post.post_time) + '\',\'' + esc(post.content_type) + '\')">Send</button>'
+      + '</div>';
+  }
 
   return `
     <div class="post-card" data-post-id="${esc(post.id)}" data-status="${status}">
-      <div class="post-card-media">
-        ${buildCarousel(post, isReel)}
-      </div>
+      <div class="post-card-media">${buildCarousel(post, isReel)}</div>
       <div class="post-card-content">
-        <div class="post-meta">
-          ${post.post_time    ? `<span class="badge badge-time">${esc(post.post_time)}</span>` : ''}
-          ${post.content_type ? `<span class="badge badge-type">${esc(post.content_type)}</span>` : ''}
-          ${priorityBadge}
-        </div>
-        ${post.caption ? `<div class="post-caption"><span class="visual-guide-label">Caption:</span>${esc(post.caption)}</div>` : ''}
+        <div class="post-meta">${timeBadge}${typeBadge}${priorityBadge}</div>
+        ${captionHtml}
         ${visualHtml}
-        ${currentRole === 'charity' ? `
-        <button class="charity-edit-btn" onclick="openEditModal('${esc(post.id)}')">&#9998; Edit Post</button>
-        ` : `
-        <div class="approve-row">
-          <label>Kelli:</label>
-          <select class="${selClass}"
-            onchange="styleSelect(this); onApprovalChange(this, '${esc(post.id)}', '${esc(post.platform)}', '${esc(post.day_label)}', '${esc(post.post_time)}', '${esc(post.content_type)}')">
-            <option${selVal === 'Pending'                       ? ' selected' : ''}>Pending</option>
-            <option${selVal === '&#9989; Approved'              ? ' selected' : ''}>&#9989; Approved</option>
-            <option${selVal === '&#9999;&#65039; Needs Edits'   ? ' selected' : ''}>&#9999;&#65039; Needs Edits</option>
-            <option${selVal === '&#10060; Do Not Post'          ? ' selected' : ''}>&#10060; Do Not Post</option>
-          </select>
-          <input class="notes-input" type="text" placeholder="Kelli's notes here..."
-            value="${esc(note)}" onblur="onNoteBlur(this, '${esc(post.id)}')" />
-          <button class="send-btn" onclick="sendNote(this.previousElementSibling, '${esc(post.id)}', '${esc(post.platform)}', '${esc(post.day_label)}', '${esc(post.post_time)}', '${esc(post.content_type)}')">Send</button>
-        </div>` : ''}
+        ${actionHtml}
       </div>
     </div>`;
 }
