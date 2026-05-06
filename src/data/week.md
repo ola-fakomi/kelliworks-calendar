@@ -1,7 +1,7 @@
 ## PLATFORM: kw
 
 ### MONDAY · APRIL 27
-date: 2025-04-27
+date: 2026-04-27
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -10,7 +10,7 @@ visual: Headline: The Firm Your Business Deserves. Navy background. Gold accent.
 drive:
 
 ### TUESDAY · APRIL 28
-date: 2025-04-28
+date: 2026-04-28
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -19,7 +19,7 @@ visual: Headline: Strong Systems. Stronger Business. Navy and gold. Clean minima
 drive:
 
 ### WEDNESDAY · APRIL 29
-date: 2025-04-29
+date: 2026-04-29
 time: 8:00 AM
 type: Carousel
 priority: HIGH
@@ -28,7 +28,7 @@ visual: Carousel — 5 slides. Slide 1: What Only You Should Be Doing. Slides 2�
 drive:
 
 ### THURSDAY · APRIL 30
-date: 2025-04-30
+date: 2026-04-30
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -37,7 +37,7 @@ visual: Headline: Clarity is a Leadership Tool. Navy background. Gold text accen
 drive:
 
 ### FRIDAY · MAY 1
-date: 2025-05-01
+date: 2026-05-01
 time: 8:00 AM
 type: Static Post
 priority: HIGH
@@ -51,7 +51,7 @@ drive:
 note-info: 📌 New direction: Mix trending POV reels (funny + relatable) with educational static posts. POV reels get the reach. Static posts build authority. Both sell KelliWorks.
 
 ### MONDAY · APRIL 27
-date: 2025-04-27
+date: 2026-04-27
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
@@ -60,7 +60,7 @@ visual: Trending audio — use a "panicking / chaotic" trending sound. Text over
 drive:
 
 ### TUESDAY · APRIL 28
-date: 2025-04-28
+date: 2026-04-28
 time: 10:00 AM
 type: Static Post
 priority: HIGH
@@ -69,7 +69,7 @@ visual: Headline: Bookkeeping Is a System. Not a Task. Navy and gold. Clean mini
 drive:
 
 ### WEDNESDAY · APRIL 29
-date: 2025-04-29
+date: 2026-04-29
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
@@ -78,7 +78,7 @@ visual: Trending audio — use a "relief / ahhh finally" sound. Text overlay 1: 
 drive:
 
 ### THURSDAY · APRIL 30
-date: 2025-04-30
+date: 2026-04-30
 time: 10:00 AM
 type: Static Post
 priority: HIGH
@@ -87,7 +87,7 @@ visual: Headline: Do You Know Your Q1 Numbers? Navy and gold. Clean bold layout.
 drive:
 
 ### FRIDAY · MAY 1
-date: 2025-05-01
+date: 2026-05-01
 time: 10:00 AM
 type: Trending Reel
 priority: TREND
@@ -100,7 +100,7 @@ drive:
 ## PLATFORM: kwt
 
 ### MONDAY · APRIL 27
-date: 2025-04-27
+date: 2026-04-27
 time: 7:00 AM
 type: Tax Tip
 priority:
@@ -109,7 +109,7 @@ visual: Tax tip graphic — headline: Q2 Is Already Counting. Navy gold bold.
 drive:
 
 ### MONDAY · APRIL 27
-date: 2025-04-27
+date: 2026-04-27
 time: 4:00 PM
 type: Quote
 priority:
@@ -118,7 +118,7 @@ visual: Brand quote card — cream background navy and gold. Elegant premium.
 drive:
 
 ### TUESDAY · APRIL 28
-date: 2025-04-28
+date: 2026-04-28
 time: 7:00 AM
 type: Tax Tip
 priority:
@@ -127,7 +127,7 @@ visual: Tax tip graphic — headline: A Big Refund Means You Overpaid. Navy gold
 drive:
 
 ### TUESDAY · APRIL 28
-date: 2025-04-28
+date: 2026-04-28
 time: 4:00 PM
 type: Carousel
 priority:
@@ -136,7 +136,7 @@ visual: Carousel — 5 slides — 4 Post Tax Season Moves. Navy and gold. Montse
 drive:
 
 ### WEDNESDAY · APRIL 29
-date: 2025-04-29
+date: 2026-04-29
 time: 7:00 AM
 type: Tax Tip
 priority:
@@ -145,7 +145,7 @@ visual: Tax tip graphic — headline: Are You Paying Yourself Correctly? Navy go
 drive:
 
 ### WEDNESDAY · APRIL 29
-date: 2025-04-29
+date: 2026-04-29
 time: 4:00 PM
 type: Quote
 priority:
@@ -154,7 +154,7 @@ visual: Quote card — cream background elegant premium. Kelli Lewis attribution
 drive:
 
 ### THURSDAY · APRIL 30
-date: 2025-04-30
+date: 2026-04-30
 time: 7:00 AM
 type: Tax Tip
 priority:
@@ -163,7 +163,7 @@ visual: Tax Tip Thursday branded graphic — navy gold. Bold headline.
 drive:
 
 ### THURSDAY · APRIL 30
-date: 2025-04-30
+date: 2026-04-30
 time: 4:00 PM
 type: Carousel
 priority:
@@ -172,7 +172,7 @@ visual: Carousel — 5 slides — Q2 Financial Checklist. Navy and gold. Montser
 drive:
 
 ### FRIDAY · MAY 1
-date: 2025-05-01
+date: 2026-05-01
 time: 7:00 AM
 type: Tax Tip
 priority:
@@ -181,7 +181,7 @@ visual: Tax tip graphic — headline: New Month. New Financial Strategy. Navy go
 drive:
 
 ### FRIDAY · MAY 1
-date: 2025-05-01
+date: 2026-05-01
 time: 4:00 PM
 type: Quote
 priority:
@@ -195,7 +195,7 @@ drive:
 note-alert: ⚠️ No EA meeting promotion this week per Kelli's instruction. Posts focus on community value and evergreen EA content only.
 
 ### MONDAY · APRIL 27
-date: 2025-04-27
+date: 2026-04-27
 time: 12:00 PM
 type: Static Post
 priority:
@@ -204,7 +204,7 @@ visual: EA branded graphic — dark background gold accent. Headline: You Were N
 drive:
 
 ### WEDNESDAY · APRIL 29
-date: 2025-04-29
+date: 2026-04-29
 time: 12:00 PM
 type: Quote Post
 priority:
@@ -213,7 +213,7 @@ visual: EA quote graphic — dark navy gold. Headline: Real Conversations. Real 
 drive:
 
 ### FRIDAY · MAY 1
-date: 2025-05-01
+date: 2026-05-01
 time: 12:00 PM
 type: Community Post
 priority:
@@ -226,7 +226,7 @@ drive:
 ## PLATFORM: kl
 
 ### MONDAY · APRIL 27
-date: 2025-04-27
+date: 2026-04-27
 time: 9:00 AM
 type: Thought Leadership
 priority:
@@ -235,7 +235,7 @@ visual: Professional Kelli photo — editorial, confident. Or clean branded quot
 drive:
 
 ### TUESDAY · APRIL 28
-date: 2025-04-28
+date: 2026-04-28
 time: 9:00 AM
 type: Founder Story
 priority:
@@ -244,7 +244,7 @@ visual: Professional Kelli photo — warm, authoritative. Or clean branded graph
 drive:
 
 ### WEDNESDAY · APRIL 29
-date: 2025-04-29
+date: 2026-04-29
 time: 9:00 AM
 type: Thought Leadership
 priority:
@@ -253,7 +253,7 @@ visual: Clean branded KelliWorks graphic — professional LinkedIn format.
 drive:
 
 ### THURSDAY · APRIL 30
-date: 2025-04-30
+date: 2026-04-30
 time: 9:00 AM
 type: Coaching Voice
 priority:
@@ -262,7 +262,7 @@ visual: Professional Kelli photo or clean quote graphic — coaching voice, dire
 drive:
 
 ### FRIDAY · MAY 1
-date: 2025-05-01
+date: 2026-05-01
 time: 9:00 AM
 type: Friday Reflection
 priority:
@@ -275,7 +275,7 @@ drive:
 ## PLATFORM: gw
 
 ### MONDAY · APRIL 27
-date: 2025-04-27
+date: 2026-04-27
 time: 11:00 AM
 type: Thought Leadership
 priority:
@@ -284,7 +284,7 @@ visual: Editorial Kelli photo — confident, authoritative. Or clean branded tho
 drive:
 
 ### TUESDAY · APRIL 28
-date: 2025-04-28
+date: 2026-04-28
 time: 11:00 AM
 type: Industry POV
 priority:
@@ -293,7 +293,7 @@ visual: Professional Kelli photo — warm, real, editorial. Not a headshot. Prem
 drive:
 
 ### THURSDAY · APRIL 30
-date: 2025-04-30
+date: 2026-04-30
 time: 11:00 AM
 type: Expert Insight
 priority:
@@ -302,7 +302,7 @@ visual: Clean expert insight graphic — Kelli's quote pulled out as a pull quot
 drive:
 
 ### FRIDAY · MAY 1
-date: 2025-05-01
+date: 2026-05-01
 time: 11:00 AM
 type: Thought Leadership
 priority:
@@ -315,7 +315,7 @@ drive:
 ## PLATFORM: web
 
 ### MONDAY · APRIL 27 — BLOG POST
-date: 2025-04-27
+date: 2026-04-27
 time: EOD
 type: Lovable Website
 priority:
@@ -324,7 +324,7 @@ visual: Blog header image — professional KelliWorks branded. Kelli photo or br
 drive:
 
 ### THIS WEEK — GOOGLE MY BUSINESS
-date: 2025-05-01
+date: 2026-05-01
 time: By Fri May 1
 type: GMB Update
 priority:
@@ -333,7 +333,7 @@ visual: Fresh KelliWorks brand photo or professional team photo for GMB.
 drive:
 
 ### THIS WEEK — YELP
-date: 2025-05-01
+date: 2026-05-01
 time: By Fri May 1
 type: Yelp Update
 priority:

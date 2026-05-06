@@ -559,7 +559,11 @@
       cursor: pointer; white-space: nowrap;
       transition: background 0.15s;
     }
-    .publish-btn:hover { background: #1e3d35; }
+    .publish-btn:hover:not(:disabled) { background: #1e3d35; }
+    .publish-btn:disabled { background: #c5c5c5; color: #f0f0f0; cursor: not-allowed; opacity: 0.7; }
+
+    /* ── Charity: card action row ── */
+    .charity-card-actions { display: flex; align-items: center; gap: 8px; margin-top: auto; }
 
     /* ── Charity: edit button on card ── */
     .charity-edit-btn {
@@ -568,10 +572,19 @@
       border: 1px solid var(--border); border-radius: 6px;
       background: var(--white); color: var(--navy);
       font-size: 11.5px; font-weight: 600; font-family: var(--font-body);
-      cursor: pointer; margin-top: auto;
+      cursor: pointer; margin-top: auto; align-self: flex-start;
       transition: border-color 0.15s, background 0.15s;
     }
     .charity-edit-btn:hover { border-color: var(--gold); background: var(--gold-pale); }
+    .charity-delete-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; flex-shrink: 0;
+      border: 1px solid var(--border); border-radius: 6px;
+      background: var(--white); color: var(--text-muted);
+      font-size: 14px; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .charity-delete-btn:hover { border-color: #e53e3e; background: #fff5f5; color: #e53e3e; }
 
     /* ── Charity: add-post zone at bottom of day ── */
     .add-post-zone {
@@ -593,92 +606,100 @@
     /* ── Post modal ── */
     #post-modal {
       display: none; position: fixed; inset: 0; z-index: 9000;
-      background: rgba(10,20,15,0.6); backdrop-filter: blur(4px);
-      align-items: center; justify-content: center; padding: 20px;
+      background: rgba(10,20,15,0.55); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 16px;
     }
     #post-modal.open { display: flex; }
     .modal-box {
-      background: var(--white); border-radius: 14px;
-      width: 100%; max-width: 560px; max-height: 90vh;
-      overflow-y: auto; box-shadow: var(--shadow-md);
+      background: var(--white); border-radius: 16px;
+      width: 100%; max-width: 600px;
+      overflow: hidden; box-shadow: 0 8px 48px rgba(18,38,32,0.18);
       animation: fadeUp 0.2s var(--ease-out) both;
     }
     .modal-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+      padding: 18px 24px 14px; border-bottom: 1px solid var(--border);
     }
     .modal-header h3 {
-      font-family: var(--font-display); font-size: 17px;
-      font-weight: 400; color: var(--navy);
+      font-family: var(--font-display); font-size: 22px;
+      font-weight: 400; color: var(--navy); letter-spacing: -0.3px;
     }
     .modal-close {
       background: none; border: none; font-size: 20px; cursor: pointer;
-      color: var(--text-muted); line-height: 1; padding: 2px 6px;
+      color: var(--text-muted); line-height: 1; padding: 4px 8px;
       border-radius: 4px; transition: background 0.15s;
     }
     .modal-close:hover { background: var(--cream-dark); color: var(--navy); }
-    .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+    .modal-body { padding: 16px 24px; display: flex; flex-direction: column; gap: 14px; }
     .modal-field { display: flex; flex-direction: column; gap: 5px; }
     .modal-field label {
-      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
       text-transform: uppercase; color: var(--text-muted);
     }
     .modal-field input,
     .modal-field select,
     .modal-field textarea {
-      font-family: var(--font-body); font-size: 12.5px; color: var(--text);
-      border: 1px solid var(--border); border-radius: 7px;
-      padding: 8px 11px; background: var(--cream);
+      font-family: var(--font-body); font-size: 13px; color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 13px; background: var(--cream);
       transition: border-color 0.15s, box-shadow 0.15s;
     }
     .modal-field input:focus,
     .modal-field select:focus,
     .modal-field textarea:focus {
       outline: none; border-color: var(--navy);
-      box-shadow: 0 0 0 2px rgba(18,38,32,0.07); background: var(--white);
+      box-shadow: 0 0 0 2px rgba(18,38,32,0.07);
     }
-    .modal-field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .modal-field textarea { resize: none; line-height: 1.6; }
     .modal-row { display: flex; gap: 10px; }
     .modal-row .modal-field { flex: 1; }
 
-    /* Media upload preview */
+    /* Media section — preview square left, choose file right */
+    .modal-media-section {
+      display: flex; gap: 20px; align-items: flex-start;
+    }
     .modal-media-preview {
-      width: 100%; aspect-ratio: 1/1; border-radius: 8px;
-      overflow: hidden; background: var(--cream-dark);
+      width: 160px; height: 160px; flex-shrink: 0; border-radius: 10px;
+      overflow: hidden; background: #1c1c1c;
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; color: var(--text-light); position: relative;
-      border: 1px solid var(--border);
+      font-size: 11px; color: #666; position: relative;
     }
     .modal-media-preview img,
     .modal-media-preview video {
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
+    .modal-media-controls {
+      display: flex; align-items: flex-start; padding-top: 6px;
+    }
     .modal-upload-label {
       display: flex; align-items: center; gap: 7px;
-      padding: 8px 14px; border: 1px solid var(--border); border-radius: 6px;
-      background: var(--cream); cursor: pointer; font-size: 12px;
-      font-weight: 600; color: var(--navy); width: fit-content;
-      transition: border-color 0.15s, background 0.15s;
+      padding: 9px 18px; border: 1px solid var(--border); border-radius: 24px;
+      background: var(--white); cursor: pointer; font-size: 10.5px;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--text); transition: border-color 0.15s, background 0.15s;
+      white-space: nowrap;
     }
-    .modal-upload-label:hover { border-color: var(--navy); background: var(--white); }
+    .modal-upload-label:hover { border-color: var(--navy); background: var(--cream); }
     .modal-footer {
-      display: flex; justify-content: flex-end; gap: 8px;
-      padding: 14px 20px; border-top: 1px solid var(--border);
+      display: flex; justify-content: flex-end; gap: 10px;
+      padding: 14px 24px; border-top: 1px solid var(--border);
     }
     .modal-cancel {
-      height: 36px; padding: 0 16px; border: 1px solid var(--border);
-      border-radius: 6px; background: var(--white); color: var(--text-mid);
-      font-size: 12px; font-family: var(--font-body); cursor: pointer;
-      transition: border-color 0.15s;
+      height: 42px; padding: 0 20px; border: 1px solid var(--border);
+      border-radius: 8px; background: var(--white); color: var(--text-mid);
+      font-size: 13px; font-family: var(--font-body); cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
     }
     .modal-cancel:hover { border-color: var(--navy); color: var(--navy); }
     .modal-save {
-      height: 36px; padding: 0 20px; border: none;
-      border-radius: 6px; background: var(--navy); color: #fff;
-      font-size: 12px; font-weight: 600; font-family: var(--font-body);
+      height: 42px; padding: 0 24px; border: none;
+      border-radius: 8px; background: var(--navy); color: #fff;
+      font-size: 13px; font-weight: 600; font-family: var(--font-body);
       cursor: pointer; transition: background 0.15s;
     }
-    .modal-save:hover { background: var(--gold); color: var(--navy); }
+    .modal-save:hover:not(:disabled) { background: #1e3d35; }
+    .modal-save:disabled { background: #c8c8c8; color: #f0f0f0; cursor: not-allowed; }
+    .modal-upload-label.uploading { opacity: 0.5; pointer-events: none; cursor: not-allowed; }
 
     /* ── Standalone carousel (outside card-media) ── */
     .media-carousel { margin-bottom: 0; }
@@ -884,18 +905,54 @@
       <button class="modal-close" onclick="closePostModal()">&times;</button>
     </div>
     <div class="modal-body">
-      <div class="modal-row">
-        <div class="modal-field" id="modal-day-field" style="display:none;">
-          <label>Day</label>
-          <select id="modal-day"></select>
+      <!-- Media section: preview left, choose file right -->
+      <div class="modal-field">
+        <label>Media (Image or Video)</label>
+        <div class="modal-media-section">
+          <div class="modal-media-preview" id="modal-media-preview">
+            <span id="modal-media-placeholder" style="font-size:11px;color:#666;">No media</span>
+          </div>
+          <div class="modal-media-controls">
+            <label class="modal-upload-label" id="modal-upload-label">
+              📎 Choose File
+              <input type="file" id="modal-file" accept="image/*,video/*" style="display:none;" onchange="onModalFileChange(this)" />
+            </label>
+          </div>
         </div>
+      </div>
+      <!-- Day (add mode only) -->
+      <div class="modal-field" id="modal-day-field" style="display:none;">
+        <label>Date</label>
+        <input id="modal-day" type="date" onchange="validateModal()" />
+      </div>
+      <!-- Time · Content Type · Priority -->
+      <div class="modal-row">
         <div class="modal-field">
           <label>Time</label>
-          <input id="modal-time" type="text" placeholder="e.g. 9:00 AM" />
+          <input id="modal-time" type="time" oninput="validateModal()" />
         </div>
         <div class="modal-field">
           <label>Content Type</label>
-          <input id="modal-type" type="text" placeholder="e.g. Static Post" />
+          <select id="modal-type" onchange="validateModal()">
+            <option value="">Select type…</option>
+            <option>Static Post</option>
+            <option>Carousel</option>
+            <option>Trending Reel</option>
+            <option>Reel</option>
+            <option>Tax Tip</option>
+            <option>Quote</option>
+            <option>Quote Post</option>
+            <option>Thought Leadership</option>
+            <option>Founder Story</option>
+            <option>Industry POV</option>
+            <option>Expert Insight</option>
+            <option>Coaching Voice</option>
+            <option>Friday Reflection</option>
+            <option>Community Post</option>
+            <option>Blog Post</option>
+            <option>GMB Update</option>
+            <option>Yelp Update</option>
+          </select>
         </div>
         <div class="modal-field">
           <label>Priority</label>
@@ -908,21 +965,11 @@
       </div>
       <div class="modal-field">
         <label>Caption</label>
-        <textarea id="modal-caption" rows="4" placeholder="Write the post caption..."></textarea>
+        <textarea id="modal-caption" rows="3" placeholder="Write the post caption..." oninput="validateModal()"></textarea>
       </div>
       <div class="modal-field">
         <label>Design Guide</label>
-        <textarea id="modal-visual" rows="2" placeholder="Visual/design notes..."></textarea>
-      </div>
-      <div class="modal-field">
-        <label>Media (Image or Video)</label>
-        <div class="modal-media-preview" id="modal-media-preview">
-          <span id="modal-media-placeholder">📷 No media selected</span>
-        </div>
-        <label class="modal-upload-label" style="margin-top:8px;">
-          📎 Choose file
-          <input type="file" id="modal-file" accept="image/*,video/*" style="display:none;" onchange="onModalFileChange(this)" />
-        </label>
+        <textarea id="modal-visual" rows="3" placeholder="Visual/design notes..."></textarea>
       </div>
     </div>
     <div class="modal-footer">
@@ -940,7 +987,7 @@
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, doc, setDoc, updateDoc, deleteDoc, collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const _fbApp = initializeApp({
   apiKey:            'AIzaSyAGcdGtIz-Crg90lXGVU1d1o6lT1h-fgQ4',
@@ -976,29 +1023,29 @@ const CDN = 'https://res.cloudinary.com/dx51n94k1';
 const W   = 'Apr%2027%20-%20May%201';
 
 const MEDIA_MANIFEST = {
-  'kw|2025-04-28|8:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/28th.png`,          type: 'image' }],
-  'kw|2025-04-29|8:00 AM':   [{ path: `${CDN}/video/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/29th.mp4`,          type: 'video' }],
-  'kw|2025-04-30|8:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/3oth.png`,          type: 'image' }],
-  'kw|2025-05-01|8:00 AM':   [{ path: `${CDN}/video/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/1st.mp4`,           type: 'video' }],
-  'kwa|2025-04-28|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/28.png`,                 type: 'image' }],
-  'kwa|2025-04-29|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/29%20-%20Carousel.png`,  type: 'image' }],
-  'kwa|2025-04-30|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/30th.png`,               type: 'image' }],
-  'kwa|2025-05-01|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/1st.png`,                type: 'image' }],
-  'kwt|2025-04-28|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/28.png`,                      type: 'image' }],
-  'kwt|2025-04-28|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/28%20-%202.png`,              type: 'image' }],
-  'kwt|2025-04-29|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/29.png`,                      type: 'image' }],
-  'kwt|2025-04-29|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/29%20-%202.png`,              type: 'image' }],
-  'kwt|2025-04-30|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/30.png`,                      type: 'image' }],
-  'kwt|2025-04-30|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/30%20-%201.png`,              type: 'image' }],
-  'kwt|2025-05-01|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/1st.png`,                     type: 'image' }],
-  'kwt|2025-05-01|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/1st%20-%202.png`,             type: 'image' }],
-  'kl|2025-04-28|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/28th.png`,              type: 'image' }],
-  'kl|2025-04-29|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/29th.png`,              type: 'image' }],
-  'kl|2025-04-30|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/30th.png`,              type: 'image' }],
-  'kl|2025-05-01|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/1st%20May.jpg`,         type: 'image' }],
-  'gw|2025-04-28|11:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/Global%20Woman/${W}/28.jpg`,                  type: 'image' }],
-  'web|2025-05-01|GMB Update':  [{ path: `${CDN}/image/upload/kw-calendar/GMB/${W}/thisweek.png`,                    type: 'image' }],
-  'web|2025-05-01|Yelp Update': [{ path: `${CDN}/image/upload/kw-calendar/Yelp/${W}/This%20week.png`,                type: 'image' }],
+  'kw|2026-04-28|8:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/28th.png`,          type: 'image' }],
+  'kw|2026-04-29|8:00 AM':   [{ path: `${CDN}/video/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/29th.mp4`,          type: 'video' }],
+  'kw|2026-04-30|8:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/3oth.png`,          type: 'image' }],
+  'kw|2026-05-01|8:00 AM':   [{ path: `${CDN}/video/upload/kw-calendar/KelliWorks%20IG%2BFB/${W}/1st.mp4`,           type: 'video' }],
+  'kwa|2026-04-28|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/28.png`,                 type: 'image' }],
+  'kwa|2026-04-29|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/29%20-%20Carousel.png`,  type: 'image' }],
+  'kwa|2026-04-30|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/30th.png`,               type: 'image' }],
+  'kwa|2026-05-01|10:00 AM': [{ path: `${CDN}/image/upload/kw-calendar/KW%20Accounting/${W}/1st.png`,                type: 'image' }],
+  'kwt|2026-04-28|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/28.png`,                      type: 'image' }],
+  'kwt|2026-04-28|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/28%20-%202.png`,              type: 'image' }],
+  'kwt|2026-04-29|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/29.png`,                      type: 'image' }],
+  'kwt|2026-04-29|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/29%20-%202.png`,              type: 'image' }],
+  'kwt|2026-04-30|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/30.png`,                      type: 'image' }],
+  'kwt|2026-04-30|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/30%20-%201.png`,              type: 'image' }],
+  'kwt|2026-05-01|7:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/1st.png`,                     type: 'image' }],
+  'kwt|2026-05-01|4:00 PM':  [{ path: `${CDN}/image/upload/kw-calendar/KW%20Taxes/${W}/1st%20-%202.png`,             type: 'image' }],
+  'kl|2026-04-28|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/28th.png`,              type: 'image' }],
+  'kl|2026-04-29|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/29th.png`,              type: 'image' }],
+  'kl|2026-04-30|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/30th.png`,              type: 'image' }],
+  'kl|2026-05-01|9:00 AM':   [{ path: `${CDN}/image/upload/kw-calendar/Kelli%20LinkedIn/${W}/1st%20May.jpg`,         type: 'image' }],
+  'gw|2026-04-28|11:00 AM':  [{ path: `${CDN}/image/upload/kw-calendar/Global%20Woman/${W}/28.jpg`,                  type: 'image' }],
+  'web|2026-05-01|GMB Update':  [{ path: `${CDN}/image/upload/kw-calendar/GMB/${W}/thisweek.png`,                    type: 'image' }],
+  'web|2026-05-01|Yelp Update': [{ path: `${CDN}/image/upload/kw-calendar/Yelp/${W}/This%20week.png`,                type: 'image' }],
 };
 
 function mediaUrl(rawPath) {
@@ -1153,15 +1200,25 @@ function parseMd(text) {
 const carouselState = {};
 
 function getMedia(post) {
-  return MEDIA_MANIFEST[`${post.platform}|${post.date}|${post.post_time}`]
-      || MEDIA_MANIFEST[`${post.platform}|${post.date}|${post.content_type}`]
-      || [];
+  // Try with current date first
+  const result =
+      MEDIA_MANIFEST[`${post.platform}|${post.date}|${post.post_time}`]
+   || MEDIA_MANIFEST[`${post.platform}|${post.date}|${post.content_type}`];
+  if (result) return result;
+  // If date was edited, fall back to original base post date for media lookup
+  const base = _weekPosts.find(p => p.id === post.id);
+  if (base && base.date && base.date !== post.date) {
+    return MEDIA_MANIFEST[`${post.platform}|${base.date}|${base.post_time}`]
+        || MEDIA_MANIFEST[`${post.platform}|${base.date}|${base.content_type}`]
+        || [];
+  }
+  return [];
 }
 
 function buildCarousel(post, isReel) {
   // Show inline uploaded media from Charity edits
   if (post.mediaDataUrl) {
-    const isVid = post.mediaDataUrl.startsWith('data:video');
+    const isVid = _isVideoUrl(post.mediaDataUrl);
     const el = isVid
       ? `<video src="${post.mediaDataUrl}" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" onclick="lightboxOpen('${post.mediaDataUrl}','video')"></video>`
       : `<img src="${post.mediaDataUrl}" alt="media" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" onclick="lightboxOpen('${post.mediaDataUrl}','image')" />`;
@@ -1222,21 +1279,47 @@ function carouselNext(cid, total) { carouselGo(cid, total, Math.min(total - 1, (
 
 function renderPosts(posts, platformNotes = {}) {
   // Merge post_edits over base posts
+  // Kelli only sees edits that have been published by Charity
   const mergedPosts = posts.map(p => {
     const edit = postEditsCache[p.id];
-    return edit ? { ...p, ...edit, id: p.id, platform: p.platform, day_label: p.day_label, day_order: p.day_order } : p;
+    if (!edit) return p;
+    if (currentRole === 'kelli' && !edit.published) return p;
+    return {
+      ...p, ...edit,
+      id: p.id, platform: p.platform,
+      day_label: edit.day_label || p.day_label,
+      day_order: edit.day_order != null ? edit.day_order : p.day_order,
+      date:      edit.date      || p.date,
+    };
   });
 
-  // Append custom posts from Firestore
-  const allPosts = [...mergedPosts, ...Object.values(customPostsCache).filter(cp => !cp._deleted)];
+  // Append custom posts — Kelli only sees published ones
+  const allPosts = [...mergedPosts, ...Object.values(customPostsCache).filter(cp => {
+    if (cp._deleted) return false;
+    if (currentRole === 'kelli' && !cp.published) return false;
+    return true;
+  })];
+
+  // Helper: parse "8:00 AM" → minutes since midnight for time sorting
+  const _timeToMins = (t) => {
+    if (!t) return 0;
+    const m = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (!m) return 0;
+    let h = parseInt(m[1]);
+    if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
+    if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
+    return h * 60 + parseInt(m[2]);
+  };
 
   const grouped = {};
   PLATFORMS.forEach(p => { grouped[p] = {}; });
   allPosts.forEach(post => {
     const p = post.platform;
     if (!grouped[p]) return;
-    const key = (post.day_order || 0) + '-' + post.day_label;
-    if (!grouped[p][key]) grouped[p][key] = { label: post.day_label, order: post.day_order || 0, posts: [] };
+    // Use ISO date as sort key when available; fall back to padded day_order
+    const sortKey = post.date || String(post.day_order || 99).padStart(6, '0');
+    const key = sortKey + '|' + post.day_label;
+    if (!grouped[p][key]) grouped[p][key] = { label: post.day_label, sortKey, posts: [] };
     grouped[p][key].posts.push(post);
   });
 
@@ -1245,10 +1328,17 @@ function renderPosts(posts, platformNotes = {}) {
     const days = grouped[platform];
     const meta = PLATFORM_META[platform];
 
+    const platformPostIds = posts.filter(p => p.platform === platform).map(p => p.id);
+    const hasUnpublishedEdits = platformPostIds.some(id => postEditsCache[id] && !postEditsCache[id].published);
+    const hasUnpublishedCustom = Object.values(customPostsCache).some(
+      cp => cp.platform === platform && !cp._deleted && !cp.published
+    );
+    const hasUnpublished = hasUnpublishedEdits || hasUnpublishedCustom;
+
     const actionsHtml = currentRole === 'charity' ? `
       <div class="platform-actions">
         <button class="add-post-btn" onclick="openAddModal('${platform}',null,null)">+ Add Post</button>
-        <button class="publish-btn" onclick="publishForReview('${platform}')">&#128203; Publish for review</button>
+        <button class="publish-btn" onclick="publishForReview('${platform}')" ${hasUnpublished ? '' : 'disabled'}>&#128203; Publish for review</button>
       </div>` : '';
 
     const header = `<div class="platform-header-row">
@@ -1258,16 +1348,18 @@ function renderPosts(posts, platformNotes = {}) {
 
     const pNote    = platformNotes[platform];
     const noteHtml = pNote ? `<div class="note-${pNote.type}">${esc(pNote.text)}</div>` : '';
-    const dayKeys  = Object.keys(days).sort((a, b) => days[a].order - days[b].order);
+    // Sort day groups by ISO date (or padded day_order fallback) — earliest first
+    const dayKeys  = Object.keys(days).sort((a, b) => days[a].sortKey < days[b].sortKey ? -1 : days[a].sortKey > days[b].sortKey ? 1 : 0);
+    // Sort posts within each day by time
+    dayKeys.forEach(k => days[k].posts.sort((a, b) => _timeToMins(a.post_time) - _timeToMins(b.post_time)));
 
-    const addZone = (dayLabel, dayOrder) => currentRole === 'charity'
-      ? `<div class="add-post-zone" onclick="openAddModal('${platform}','${esc(dayLabel)}',${dayOrder})">
+    const bottomAddZone = currentRole === 'charity'
+      ? `<div class="add-post-zone" onclick="openAddModal('${platform}',null,null)">
            <button class="add-post-zone-btn">+ Add Post</button>
          </div>` : '';
 
     if (!dayKeys.length) {
-      const emptyZone = currentRole === 'charity' ? addZone('', 0) : '';
-      el.innerHTML = header + noteHtml + '<div class="empty-state">No posts for this platform this week.</div>' + emptyZone;
+      el.innerHTML = header + noteHtml + '<div class="empty-state">No posts for this platform this week.</div>' + bottomAddZone;
       return;
     }
 
@@ -1276,9 +1368,8 @@ function renderPosts(posts, platformNotes = {}) {
       return `<div class="day-block">
         <div class="day-label">${esc(day.label)}</div>
         ${day.posts.map(p => buildCard(p)).join('')}
-        ${addZone(day.label, day.order)}
       </div>`;
-    }).join('');
+    }).join('') + bottomAddZone;
   });
 }
 
@@ -1312,7 +1403,10 @@ function buildCard(post) {
 
   let actionHtml;
   if (currentRole === 'charity') {
-    actionHtml = '<button class="charity-edit-btn" onclick="openEditModal(\'' + esc(post.id) + '\')">&#9998; Edit Post</button>';
+    actionHtml = '<div class="charity-card-actions">'
+      + '<button class="charity-edit-btn" onclick="openEditModal(\'' + esc(post.id) + '\')">&#9998; Edit Post</button>'
+      + '<button class="charity-delete-btn" onclick="deletePost(\'' + esc(post.id) + '\')" title="Delete post">&#128465;</button>'
+      + '</div>';
   } else {
     actionHtml = '<div class="approve-row">'
       + '<label>Kelli:</label>'
@@ -1488,6 +1582,47 @@ let _modalDayLabel = null;
 let _modalDayOrder = null;
 let _modalMediaDataUrl = null;
 
+// Convert "8:00 AM" → "08:00" for <input type="time">
+function _to24h(t) {
+  if (!t) return '';
+  const m = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (!m) return t;
+  let h = parseInt(m[1]);
+  const period = m[3].toUpperCase();
+  if (period === 'PM' && h !== 12) h += 12;
+  if (period === 'AM' && h === 12) h = 0;
+  return String(h).padStart(2,'0') + ':' + m[2];
+}
+
+// Convert "08:00" → "8:00 AM" for storage
+function _to12h(t) {
+  if (!t) return '';
+  const [hStr, min] = t.split(':');
+  let h = parseInt(hStr);
+  const period = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return h + ':' + min + ' ' + period;
+}
+
+// Convert "2026-04-27" → "MONDAY · APRIL 27"
+function _dateToLabel(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const days   = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  return days[d.getDay()] + ' \u00B7 ' + months[d.getMonth()] + ' ' + d.getDate();
+}
+
+function validateModal() {
+  const time    = document.getElementById('modal-time').value.trim();
+  const type    = document.getElementById('modal-type').value;
+  const caption = document.getElementById('modal-caption').value.trim();
+  const dayField = document.getElementById('modal-day-field');
+  const dayVisible = dayField.style.display !== 'none';
+  const day = document.getElementById('modal-day').value;
+  const valid = !!(time && type && caption && (!dayVisible || day));
+  document.getElementById('modal-save-btn').disabled = !valid;
+}
+
 function openEditModal(postId) {
   _modalMode   = 'edit';
   _modalPostId = postId;
@@ -1501,19 +1636,22 @@ function openEditModal(postId) {
 
   document.getElementById('modal-title').textContent = 'Edit Post';
   document.getElementById('modal-save-btn').textContent = 'Save Changes';
-  document.getElementById('modal-day-field').style.display = 'none';
-  document.getElementById('modal-time').value    = post.post_time    || '';
-  document.getElementById('modal-type').value    = post.content_type || '';
-  document.getElementById('modal-priority').value = post.priority   || '';
-  document.getElementById('modal-caption').value = post.caption     || '';
-  document.getElementById('modal-visual').value  = post.visual_text || '';
-  document.getElementById('modal-file').value    = '';
+  document.getElementById('modal-day-field').style.display = 'block';
+  const _postDate = (post.date || '').replace(/^2025-/, '2026-');
+  document.getElementById('modal-day').value      = _postDate;
+  document.getElementById('modal-time').value     = _to24h(post.post_time || '');
+  document.getElementById('modal-type').value     = post.content_type || '';
+  document.getElementById('modal-priority').value = post.priority    || '';
+  document.getElementById('modal-caption').value  = post.caption     || '';
+  document.getElementById('modal-visual').value   = post.visual_text || '';
+  document.getElementById('modal-file').value     = '';
   const preview = document.getElementById('modal-media-preview');
   if (post.mediaDataUrl) {
     _renderModalMediaPreview(post.mediaDataUrl);
   } else {
-    preview.innerHTML = '<span id="modal-media-placeholder">📷 No media selected</span>';
+    preview.innerHTML = '<span style="font-size:11px;color:#666;">No media</span>';
   }
+  validateModal();
   document.getElementById('post-modal').classList.add('open');
 }
 
@@ -1533,101 +1671,179 @@ function openAddModal(platform, dayLabel, dayOrder) {
   document.getElementById('modal-caption').value  = '';
   document.getElementById('modal-visual').value   = '';
   document.getElementById('modal-file').value     = '';
-  document.getElementById('modal-media-preview').innerHTML = '<span id="modal-media-placeholder">📷 No media selected</span>';
+  document.getElementById('modal-media-preview').innerHTML = '<span style="font-size:11px;color:#666;">No media</span>';
 
-  // Show day selector if no day was pre-selected
+  // Show date picker if no day was pre-selected
   const dayField = document.getElementById('modal-day-field');
   if (!dayLabel) {
     dayField.style.display = 'block';
-    const daySelect = document.getElementById('modal-day');
-    const days = [...new Set(_weekPosts.filter(p => p.platform === platform).map(p => p.day_label))];
-    daySelect.innerHTML = days.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join('');
+    document.getElementById('modal-day').value = '';
   } else {
     dayField.style.display = 'none';
   }
 
+  validateModal();
   document.getElementById('post-modal').classList.add('open');
+}
+
+async function deletePost(postId) {
+  if (!confirm('Delete this post? This cannot be undone.')) return;
+  try {
+    if (customPostsCache[postId]) {
+      await deleteDoc(doc(db, 'custom_posts', postId));
+      delete customPostsCache[postId];
+    } else {
+      await deleteDoc(doc(db, 'post_edits', postId));
+      delete postEditsCache[postId];
+    }
+    renderPosts(_weekPosts, _platformNotes);
+  } catch(e) {
+    console.warn('Delete failed:', e);
+    alert('Delete failed. Please try again.');
+  }
 }
 
 function closePostModal() {
   document.getElementById('post-modal').classList.remove('open');
 }
 
-function onModalFileChange(input) {
+async function onModalFileChange(input) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    _modalMediaDataUrl = e.target.result;
+
+  const preview   = document.getElementById('modal-media-preview');
+  const uploadLbl = document.getElementById('modal-upload-label');
+  preview.innerHTML = '<span style="font-size:11px;color:#888;">Uploading…</span>';
+  uploadLbl.classList.add('uploading');
+  _modalMediaDataUrl = null;
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'kw-calendar');
+    const res = await fetch('https://api.cloudinary.com/v1_1/dx51n94k1/upload', { method: 'POST', body: formData });
+    if (!res.ok) throw new Error('Upload failed: ' + res.status);
+    const data = await res.json();
+    _modalMediaDataUrl = data.secure_url;
     _renderModalMediaPreview(_modalMediaDataUrl);
-  };
-  reader.readAsDataURL(file);
+  } catch(e) {
+    console.warn('Cloudinary upload failed:', e);
+    preview.innerHTML = '<span style="font-size:11px;color:#c00;">Upload failed. Try again.</span>';
+  } finally {
+    uploadLbl.classList.remove('uploading');
+  }
 }
 
-function _renderModalMediaPreview(dataUrl) {
+function _isVideoUrl(url) {
+  return /\.(mp4|webm|mov|avi|ogv)(\?|$)/i.test(url) || url.startsWith('data:video');
+}
+
+function _renderModalMediaPreview(url) {
   const preview = document.getElementById('modal-media-preview');
-  const isVid = dataUrl.startsWith('data:video');
-  preview.innerHTML = isVid
-    ? `<video src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;" controls></video>`
-    : `<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;" alt="preview" />`;
+  preview.innerHTML = _isVideoUrl(url)
+    ? `<video src="${url}" style="width:100%;height:100%;object-fit:cover;" controls></video>`
+    : `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" alt="preview" />`;
 }
 
 async function savePostModal() {
-  const time     = document.getElementById('modal-time').value.trim();
-  const type     = document.getElementById('modal-type').value.trim();
+  const btn = document.getElementById('modal-save-btn');
+  const origText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  // Convert time from 24h picker format to 12h for storage
+  const time24   = document.getElementById('modal-time').value;
+  const time     = _to12h(time24);
+  const type     = document.getElementById('modal-type').value;
   const priority = document.getElementById('modal-priority').value;
   const caption  = document.getElementById('modal-caption').value.trim();
   const visual   = document.getElementById('modal-visual').value.trim();
 
-  if (_modalMode === 'edit') {
-    const edit = { post_time: time, content_type: type, priority, caption, visual_text: visual };
-    if (_modalMediaDataUrl) edit.mediaDataUrl = _modalMediaDataUrl;
-    try {
-      await setDoc(doc(db, 'post_edits', _modalPostId), { ...edit, updatedAt: new Date().toISOString() });
-      postEditsCache[_modalPostId] = edit;
-      flashSaved();
-    } catch(e) {
-      postEditsCache[_modalPostId] = edit;
-      console.warn('Firestore post_edits save failed:', e);
-    }
-  } else {
-    const dayLabel = _modalDayLabel || document.getElementById('modal-day').value;
-    const dayOrder = _modalDayOrder || (_weekPosts.find(p => p.day_label === dayLabel)?.day_order || 0);
-    const id = `custom-${_modalPlatform}-${Date.now()}`;
-    const newPost = {
-      id, platform: _modalPlatform, day_label: dayLabel, day_order: dayOrder,
-      post_time: time, content_type: type, priority, caption, visual_text: visual,
-      date: '', image_url: '',
-    };
-    if (_modalMediaDataUrl) newPost.mediaDataUrl = _modalMediaDataUrl;
-    try {
+  try {
+    if (_modalMode === 'edit') {
+      const dateVal  = document.getElementById('modal-day').value;
+      const dayLabel = dateVal ? _dateToLabel(dateVal) : null;
+      const dayOrder = dateVal ? new Date(dateVal + 'T00:00:00').getTime() : null;
+      const edit = { post_time: time, content_type: type, priority, caption, visual_text: visual };
+      if (dateVal)  { edit.date = dateVal; edit.day_label = dayLabel; edit.day_order = dayOrder; }
+      const existingMedia = postEditsCache[_modalPostId]?.mediaDataUrl;
+      if (_modalMediaDataUrl) edit.mediaDataUrl = _modalMediaDataUrl;
+      else if (existingMedia) edit.mediaDataUrl = existingMedia;
+      await setDoc(doc(db, 'post_edits', _modalPostId), { ...edit, published: false, updatedAt: new Date().toISOString() });
+      postEditsCache[_modalPostId] = { ...edit, published: false };
+    } else {
+      // Convert date picker value to day_label and day_order
+      const dateVal  = document.getElementById('modal-day').value;
+      const dayLabel = _modalDayLabel || (dateVal ? _dateToLabel(dateVal) : '');
+      const dayOrder = _modalDayOrder || (dateVal ? new Date(dateVal + 'T00:00:00').getTime() : 0);
+      const id = `custom-${_modalPlatform}-${Date.now()}`;
+      const newPost = {
+        id, platform: _modalPlatform, day_label: dayLabel, day_order: dayOrder,
+        post_time: time, content_type: type, priority, caption, visual_text: visual,
+        date: dateVal, image_url: '', published: false,
+      };
+      if (_modalMediaDataUrl) newPost.mediaDataUrl = _modalMediaDataUrl;
       await setDoc(doc(db, 'custom_posts', id), { ...newPost, createdAt: new Date().toISOString() });
       customPostsCache[id] = newPost;
-      flashSaved();
-    } catch(e) {
-      customPostsCache[id] = newPost;
-      console.warn('Firestore custom_posts save failed:', e);
     }
-  }
 
-  closePostModal();
-  renderPosts(_weekPosts, _platformNotes);
+    // Success flash then close
+    const successLabel = _modalMode === 'add' ? '✓ Added' : '✓ Saved';
+    btn.textContent = successLabel;
+    btn.style.background = '#27ae60';
+    renderPosts(_weekPosts, _platformNotes);
+    setTimeout(() => closePostModal(), 800);
+  } catch(e) {
+    console.warn('Save failed:', e);
+    btn.disabled = false;
+    btn.textContent = origText;
+    btn.style.background = '';
+    alert('Save failed. Please try again.');
+  }
 }
 
 async function publishForReview(platform) {
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
-  const text = `📋 Charity has published *${platformName}* posts for review.\nPlease log in to review and approve the week's content.`;
+  const btn = event.target;
+
+  // Collect all unpublished drafts for this platform
+  const platformPostIds = _weekPosts.filter(p => p.platform === platform).map(p => p.id);
+  const unpublishedEditIds = platformPostIds.filter(id => postEditsCache[id] && !postEditsCache[id].published);
+  const unpublishedCustom = Object.values(customPostsCache).filter(
+    cp => cp.platform === platform && !cp._deleted && !cp.published
+  );
+
+  if (unpublishedEditIds.length === 0 && unpublishedCustom.length === 0) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Publishing…';
+
   try {
-    const res = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
-    if (!res.ok) throw new Error(`${res.status}`);
-    const btn = event.target;
-    const orig = btn.textContent;
+    // Mark all drafts as published — only update the flag, don't re-write media
+    const updates = [];
+    for (const id of unpublishedEditIds) {
+      updates.push(updateDoc(doc(db, 'post_edits', id), { published: true }));
+    }
+    for (const cp of unpublishedCustom) {
+      updates.push(updateDoc(doc(db, 'custom_posts', cp.id), { published: true }));
+    }
+    await Promise.all(updates);
+
+    // Send Slack notification (only on Vercel — not supported by local static server)
+    if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+      const text = '📋 New edits have been published for *' + platformName + '*.\nCharity has submitted content for review. Please log in to review and approve.';
+      const res = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+      if (!res.ok) console.warn('Slack notify failed:', res.status);
+    }
+
     btn.textContent = '✓ Published';
     btn.style.background = '#27ae60';
-    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
+    setTimeout(() => { btn.textContent = '📋 Publish for review'; btn.style.background = ''; }, 3000);
   } catch(e) {
-    console.warn('Publish notify failed:', e.message);
-    alert('Could not send Slack notification. Check SLACK_WEBHOOK_URL in Vercel settings.');
+    console.warn('Publish failed:', e.message);
+    btn.disabled = false;
+    btn.textContent = '📋 Publish for review';
+    alert('Could not complete publish. Check console for details.');
   }
 }
 
@@ -1684,6 +1900,8 @@ window.openEditModal    = openEditModal;
 window.openAddModal     = openAddModal;
 window.closePostModal   = closePostModal;
 window.savePostModal    = savePostModal;
+window.validateModal    = validateModal;
+window.deletePost       = deletePost;
 window.onModalFileChange = onModalFileChange;
 window.publishForReview = publishForReview;
 
