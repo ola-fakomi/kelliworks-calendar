@@ -528,6 +528,158 @@
     }
     .send-btn:hover { background: var(--gold); color: var(--navy); }
 
+    /* ── Charity: platform header with actions ── */
+    .platform-header-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .platform-header-row > div:first-child { flex: 1; min-width: 0; }
+    .platform-header-row h2 {
+      font-family: var(--font-display); font-size: 18px; font-weight: 400;
+      color: var(--navy); margin-bottom: 3px;
+    }
+    .platform-header-row p { font-size: 10.5px; color: var(--text-muted); line-height: 1.65; }
+    .platform-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; margin-top: 2px; }
+
+    .add-post-btn {
+      height: 34px; padding: 0 14px;
+      border: 1px solid var(--border); border-radius: 6px;
+      background: var(--white); color: var(--navy);
+      font-size: 12px; font-weight: 600; font-family: var(--font-body);
+      cursor: pointer; white-space: nowrap;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .add-post-btn:hover { border-color: var(--navy); background: var(--cream); }
+
+    .publish-btn {
+      height: 34px; padding: 0 14px;
+      border: none; border-radius: 6px;
+      background: var(--navy); color: #fff;
+      font-size: 12px; font-weight: 600; font-family: var(--font-body);
+      cursor: pointer; white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .publish-btn:hover { background: #1e3d35; }
+
+    /* ── Charity: edit button on card ── */
+    .charity-edit-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      height: 32px; padding: 0 14px;
+      border: 1px solid var(--border); border-radius: 6px;
+      background: var(--white); color: var(--navy);
+      font-size: 11.5px; font-weight: 600; font-family: var(--font-body);
+      cursor: pointer; margin-top: auto;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .charity-edit-btn:hover { border-color: var(--gold); background: var(--gold-pale); }
+
+    /* ── Charity: add-post zone at bottom of day ── */
+    .add-post-zone {
+      border: 1.5px dashed var(--gold);
+      border-radius: 10px; background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      padding: 18px; margin-bottom: 10px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .add-post-zone:hover { background: var(--gold-pale); }
+    .add-post-zone-btn {
+      background: none; border: 1px solid var(--border); border-radius: 6px;
+      padding: 7px 18px; font-size: 12px; font-weight: 600;
+      font-family: var(--font-body); color: var(--navy); cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .add-post-zone:hover .add-post-zone-btn { border-color: var(--navy); }
+
+    /* ── Post modal ── */
+    #post-modal {
+      display: none; position: fixed; inset: 0; z-index: 9000;
+      background: rgba(10,20,15,0.6); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    #post-modal.open { display: flex; }
+    .modal-box {
+      background: var(--white); border-radius: 14px;
+      width: 100%; max-width: 560px; max-height: 90vh;
+      overflow-y: auto; box-shadow: var(--shadow-md);
+      animation: fadeUp 0.2s var(--ease-out) both;
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+    }
+    .modal-header h3 {
+      font-family: var(--font-display); font-size: 17px;
+      font-weight: 400; color: var(--navy);
+    }
+    .modal-close {
+      background: none; border: none; font-size: 20px; cursor: pointer;
+      color: var(--text-muted); line-height: 1; padding: 2px 6px;
+      border-radius: 4px; transition: background 0.15s;
+    }
+    .modal-close:hover { background: var(--cream-dark); color: var(--navy); }
+    .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+    .modal-field { display: flex; flex-direction: column; gap: 5px; }
+    .modal-field label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .modal-field input,
+    .modal-field select,
+    .modal-field textarea {
+      font-family: var(--font-body); font-size: 12.5px; color: var(--text);
+      border: 1px solid var(--border); border-radius: 7px;
+      padding: 8px 11px; background: var(--cream);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .modal-field input:focus,
+    .modal-field select:focus,
+    .modal-field textarea:focus {
+      outline: none; border-color: var(--navy);
+      box-shadow: 0 0 0 2px rgba(18,38,32,0.07); background: var(--white);
+    }
+    .modal-field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .modal-row { display: flex; gap: 10px; }
+    .modal-row .modal-field { flex: 1; }
+
+    /* Media upload preview */
+    .modal-media-preview {
+      width: 100%; aspect-ratio: 1/1; border-radius: 8px;
+      overflow: hidden; background: var(--cream-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: var(--text-light); position: relative;
+      border: 1px solid var(--border);
+    }
+    .modal-media-preview img,
+    .modal-media-preview video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .modal-upload-label {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 14px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--cream); cursor: pointer; font-size: 12px;
+      font-weight: 600; color: var(--navy); width: fit-content;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .modal-upload-label:hover { border-color: var(--navy); background: var(--white); }
+    .modal-footer {
+      display: flex; justify-content: flex-end; gap: 8px;
+      padding: 14px 20px; border-top: 1px solid var(--border);
+    }
+    .modal-cancel {
+      height: 36px; padding: 0 16px; border: 1px solid var(--border);
+      border-radius: 6px; background: var(--white); color: var(--text-mid);
+      font-size: 12px; font-family: var(--font-body); cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .modal-cancel:hover { border-color: var(--navy); color: var(--navy); }
+    .modal-save {
+      height: 36px; padding: 0 20px; border: none;
+      border-radius: 6px; background: var(--navy); color: #fff;
+      font-size: 12px; font-weight: 600; font-family: var(--font-body);
+      cursor: pointer; transition: background 0.15s;
+    }
+    .modal-save:hover { background: var(--gold); color: var(--navy); }
+
     /* ── Standalone carousel (outside card-media) ── */
     .media-carousel { margin-bottom: 0; }
     .carousel-track-wrap { overflow: hidden; border-radius: 4px; }
@@ -722,6 +874,64 @@
 
 <div id="save-indicator">Saved</div>
 
+<!-- ═══════════════════════════════════════════
+     POST MODAL (Edit / Add Post)
+═══════════════════════════════════════════ -->
+<div id="post-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title">Edit Post</h3>
+      <button class="modal-close" onclick="closePostModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <div class="modal-field" id="modal-day-field" style="display:none;">
+          <label>Day</label>
+          <select id="modal-day"></select>
+        </div>
+        <div class="modal-field">
+          <label>Time</label>
+          <input id="modal-time" type="text" placeholder="e.g. 9:00 AM" />
+        </div>
+        <div class="modal-field">
+          <label>Content Type</label>
+          <input id="modal-type" type="text" placeholder="e.g. Static Post" />
+        </div>
+        <div class="modal-field">
+          <label>Priority</label>
+          <select id="modal-priority">
+            <option value="">None</option>
+            <option value="HIGH">HIGH</option>
+            <option value="TREND">TREND</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-field">
+        <label>Caption</label>
+        <textarea id="modal-caption" rows="4" placeholder="Write the post caption..."></textarea>
+      </div>
+      <div class="modal-field">
+        <label>Design Guide</label>
+        <textarea id="modal-visual" rows="2" placeholder="Visual/design notes..."></textarea>
+      </div>
+      <div class="modal-field">
+        <label>Media (Image or Video)</label>
+        <div class="modal-media-preview" id="modal-media-preview">
+          <span id="modal-media-placeholder">📷 No media selected</span>
+        </div>
+        <label class="modal-upload-label" style="margin-top:8px;">
+          📎 Choose file
+          <input type="file" id="modal-file" accept="image/*,video/*" style="display:none;" onchange="onModalFileChange(this)" />
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-cancel" onclick="closePostModal()">Cancel</button>
+      <button class="modal-save" id="modal-save-btn" onclick="savePostModal()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <div id="lightbox" onclick="lightboxClose()">
   <button id="lightbox-close" onclick="lightboxClose()">&times;</button>
   <img id="lightbox-media" src="" alt="preview" style="display:none;" />
@@ -730,7 +940,7 @@
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const _fbApp = initializeApp({
   apiKey:            'AIzaSyAGcdGtIz-Crg90lXGVU1d1o6lT1h-fgQ4',
@@ -756,7 +966,11 @@ const PLATFORM_META = {
 
 const LS_PREFIX = 'kw-approval-';
 const approvalCache = {};
+const postEditsCache = {};
+const customPostsCache = {};
 let currentRole = 'kelli';
+let _weekPosts = [];
+let _platformNotes = {};
 
 const CDN = 'https://res.cloudinary.com/dx51n94k1';
 const W   = 'Apr%2027%20-%20May%201';
@@ -826,8 +1040,13 @@ async function loadWeek() {
     if (!res.ok) throw new Error('week.md not found');
     const text = await res.text();
     const { label, posts, platformNotes } = parseMd(text);
+    _weekPosts = posts;
+    _platformNotes = platformNotes;
     document.getElementById('approve-week-label').textContent = label || 'Current Week';
     renderPosts(posts, platformNotes);
+    startApprovalListener();
+    startPostEditsListener();
+    startCustomPostsListener();
   } catch (e) {
     document.getElementById('approve-week-label').textContent = 'Could not load week data';
     PLATFORMS.forEach(p => {
@@ -940,6 +1159,14 @@ function getMedia(post) {
 }
 
 function buildCarousel(post, isReel) {
+  // Show inline uploaded media from Charity edits
+  if (post.mediaDataUrl) {
+    const isVid = post.mediaDataUrl.startsWith('data:video');
+    const el = isVid
+      ? `<video src="${post.mediaDataUrl}" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" onclick="lightboxOpen('${post.mediaDataUrl}','video')"></video>`
+      : `<img src="${post.mediaDataUrl}" alt="media" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" onclick="lightboxOpen('${post.mediaDataUrl}','image')" />`;
+    return `<div class="carousel-slide">${el}</div>`;
+  }
   const media = getMedia(post);
   if (!media.length) {
     const icon  = isReel ? '🎬' : '📷';
@@ -994,13 +1221,22 @@ function carouselPrev(cid, total) { carouselGo(cid, total, Math.max(0, (carousel
 function carouselNext(cid, total) { carouselGo(cid, total, Math.min(total - 1, (carouselState[cid] || 0) + 1)); }
 
 function renderPosts(posts, platformNotes = {}) {
+  // Merge post_edits over base posts
+  const mergedPosts = posts.map(p => {
+    const edit = postEditsCache[p.id];
+    return edit ? { ...p, ...edit, id: p.id, platform: p.platform, day_label: p.day_label, day_order: p.day_order } : p;
+  });
+
+  // Append custom posts from Firestore
+  const allPosts = [...mergedPosts, ...Object.values(customPostsCache).filter(cp => !cp._deleted)];
+
   const grouped = {};
   PLATFORMS.forEach(p => { grouped[p] = {}; });
-  posts.forEach(post => {
+  allPosts.forEach(post => {
     const p = post.platform;
     if (!grouped[p]) return;
-    const key = post.day_order + '-' + post.day_label;
-    if (!grouped[p][key]) grouped[p][key] = { label: post.day_label, order: post.day_order, posts: [] };
+    const key = (post.day_order || 0) + '-' + post.day_label;
+    if (!grouped[p][key]) grouped[p][key] = { label: post.day_label, order: post.day_order || 0, posts: [] };
     grouped[p][key].posts.push(post);
   });
 
@@ -1009,13 +1245,29 @@ function renderPosts(posts, platformNotes = {}) {
     const days = grouped[platform];
     const meta = PLATFORM_META[platform];
 
-    const header = `<div class="platform-header"><h2>${meta.name}</h2><p>${meta.sub}</p></div>`;
-    const pNote  = platformNotes[platform];
+    const actionsHtml = currentRole === 'charity' ? `
+      <div class="platform-actions">
+        <button class="add-post-btn" onclick="openAddModal('${platform}',null,null)">+ Add Post</button>
+        <button class="publish-btn" onclick="publishForReview('${platform}')">&#128203; Publish for review</button>
+      </div>` : '';
+
+    const header = `<div class="platform-header-row">
+      <div><h2>${esc(meta.name)}</h2><p>${esc(meta.sub)}</p></div>
+      ${actionsHtml}
+    </div>`;
+
+    const pNote    = platformNotes[platform];
     const noteHtml = pNote ? `<div class="note-${pNote.type}">${esc(pNote.text)}</div>` : '';
     const dayKeys  = Object.keys(days).sort((a, b) => days[a].order - days[b].order);
 
+    const addZone = (dayLabel, dayOrder) => currentRole === 'charity'
+      ? `<div class="add-post-zone" onclick="openAddModal('${platform}','${esc(dayLabel)}',${dayOrder})">
+           <button class="add-post-zone-btn">+ Add Post</button>
+         </div>` : '';
+
     if (!dayKeys.length) {
-      el.innerHTML = header + noteHtml + '<div class="empty-state">No posts for this platform this week.</div>';
+      const emptyZone = currentRole === 'charity' ? addZone('', 0) : '';
+      el.innerHTML = header + noteHtml + '<div class="empty-state">No posts for this platform this week.</div>' + emptyZone;
       return;
     }
 
@@ -1024,6 +1276,7 @@ function renderPosts(posts, platformNotes = {}) {
       return `<div class="day-block">
         <div class="day-label">${esc(day.label)}</div>
         ${day.posts.map(p => buildCard(p)).join('')}
+        ${addZone(day.label, day.order)}
       </div>`;
     }).join('');
   });
@@ -1064,7 +1317,9 @@ function buildCard(post) {
         </div>
         ${post.caption ? `<div class="post-caption"><span class="visual-guide-label">Caption:</span>${esc(post.caption)}</div>` : ''}
         ${visualHtml}
-        ${currentRole !== 'charity' ? `
+        ${currentRole === 'charity' ? `
+        <button class="charity-edit-btn" onclick="openEditModal('${esc(post.id)}')">&#9998; Edit Post</button>
+        ` : `
         <div class="approve-row">
           <label>Kelli:</label>
           <select class="${selClass}"
@@ -1219,6 +1474,180 @@ function esc(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
+/* ══════════════════════════════════════════
+   CHARITY: EDIT / ADD POST MODAL
+══════════════════════════════════════════ */
+
+let _modalMode  = 'edit';  // 'edit' | 'add'
+let _modalPostId = null;
+let _modalPlatform = null;
+let _modalDayLabel = null;
+let _modalDayOrder = null;
+let _modalMediaDataUrl = null;
+
+function openEditModal(postId) {
+  _modalMode   = 'edit';
+  _modalPostId = postId;
+  _modalMediaDataUrl = null;
+
+  // Find post from merged data
+  const base = _weekPosts.find(p => p.id === postId) || {};
+  const edit = postEditsCache[postId] || {};
+  const custom = customPostsCache[postId];
+  const post = custom || { ...base, ...edit };
+
+  document.getElementById('modal-title').textContent = 'Edit Post';
+  document.getElementById('modal-save-btn').textContent = 'Save Changes';
+  document.getElementById('modal-day-field').style.display = 'none';
+  document.getElementById('modal-time').value    = post.post_time    || '';
+  document.getElementById('modal-type').value    = post.content_type || '';
+  document.getElementById('modal-priority').value = post.priority   || '';
+  document.getElementById('modal-caption').value = post.caption     || '';
+  document.getElementById('modal-visual').value  = post.visual_text || '';
+  document.getElementById('modal-file').value    = '';
+  const preview = document.getElementById('modal-media-preview');
+  if (post.mediaDataUrl) {
+    _renderModalMediaPreview(post.mediaDataUrl);
+  } else {
+    preview.innerHTML = '<span id="modal-media-placeholder">📷 No media selected</span>';
+  }
+  document.getElementById('post-modal').classList.add('open');
+}
+
+function openAddModal(platform, dayLabel, dayOrder) {
+  _modalMode     = 'add';
+  _modalPostId   = null;
+  _modalPlatform = platform;
+  _modalDayLabel = dayLabel;
+  _modalDayOrder = dayOrder;
+  _modalMediaDataUrl = null;
+
+  document.getElementById('modal-title').textContent = 'Add New Post';
+  document.getElementById('modal-save-btn').textContent = 'Add Post';
+  document.getElementById('modal-time').value     = '';
+  document.getElementById('modal-type').value     = '';
+  document.getElementById('modal-priority').value = '';
+  document.getElementById('modal-caption').value  = '';
+  document.getElementById('modal-visual').value   = '';
+  document.getElementById('modal-file').value     = '';
+  document.getElementById('modal-media-preview').innerHTML = '<span id="modal-media-placeholder">📷 No media selected</span>';
+
+  // Show day selector if no day was pre-selected
+  const dayField = document.getElementById('modal-day-field');
+  if (!dayLabel) {
+    dayField.style.display = 'block';
+    const daySelect = document.getElementById('modal-day');
+    const days = [...new Set(_weekPosts.filter(p => p.platform === platform).map(p => p.day_label))];
+    daySelect.innerHTML = days.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join('');
+  } else {
+    dayField.style.display = 'none';
+  }
+
+  document.getElementById('post-modal').classList.add('open');
+}
+
+function closePostModal() {
+  document.getElementById('post-modal').classList.remove('open');
+}
+
+function onModalFileChange(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    _modalMediaDataUrl = e.target.result;
+    _renderModalMediaPreview(_modalMediaDataUrl);
+  };
+  reader.readAsDataURL(file);
+}
+
+function _renderModalMediaPreview(dataUrl) {
+  const preview = document.getElementById('modal-media-preview');
+  const isVid = dataUrl.startsWith('data:video');
+  preview.innerHTML = isVid
+    ? `<video src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;" controls></video>`
+    : `<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;" alt="preview" />`;
+}
+
+async function savePostModal() {
+  const time     = document.getElementById('modal-time').value.trim();
+  const type     = document.getElementById('modal-type').value.trim();
+  const priority = document.getElementById('modal-priority').value;
+  const caption  = document.getElementById('modal-caption').value.trim();
+  const visual   = document.getElementById('modal-visual').value.trim();
+
+  if (_modalMode === 'edit') {
+    const edit = { post_time: time, content_type: type, priority, caption, visual_text: visual };
+    if (_modalMediaDataUrl) edit.mediaDataUrl = _modalMediaDataUrl;
+    try {
+      await setDoc(doc(db, 'post_edits', _modalPostId), { ...edit, updatedAt: new Date().toISOString() });
+      postEditsCache[_modalPostId] = edit;
+      flashSaved();
+    } catch(e) {
+      postEditsCache[_modalPostId] = edit;
+      console.warn('Firestore post_edits save failed:', e);
+    }
+  } else {
+    const dayLabel = _modalDayLabel || document.getElementById('modal-day').value;
+    const dayOrder = _modalDayOrder || (_weekPosts.find(p => p.day_label === dayLabel)?.day_order || 0);
+    const id = `custom-${_modalPlatform}-${Date.now()}`;
+    const newPost = {
+      id, platform: _modalPlatform, day_label: dayLabel, day_order: dayOrder,
+      post_time: time, content_type: type, priority, caption, visual_text: visual,
+      date: '', image_url: '',
+    };
+    if (_modalMediaDataUrl) newPost.mediaDataUrl = _modalMediaDataUrl;
+    try {
+      await setDoc(doc(db, 'custom_posts', id), { ...newPost, createdAt: new Date().toISOString() });
+      customPostsCache[id] = newPost;
+      flashSaved();
+    } catch(e) {
+      customPostsCache[id] = newPost;
+      console.warn('Firestore custom_posts save failed:', e);
+    }
+  }
+
+  closePostModal();
+  renderPosts(_weekPosts, _platformNotes);
+}
+
+async function publishForReview(platform) {
+  const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
+  const text = `📋 Charity has published *${platformName}* posts for review.\nPlease log in to review and approve the week's content.`;
+  try {
+    const res = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+    if (!res.ok) throw new Error(`${res.status}`);
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✓ Published';
+    btn.style.background = '#27ae60';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
+  } catch(e) {
+    console.warn('Publish notify failed:', e.message);
+    alert('Could not send Slack notification. Check SLACK_WEBHOOK_URL in Vercel settings.');
+  }
+}
+
+function startPostEditsListener() {
+  onSnapshot(collection(db, 'post_edits'), snapshot => {
+    snapshot.docChanges().forEach(change => {
+      if (change.type === 'removed') { delete postEditsCache[change.doc.id]; return; }
+      postEditsCache[change.doc.id] = change.doc.data();
+    });
+    renderPosts(_weekPosts, _platformNotes);
+  }, err => console.warn('post_edits listener error:', err));
+}
+
+function startCustomPostsListener() {
+  onSnapshot(collection(db, 'custom_posts'), snapshot => {
+    snapshot.docChanges().forEach(change => {
+      if (change.type === 'removed') { delete customPostsCache[change.doc.id]; return; }
+      customPostsCache[change.doc.id] = change.doc.data();
+    });
+    renderPosts(_weekPosts, _platformNotes);
+  }, err => console.warn('custom_posts listener error:', err));
+}
+
 function lightboxOpen(url, type) {
   const lb  = document.getElementById('lightbox');
   const img = document.getElementById('lightbox-media');
@@ -1234,7 +1663,7 @@ function lightboxClose() {
   lb.classList.remove('open'); vid.pause(); vid.src = '';
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') lightboxClose(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { lightboxClose(); closePostModal(); } });
 
 window.enterApproveMode = enterApproveMode;
 window.enterCharityMode = enterCharityMode;
@@ -1248,6 +1677,12 @@ window.carouselPrev     = carouselPrev;
 window.carouselNext     = carouselNext;
 window.lightboxOpen     = lightboxOpen;
 window.lightboxClose    = lightboxClose;
+window.openEditModal    = openEditModal;
+window.openAddModal     = openAddModal;
+window.closePostModal   = closePostModal;
+window.savePostModal    = savePostModal;
+window.onModalFileChange = onModalFileChange;
+window.publishForReview = publishForReview;
 
 startApprovalListener();
 </script>
