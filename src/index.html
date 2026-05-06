@@ -1143,11 +1143,14 @@ async function sendNote(input, postId, platform, dayLabel, postTime, contentType
   const note = input.value.trim();
   if (!note) return;
   const btn = input.nextElementSibling;
+  const statusSelect = input.previousElementSibling;
+  const approvalStatus = statusSelect ? statusSelect.value : (loadApproval(postId).status || 'Pending');
   const saved = loadApproval(postId);
   await saveApproval(postId, { status: saved.status || 'pending', note });
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
   const text = ['\ud83d\udcac Kelli left a note', `Platform: ${platformName}`, `Day: ${dayLabel}`,
-    `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`, `Note: ${note}`].join('\n');
+    `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`,
+    `Approval status: ${approvalStatus}`, `Note: ${note}`].join('\n');
   try {
     const res = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
     if (!res.ok) throw new Error(`Server returned ${res.status}`);
