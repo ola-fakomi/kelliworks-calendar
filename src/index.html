@@ -1142,16 +1142,28 @@ function updateCardUI(postId, data) {
 async function sendNote(input, postId, platform, dayLabel, postTime, contentType) {
   const note = input.value.trim();
   if (!note) return;
+  const btn = input.nextElementSibling;
   const saved = loadApproval(postId);
   await saveApproval(postId, { status: saved.status || 'pending', note });
   const platformName = PLATFORM_META[platform]?.name.split('\u2014')[0].trim() || platform;
   const text = ['\ud83d\udcac Kelli left a note', `Platform: ${platformName}`, `Day: ${dayLabel}`,
     `Time: ${postTime || '\u2014'}`, `Content type: ${contentType || '\u2014'}`, `Note: ${note}`].join('\n');
   try {
-    await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+    const res = await fetch('/api/notify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+    if (!res.ok) throw new Error(`Server returned ${res.status}`);
     input.classList.add('sent');
-    setTimeout(() => input.classList.remove('sent'), 1500);
-  } catch(e) { console.warn('Slack note failed:', e.message); }
+    if (btn) { btn.textContent = '✓ Sent to Slack'; btn.disabled = true; }
+    setTimeout(() => {
+      input.classList.remove('sent');
+      if (btn) { btn.textContent = 'Send'; btn.disabled = false; }
+    }, 3000);
+  } catch(e) {
+    console.warn('Slack note failed:', e.message);
+    if (btn) { btn.textContent = '⚠ Failed'; btn.style.background = '#c0392b'; }
+    setTimeout(() => {
+      if (btn) { btn.textContent = 'Send'; btn.style.background = ''; btn.disabled = false; }
+    }, 3000);
+  }
 }
 
 async function notifySlack(platform, dayLabel, postTime, contentType) {
