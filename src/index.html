@@ -817,6 +817,14 @@
       .approve-row select     { grid-area: select; width: 100%; height: 36px; }
       .approve-row .notes-input { grid-area: notes; width: 100%; }
       .approve-row .send-btn  { grid-area: send; }
+
+      /* Platform header: stack vertically on mobile */
+      .platform-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .platform-actions { width: 100%; }
     }
   </style>
 </head>
