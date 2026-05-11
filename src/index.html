@@ -703,6 +703,31 @@
     .modal-save:disabled { background: #c8c8c8; color: #f0f0f0; cursor: not-allowed; }
     .modal-upload-label.uploading { opacity: 0.5; pointer-events: none; cursor: not-allowed; }
 
+    /* ── Carousel multi-upload in modal ── */
+    .modal-carousel-upload { margin-top: 0; }
+    .modal-carousel-thumbs {
+      display: flex; flex-wrap: wrap; gap: 8px; min-height: 72px;
+      padding: 8px; background: var(--cream-dark); border-radius: 8px;
+      border: 1px solid var(--border); align-items: flex-start;
+    }
+    .modal-carousel-thumb-wrap {
+      position: relative; width: 60px; height: 60px; flex-shrink: 0;
+    }
+    .modal-carousel-thumb {
+      width: 60px; height: 60px; border-radius: 6px; object-fit: cover;
+      border: 2px solid var(--border); display: block;
+    }
+    .modal-carousel-thumb-remove {
+      position: absolute; top: -5px; right: -5px; background: #c00;
+      color: #fff; border: none; border-radius: 50%; width: 17px; height: 17px;
+      font-size: 11px; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; line-height: 1; font-weight: 700; padding: 0;
+    }
+    .modal-carousel-footer {
+      display: flex; align-items: center; gap: 10px; margin-top: 8px;
+    }
+    .modal-carousel-count { font-size: 11px; color: var(--text-muted); }
+
     /* ── Standalone carousel (outside card-media) ── */
     .media-carousel { margin-bottom: 0; }
     .carousel-track-wrap { overflow: hidden; border-radius: 4px; }
@@ -915,10 +940,11 @@
       <button class="modal-close" onclick="closePostModal()">&times;</button>
     </div>
     <div class="modal-body">
-      <!-- Media section: preview left, choose file right -->
-      <div class="modal-field">
-        <label>Media (Image or Video)</label>
-        <div class="modal-media-section">
+      <!-- Media section: toggles between single and carousel based on content type -->
+      <div class="modal-field" id="modal-media-field">
+        <label id="modal-media-label">Media (Image or Video)</label>
+        <!-- Single upload (default) -->
+        <div class="modal-media-section" id="modal-single-upload">
           <div class="modal-media-preview" id="modal-media-preview">
             <span id="modal-media-placeholder" style="font-size:11px;color:#666;">No media</span>
           </div>
@@ -927,6 +953,19 @@
               📎 Choose File
               <input type="file" id="modal-file" accept="image/*,video/*" style="display:none;" onchange="onModalFileChange(this)" />
             </label>
+          </div>
+        </div>
+        <!-- Carousel multi-upload (shown when Carousel type is selected) -->
+        <div class="modal-carousel-upload" id="modal-carousel-upload" style="display:none;">
+          <div class="modal-carousel-thumbs" id="modal-carousel-thumbs">
+            <span style="font-size:11px;color:#666;">No images uploaded yet</span>
+          </div>
+          <div class="modal-carousel-footer">
+            <label class="modal-upload-label" id="modal-carousel-label">
+              📎 Add Images (max 10)
+              <input type="file" id="modal-carousel-files" accept="image/*" multiple style="display:none;" onchange="onCarouselFilesChange(this)" />
+            </label>
+            <span class="modal-carousel-count" id="modal-carousel-count">0 / 10</span>
           </div>
         </div>
       </div>
@@ -1226,7 +1265,25 @@ function getMedia(post) {
 }
 
 function buildCarousel(post, isReel) {
-  // Show inline uploaded media from Charity edits
+  // Multiple uploaded images — carousel type
+  if (post.mediaDataUrls && post.mediaDataUrls.length) {
+    const cid   = 'c-' + post.id.replace(/[^a-z0-9]/gi, '-');
+    const total = post.mediaDataUrls.length;
+    const slides = post.mediaDataUrls.map(url =>
+      `<div class="carousel-slide"><img src="${esc(url)}" alt="media" style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;" onclick="lightboxOpen('${esc(url)}','image')" /></div>`
+    ).join('');
+    const controls = total > 1 ? (() => {
+      const counter = `<span class="carousel-counter" id="${cid}-counter">1 / ${total}</span>`;
+      const prevBtn = `<button class="carousel-btn" id="${cid}-prev" onclick="carouselPrev('${cid}',${total})" disabled>&#8592;</button>`;
+      const nextBtn = `<button class="carousel-btn" id="${cid}-next" onclick="carouselNext('${cid}',${total})">&#8594;</button>`;
+      return `<div class="carousel-controls">${prevBtn}${counter}${nextBtn}</div>`;
+    })() : '';
+    return `<div class="media-carousel" id="${cid}">
+      <div class="carousel-track-wrap"><div class="carousel-track" id="${cid}-track">${slides}</div></div>
+      ${controls}
+    </div>`;
+  }
+  // Single uploaded media from Charity edits
   if (post.mediaDataUrl) {
     const isVid = _isVideoUrl(post.mediaDataUrl);
     const el = isVid
@@ -1591,6 +1648,7 @@ let _modalPlatform = null;
 let _modalDayLabel = null;
 let _modalDayOrder = null;
 let _modalMediaDataUrl = null;
+let _modalCarouselUrls = [];
 
 // Convert "8:00 AM" → "08:00" for <input type="time">
 function _to24h(t) {
@@ -1631,6 +1689,15 @@ function validateModal() {
   const day = document.getElementById('modal-day').value;
   const valid = !!(time && type && caption && (!dayVisible || day));
   document.getElementById('modal-save-btn').disabled = !valid;
+  _updateModalMediaMode(type);
+}
+
+function _updateModalMediaMode(type) {
+  const isCarousel = type === 'Carousel';
+  document.getElementById('modal-single-upload').style.display   = isCarousel ? 'none'  : 'flex';
+  document.getElementById('modal-carousel-upload').style.display = isCarousel ? 'block' : 'none';
+  document.getElementById('modal-media-label').textContent =
+    isCarousel ? 'Carousel Images (max 10)' : 'Media (Image or Video)';
 }
 
 function openEditModal(postId) {
@@ -1655,12 +1722,16 @@ function openEditModal(postId) {
   document.getElementById('modal-caption').value  = post.caption     || '';
   document.getElementById('modal-visual').value   = post.visual_text || '';
   document.getElementById('modal-file').value     = '';
+  document.getElementById('modal-carousel-files').value = '';
+  _modalCarouselUrls = post.mediaDataUrls ? [...post.mediaDataUrls] : [];
   const preview = document.getElementById('modal-media-preview');
   if (post.mediaDataUrl) {
     _renderModalMediaPreview(post.mediaDataUrl);
   } else {
     preview.innerHTML = '<span style="font-size:11px;color:#666;">No media</span>';
   }
+  _updateModalMediaMode(post.content_type || '');
+  _renderCarouselThumbs();
   validateModal();
   document.getElementById('post-modal').classList.add('open');
 }
@@ -1681,7 +1752,11 @@ function openAddModal(platform, dayLabel, dayOrder) {
   document.getElementById('modal-caption').value  = '';
   document.getElementById('modal-visual').value   = '';
   document.getElementById('modal-file').value     = '';
+  document.getElementById('modal-carousel-files').value = '';
   document.getElementById('modal-media-preview').innerHTML = '<span style="font-size:11px;color:#666;">No media</span>';
+  _modalCarouselUrls = [];
+  _updateModalMediaMode('');
+  _renderCarouselThumbs();
 
   // Show date picker if no day was pre-selected
   const dayField = document.getElementById('modal-day-field');
@@ -1755,6 +1830,65 @@ function _renderModalMediaPreview(url) {
     : `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" alt="preview" />`;
 }
 
+function _renderCarouselThumbs() {
+  const container = document.getElementById('modal-carousel-thumbs');
+  const countEl   = document.getElementById('modal-carousel-count');
+  const addLbl    = document.getElementById('modal-carousel-label');
+  if (!container) return;
+  if (!_modalCarouselUrls.length) {
+    container.innerHTML = '<span style="font-size:11px;color:#666;">No images uploaded yet</span>';
+    if (countEl) countEl.textContent = '0 / 10';
+    if (addLbl)  addLbl.classList.remove('uploading');
+    return;
+  }
+  container.innerHTML = _modalCarouselUrls.map((url, i) =>
+    `<div class="modal-carousel-thumb-wrap">
+      <img class="modal-carousel-thumb" src="${esc(url)}" alt="slide ${i + 1}" />
+      <button class="modal-carousel-thumb-remove" onclick="removeCarouselThumb(${i})" title="Remove">&times;</button>
+    </div>`
+  ).join('');
+  if (countEl) countEl.textContent = `${_modalCarouselUrls.length} / 10`;
+  if (addLbl) {
+    if (_modalCarouselUrls.length >= 10) addLbl.classList.add('uploading');
+    else addLbl.classList.remove('uploading');
+  }
+}
+
+function removeCarouselThumb(index) {
+  _modalCarouselUrls.splice(index, 1);
+  _renderCarouselThumbs();
+}
+
+async function onCarouselFilesChange(input) {
+  const files     = Array.from(input.files);
+  const remaining = 10 - _modalCarouselUrls.length;
+  const toUpload  = files.slice(0, remaining);
+  if (!toUpload.length) { input.value = ''; return; }
+
+  const lbl = document.getElementById('modal-carousel-label');
+  if (lbl) lbl.classList.add('uploading');
+
+  for (const file of toUpload) {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'kw-calendar');
+      const res = await fetch('https://api.cloudinary.com/v1_1/dx51n94k1/upload', { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('Upload failed: ' + res.status);
+      const data = await res.json();
+      _modalCarouselUrls.push(data.secure_url);
+      _renderCarouselThumbs();
+    } catch(e) {
+      console.warn('Carousel upload failed:', e);
+    }
+  }
+
+  if (lbl) lbl.classList.remove('uploading');
+  input.value = '';
+  // Re-apply max lock
+  _renderCarouselThumbs();
+}
+
 async function savePostModal() {
   const btn = document.getElementById('modal-save-btn');
   const origText = btn.textContent;
@@ -1776,9 +1910,15 @@ async function savePostModal() {
       const dayOrder = dateVal ? new Date(dateVal + 'T00:00:00').getTime() : null;
       const edit = { post_time: time, content_type: type, priority, caption, visual_text: visual };
       if (dateVal)  { edit.date = dateVal; edit.day_label = dayLabel; edit.day_order = dayOrder; }
-      const existingMedia = postEditsCache[_modalPostId]?.mediaDataUrl;
-      if (_modalMediaDataUrl) edit.mediaDataUrl = _modalMediaDataUrl;
-      else if (existingMedia) edit.mediaDataUrl = existingMedia;
+      if (type === 'Carousel') {
+        if (_modalCarouselUrls.length) edit.mediaDataUrls = [..._modalCarouselUrls];
+        const existingUrls = postEditsCache[_modalPostId]?.mediaDataUrls;
+        if (!edit.mediaDataUrls && existingUrls) edit.mediaDataUrls = existingUrls;
+      } else {
+        const existingMedia = postEditsCache[_modalPostId]?.mediaDataUrl;
+        if (_modalMediaDataUrl) edit.mediaDataUrl = _modalMediaDataUrl;
+        else if (existingMedia) edit.mediaDataUrl = existingMedia;
+      }
       await setDoc(doc(db, 'post_edits', _modalPostId), { ...edit, published: false, updatedAt: new Date().toISOString() });
       postEditsCache[_modalPostId] = { ...edit, published: false };
     } else {
@@ -1792,7 +1932,11 @@ async function savePostModal() {
         post_time: time, content_type: type, priority, caption, visual_text: visual,
         date: dateVal, image_url: '', published: false,
       };
-      if (_modalMediaDataUrl) newPost.mediaDataUrl = _modalMediaDataUrl;
+      if (type === 'Carousel' && _modalCarouselUrls.length) {
+        newPost.mediaDataUrls = [..._modalCarouselUrls];
+      } else if (_modalMediaDataUrl) {
+        newPost.mediaDataUrl = _modalMediaDataUrl;
+      }
       await setDoc(doc(db, 'custom_posts', id), { ...newPost, createdAt: new Date().toISOString() });
       customPostsCache[id] = newPost;
     }
@@ -1913,7 +2057,9 @@ window.closePostModal   = closePostModal;
 window.savePostModal    = savePostModal;
 window.validateModal    = validateModal;
 window.deletePost       = deletePost;
-window.onModalFileChange = onModalFileChange;
+window.onModalFileChange      = onModalFileChange;
+window.onCarouselFilesChange  = onCarouselFilesChange;
+window.removeCarouselThumb    = removeCarouselThumb;
 window.publishForReview = publishForReview;
 
 startApprovalListener();
